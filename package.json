@@ -2,9 +2,6 @@
   "name": "firsttouch",
   "version": "1.0.0",
   "main": "expo-router/entry",
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {
     "@expo/ui": "~58.0.27",
     "expo": "~58.0.23",
@@ -35,8 +32,10 @@
     "@types/react": "~19.3.0",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~58.0.4",
+    "supabase": "^3.0.0",
     "tailwindcss": "^3.4.19",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^5.1.0"
   },
   "scripts": {
     "start": "expo start",
@@ -44,7 +43,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "test": "vitest run"
   },
   "private": true
 }

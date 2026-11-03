@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { balanceTeams } from './index';
+import { balanceTeams } from './balance.ts';
 
 describe('balanceTeams', () => {
   it('is not implemented yet', () => {
