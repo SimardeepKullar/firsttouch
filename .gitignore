@@ -30,8 +30,6 @@ yarn-error.*
 .DS_Store
 *.pem
 
-# local env files
-.env*.local
 
 # typescript
 *.tsbuildinfo
@@ -42,5 +40,6 @@ example
 /ios
 /android
 
-# env files
-.env
+# env files: every .env* file stays on your machine, except the template
+.env*
+!.env.example
