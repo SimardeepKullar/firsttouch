@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch · Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E4D32}a:hover{color:#0A3A26}
+</style>
+</helmet>
+<div style="width: 390px; height: 1120px; box-sizing: border-box; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Archivo', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 16px; padding: 24px 16px 16px; min-height: 0">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="height: 32px; padding: 0 12px 0 10px; border-radius: 999px; background: {{pass.bg}}; color: {{pass.fg}}; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: {{pass.fg}}"></span>{{pass.label}}
+      </div>
+      <div aria-label="{{me.full}}" style="width: 44px; height: 44px; border-radius: 50%; background: {{t.brand}}; color: {{t.brandInk}}; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800">{{me.ini}}</div>
+    </div>
+    <div>
+      <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.02em">Morning, {{me.first}}</h1>
+      <p style="margin: 4px 0 0; font-size: 16px; color: {{t.muted}}">Indoor 2026–27 · three runs this week</p>
+    </div>
+    <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 6px 12px 14px; border-radius: 18px; background: {{t.brandSoft}}">
+        <div style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; background: {{t.brand}}; display: flex; align-items: center; justify-content: center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="{{t.brandInk}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"></rect><path d="M12 8v6M9 11h6"></path></svg>
+        </div>
+        <p style="margin: 0; flex-grow: 1; font-size: 14px; line-height: 1.35; font-weight: 600">Add FirstTouch to your Home Screen for notifications</p>
+        <button type="button" aria-label="Dismiss" onClick="{{ dismiss }}" style="width: 44px; height: 44px; flex-shrink: 0; border: none; background: transparent; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 12px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+    </sc-if>
+    <sc-for list="{{ runs }}" as="run" hint-placeholder-count="3">
+      <article style="border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
+          <div>
+            <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.brandText}}">{{run.kicker}}</div>
+            <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.01em; margin-top: 2px">{{run.title}}</div>
+          </div>
+          <a href="RunDetail.dc.html" style="height: 32px; flex-shrink: 0; padding: 0 12px; border-radius: 999px; background: {{t.surface2}}; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px">Details
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: {{t.muted}}; font-weight: 500">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+            <span style="color: {{t.ink}}; font-weight: 700">6:30 AM start</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+            7855 Finch Ave W, Brampton
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+            {{run.closeLine}}
+          </div>
+        </div>
+        <div style="height: 1px; background: {{t.line}}"></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="display: flex">
+              <span style="width: 30px; height: 30px; border-radius: 50%; background: {{t.surface2}}; border: 2px solid {{t.surface}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">MB</span>
+              <span style="width: 30px; height: 30px; margin-left: -10px; border-radius: 50%; background: {{t.surface2}}; border: 2px solid {{t.surface}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">PN</span>
+              <span style="width: 30px; height: 30px; margin-left: -10px; border-radius: 50%; background: {{t.surface2}}; border: 2px solid {{t.surface}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">TR</span>
+            </div>
+            <div>
+              <div style="font-size: 20px; font-weight: 800; line-height: 1.1">{{run.count}} going</div>
+              <div style="font-size: 13px; color: {{t.muted}}">{{run.note}}</div>
+            </div>
+          </div>
+          <sc-if value="{{ isCoach }}" hint-placeholder-val="{{ false }}">
+            <span style="flex-shrink: 0; max-width: 150px; text-align: right; font-size: 14px; font-weight: 600; line-height: 1.3; color: {{t.muted}}">You're managing this run</span>
+          </sc-if>
+          <sc-if value="{{ isPlayer }}" hint-placeholder-val="{{ true }}">
+          <button type="button" aria-pressed="{{run.inStr}}" aria-disabled="{{run.disabledStr}}" onClick="{{ run.toggle }}" style="height: 56px; padding: 0 10px 0 18px; border-radius: 999px; border: 2px solid {{run.btnBorder}}; background: {{run.btnBg}}; color: {{run.btnFg}}; opacity: {{run.btnOpacity}}; font-family: inherit; font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 12px; cursor: {{run.cursor}}">
+            I'm in
+            <span style="width: 48px; height: 30px; border-radius: 999px; background: {{run.trackBg}}; display: flex; align-items: center; justify-content: {{run.knobSide}}; padding: 3px; box-sizing: border-box">
+              <span style="width: 24px; height: 24px; border-radius: 50%; background: {{run.knobBg}}"></span>
+            </span>
+          </button>
+          </sc-if>
+        </div>
+        <sc-if value="{{ run.closed }}" hint-placeholder-val="{{ false }}">
+          <div style="border-radius: 16px; background: {{t.brandSoft}}; padding: 12px 12px 12px 14px; display: flex; align-items: center; gap: 12px">
+            <sc-if value="{{ isPlayer }}" hint-placeholder-val="{{ true }}">
+              <span style="width: 14px; height: 14px; flex-shrink: 0; border-radius: 50%; background: #2563EB"></span>
+            </sc-if>
+            <span style="flex-grow: 1; font-size: 15px; font-weight: 700; line-height: 1.3">{{teamsLine}}</span>
+            <a href="Teams.dc.html" style="height: 44px; flex-shrink: 0; padding: 0 14px; border-radius: 12px; background: {{t.brand}}; color: {{t.brandInk}}; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center">View teams</a>
+          </div>
+        </sc-if>
+      </article>
+    </sc-for>
+  </div>
+  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 12px 20px; background: {{t.navBg}}; border-top: 1px solid {{t.line}}; display: grid; grid-template-columns: {{navCols}}">
+    <a href="Home.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 800">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+    </a>
+    <a href="Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 3 6l2 5 3-1v11h8V10l3 1 2-5-5-3c-.5 1.5-2 2.5-4 2.5S8.5 4.5 8 3z"></path></svg>Teams
+    </a>
+    <sc-if value="{{ isCoach }}" hint-placeholder-val="{{ false }}">
+      <a href="AdminPlayers.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Admin
+      </a>
+    </sc-if>
+    <a href="Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"></path><circle cx="15" cy="6" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Settings
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"plays":{"editor":"enum","options":["on","off"],"default":"on"},"dark":{"editor":"boolean","default":false},"pass":{"editor":"enum","options":["paid","unpaid"],"default":"paid"},"$preview":{"width":390,"height":1120}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sun: true, mon: false, banner: true };
+  }
+  renderVals() {
+    const dark = !!this.props.dark;
+    const t = dark ? {
+      bg: '#151514', surface: '#1F1F1D', surface2: '#2B2B28', ink: '#F0EFEA', muted: '#A8A69E', line: '#33332F',
+      brand: '#4CC38A', brandInk: '#062113', brandText: '#6FD6A3', brandSoft: '#1E2E25', navBg: '#181816', track: '#123D27',
+      okBg: '#0F3320', okFg: '#6EE7A0', badBg: '#3B1414', badFg: '#FCA5A5'
+    } : {
+      bg: '#F4F3EE', surface: '#FFFFFF', surface2: '#ECEBE4', ink: '#121A15', muted: '#56625B', line: '#E2E1D9',
+      brand: '#0E4D32', brandInk: '#FFFFFF', brandText: '#0E4D32', brandSoft: '#DCEBE2', navBg: '#FFFFFF', track: '#2E7A55',
+      okBg: '#DCFCE7', okFg: '#166534', badBg: '#FEE2E2', badFg: '#B91C1C'
+    };
+    const coach = this.props.plays === 'off';
+    const paid = (this.props.pass ?? 'paid') === 'paid';
+    const pass = coach
+      ? { bg: t.brandSoft, fg: t.brandText, label: 'Admin · manages runs' }
+      : paid
+        ? { bg: t.okBg, fg: t.okFg, label: 'Indoor pass: Paid' }
+        : { bg: t.badBg, fg: t.badFg, label: 'Indoor pass: Not paid' };
+    const mk = (key, kicker, title, base, closed) => {
+      const on = closed ? true : this.state[key];
+      return {
+        kicker, title, closed,
+        count: base + (on && !closed ? 1 : 0),
+        closeLine: closed ? 'RSVPs closed 5:30 AM' : 'RSVPs close 5:30 AM',
+        note: closed ? 'RSVPs are closed' : coach ? 'RSVPs open' : (on ? 'Including you' : 'You haven’t replied'),
+        inStr: on ? 'true' : 'false',
+        disabledStr: closed ? 'true' : 'false',
+        btnBg: on ? t.brand : t.surface,
+        btnFg: on ? t.brandInk : t.ink,
+        btnBorder: on ? t.brand : t.line,
+        btnOpacity: closed ? '0.45' : '1',
+        cursor: closed ? 'not-allowed' : 'pointer',
+        trackBg: on ? t.track : t.surface2,
+        knobBg: on ? '#FFFFFF' : (dark ? '#7C8A82' : '#9AA39D'),
+        knobSide: on ? 'flex-end' : 'flex-start',
+        toggle: () => { if (!closed) this.setState({ [key]: !this.state[key] }); }
+      };
+    };
+    return {
+      t, pass,
+      isCoach: coach, isPlayer: !coach,
+      me: coach ? { full: 'Coach', first: 'Coach', ini: 'C' } : { full: 'Daniel Mensah', first: 'Daniel', ini: 'DM' },
+      teamsLine: coach ? 'Teams are up' : 'Teams are up — you’re on Blue',
+      navCols: coach ? 'repeat(4, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))',
+      showBanner: this.state.banner,
+      dismiss: () => this.setState({ banner: false }),
+      runs: [
+        mk('sat', 'Saturday', 'Sat Feb 13', 20, true),
+        mk('sun', 'Sunday', 'Sun Feb 14', 19, false),
+        mk('mon', 'Holiday Monday', 'Mon Feb 15 · Family Day', 8, false)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

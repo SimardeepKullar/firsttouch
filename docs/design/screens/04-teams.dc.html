@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch · Teams</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E4D32}a:hover{color:#0A3A26}
+</style>
+</helmet>
+<div style="width: 390px; height: {{rootH}}; box-sizing: border-box; background: {{t.bg}}; color: {{t.ink}}; font-family: 'Archivo', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; min-height: 0; padding: 16px 16px 12px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Teams</h1>
+        <div style="font-size: 14px; color: {{t.muted}}; margin-top: 2px">{{sub}}</div>
+      </div>
+      <span style="height: 28px; padding: 0 10px; border-radius: 999px; background: {{t.okBg}}; color: {{t.okFg}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>Published
+      </span>
+    </div>
+    <div role="group" aria-label="View" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 16px; background: {{t.surface2}}">
+      <button type="button" aria-pressed="{{segTable.pressed}}" onClick="{{ setTable }}" style="height: 40px; border: none; border-radius: 12px; background: {{segTable.bg}}; color: {{segTable.fg}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: {{segTable.shadow}}">Table</button>
+      <button type="button" aria-pressed="{{segField.pressed}}" onClick="{{ setField }}" style="height: 40px; border: none; border-radius: 12px; background: {{segField.bg}}; color: {{segField.fg}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer; box-shadow: {{segField.shadow}}">Field</button>
+    </div>
+    <div style="margin-top: -4px; font-size: 13px; font-weight: 600; color: {{t.muted}}; display: flex; align-items: center; gap: 6px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Published {{publishedAt}}
+    </div>
+
+    <sc-if value="{{ isTable }}" hint-placeholder-val="{{ true }}">
+      <sc-for list="{{ teams }}" as="tm" hint-placeholder-count="3">
+        <section aria-label="{{tm.name}} team" style="border-radius: 22px; overflow: hidden; background: {{t.surface}}; border: 1px solid {{t.line}}">
+          <div style="height: 48px; padding: 0 16px; background: {{tm.fill}}; color: {{tm.fg}}; display: flex; align-items: center; justify-content: space-between">
+            <h2 style="margin: 0; font-size: 19px; font-weight: 800">{{tm.name}}</h2>
+            <span style="font-size: 14px; font-weight: 700">{{tm.count}} players</span>
+          </div>
+          <ul style="list-style: none; margin: 0; padding: 0 14px">
+            <sc-for list="{{ tm.rows }}" as="p" hint-placeholder-count="7">
+              <li style="height: 48px; display: flex; align-items: center; gap: 10px; border-top: {{p.divider}}">
+                <span style="width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: {{t.surface2}}; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{p.ini}}</span>
+                <div style="flex-grow: 1; min-width: 0">
+                  <div style="font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{p.name}}<span style="color: {{t.brandText}}">{{p.you}}</span></div>
+                  <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                    <span role="img" aria-label="{{p.starLabel}}" style="display: flex; gap: 1px; margin-top: 2px">
+                      <sc-for list="{{ p.stars }}" as="st" hint-placeholder-count="5">
+                        <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="{{st.c}}"></path></svg>
+                      </sc-for>
+                    </span>
+                  </sc-if>
+                </div>
+                <sc-for list="{{ p.flags }}" as="f" hint-placeholder-count="0">
+                  <span style="height: 22px; padding: 0 8px; flex-shrink: 0; border-radius: 999px; background: {{f.bg}}; color: {{f.fg}}; font-size: 11px; font-weight: 800; display: flex; align-items: center">{{f.label}}</span>
+                </sc-for>
+                <span style="flex-shrink: 0; width: 42px; height: 26px; box-sizing: border-box; border-radius: 8px; background: {{p.posBg}}; color: {{p.posFg}}; border: 1.5px solid {{t.ink}}; font-size: 12px; font-weight: 800; letter-spacing: 0.04em; display: flex; align-items: center; justify-content: center">{{p.pos}}</span>
+              </li>
+            </sc-for>
+          </ul>
+          <div style="height: 56px; padding: 0 16px; background: {{t.surface2}}; display: grid; grid-template-columns: {{footCols}}; align-items: center">
+            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+              <div><div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">Total stars</div><div style="font-size: 17px; font-weight: 800">{{tm.total}}</div></div>
+            </sc-if>
+            <div><div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">Players</div><div style="font-size: 17px; font-weight: 800">{{tm.count}}</div></div>
+            <div><div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">ATT : DEF</div><div style="font-size: 17px; font-weight: 800">{{tm.ratio}}</div></div>
+          </div>
+        </section>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isFieldThree }}" hint-placeholder-val="{{ false }}">
+      <sc-for list="{{ teams }}" as="tm" hint-placeholder-count="3">
+        <section aria-label="{{tm.name}} lineup" style="border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 8px 12px 10px; display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; align-items: center; justify-content: space-between; height: 22px">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="width: 14px; height: 14px; border-radius: 50%; background: {{tm.fill}}; box-shadow: 0 0 0 1.5px {{t.line}}"></span>
+              <h2 style="margin: 0; font-size: 16px; font-weight: 800">{{tm.name}}</h2>
+            </div>
+            <span style="font-size: 13px; font-weight: 700; color: {{t.muted}}">{{tm.meta}}</span>
+          </div>
+          <div style="position: relative; width: 334px; height: 132px; border-radius: 10px; overflow: hidden">
+            <svg width="334" height="132" viewBox="0 0 334 132" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+              <rect x="0" y="0" width="334" height="132" fill="{{pitch.bg}}"></rect>
+              <rect x="55.7" y="0" width="55.7" height="132" fill="{{pitch.stripe}}"></rect>
+              <rect x="167" y="0" width="55.7" height="132" fill="{{pitch.stripe}}"></rect>
+              <rect x="278.3" y="0" width="55.7" height="132" fill="{{pitch.stripe}}"></rect>
+              <g fill="none" stroke="{{pitch.line}}" stroke-width="2">
+                <rect x="1" y="1" width="332" height="130" rx="2"></rect>
+                <rect x="1" y="31" width="48" height="70"></rect>
+                <rect x="1" y="50" width="18" height="32"></rect>
+                <path d="M49 52 A18 18 0 0 1 49 80"></path>
+                <path d="M333 40 A26 26 0 0 0 333 92"></path>
+              </g>
+              <circle cx="34" cy="66" r="2" fill="{{pitch.line}}"></circle>
+            </svg>
+            <sc-for list="{{ tm.dots }}" as="d" hint-placeholder-count="7">
+              <div aria-label="{{d.label}}" style="position: absolute; left: {{d.x}}; top: {{d.y}}; transform: translate(-50%, -50%); width: 32px; height: 32px; box-sizing: border-box; border-radius: 50%; background: {{d.fill}}; color: {{d.fg}}; border: 2px solid #FFFFFF; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.25)">
+                {{d.ini}}
+                <sc-if value="{{ d.hasFlag }}" hint-placeholder-val="{{ false }}">
+                  <span style="position: absolute; right: -4px; top: -4px; width: 12px; height: 12px; box-sizing: border-box; border-radius: 50%; background: {{d.flagColor}}; border: 2px solid #FFFFFF"></span>
+                </sc-if>
+              </div>
+            </sc-for>
+            <span style="position: absolute; left: 8px; bottom: 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; color: rgba(255,255,255,0.85)">GOAL</span>
+            <span style="position: absolute; right: 8px; bottom: 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.06em; color: rgba(255,255,255,0.85)">HALFWAY</span>
+          </div>
+        </section>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isFieldTwo }}" hint-placeholder-val="{{ false }}">
+      <section aria-label="Blue versus Yellow lineup" style="border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 12px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 800">
+          <span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 14px; border-radius: 50%; background: #2563EB"></span>Blue</span>
+          <span style="display: flex; align-items: center; gap: 8px">Yellow<span style="width: 14px; height: 14px; border-radius: 50%; background: #F5C518; box-shadow: 0 0 0 1.5px {{t.line}}"></span></span>
+        </div>
+        <div style="position: relative; width: 334px; height: 300px; border-radius: 12px; overflow: hidden">
+          <svg width="334" height="300" viewBox="0 0 334 300" style="position: absolute; left: 0; top: 0" aria-hidden="true">
+            <rect x="0" y="0" width="334" height="300" fill="{{pitch.bg}}"></rect>
+            <rect x="41.75" y="0" width="41.75" height="300" fill="{{pitch.stripe}}"></rect>
+            <rect x="125.25" y="0" width="41.75" height="300" fill="{{pitch.stripe}}"></rect>
+            <rect x="208.75" y="0" width="41.75" height="300" fill="{{pitch.stripe}}"></rect>
+            <rect x="292.25" y="0" width="41.75" height="300" fill="{{pitch.stripe}}"></rect>
+            <g fill="none" stroke="{{pitch.line}}" stroke-width="2">
+              <rect x="1" y="1" width="332" height="298" rx="2"></rect>
+              <line x1="167" y1="1" x2="167" y2="299"></line>
+              <circle cx="167" cy="150" r="36"></circle>
+              <rect x="1" y="80" width="50" height="140"></rect>
+              <rect x="1" y="118" width="18" height="64"></rect>
+              <rect x="283" y="80" width="50" height="140"></rect>
+              <rect x="315" y="118" width="18" height="64"></rect>
+            </g>
+            <circle cx="167" cy="150" r="2.5" fill="{{pitch.line}}"></circle>
+          </svg>
+          <sc-for list="{{ fullDots }}" as="d" hint-placeholder-count="20">
+            <div aria-label="{{d.label}}" style="position: absolute; left: {{d.x}}; top: {{d.y}}; transform: translate(-50%, -50%); width: 34px; height: 34px; box-sizing: border-box; border-radius: 50%; background: {{d.fill}}; color: {{d.fg}}; border: 2px solid #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.25)">
+              {{d.ini}}
+              <sc-if value="{{ d.hasFlag }}" hint-placeholder-val="{{ false }}">
+                <span style="position: absolute; right: -4px; top: -4px; width: 12px; height: 12px; box-sizing: border-box; border-radius: 50%; background: {{d.flagColor}}; border: 2px solid #FFFFFF"></span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{ teams }}" as="tm" hint-placeholder-count="2">
+          <div style="border-radius: 18px; background: {{t.surface}}; border: 1px solid {{t.line}}; overflow: hidden">
+            <div style="height: 8px; background: {{tm.fill}}"></div>
+            <div style="padding: 10px 14px 12px">
+              <div style="font-size: 16px; font-weight: 800">{{tm.name}}</div>
+              <div style="font-size: 14px; color: {{t.muted}}; margin-top: 4px; line-height: 1.45">{{tm.count}} players<br>{{tm.meta2}}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isField }}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; gap: 14px; font-size: 12px; font-weight: 600; color: {{t.muted}}">
+        <span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 50%; background: #F59E0B"></span>Morning of</span>
+        <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 50%; background: #DC2626"></span>Unpaid</span>
+        </sc-if>
+        <span>Back line DEF · front line ATT</span>
+      </div>
+    </sc-if>
+  </div>
+  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 12px 20px; background: {{t.navBg}}; border-top: 1px solid {{t.line}}; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))">
+    <a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+    </a>
+    <a href="Teams.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 800">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 3 6l2 5 3-1v11h8V10l3 1 2-5-5-3c-.5 1.5-2 2.5-4 2.5S8.5 4.5 8 3z"></path></svg>Teams
+    </a>
+    <a href="Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"></path><circle cx="15" cy="6" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Settings
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"role":{"editor":"enum","options":["player","admin"],"default":"player"},"dark":{"editor":"boolean","default":false},"view":{"editor":"enum","options":["table","field"],"default":"table"},"teams":{"editor":"enum","options":["3","2"],"default":"3"},"$preview":{"width":390,"height":1590}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { view: null };
+  }
+  renderVals() {
+    const dark = !!this.props.dark;
+    const shared = { okBg: '#0F3320', okFg: '#6EE7A0', amberBg: '#3A2A08', amberFg: '#FCD34D', redBg: '#3B1414', redFg: '#FCA5A5' };
+    const DARK = {
+      pitch: Object.assign({
+        bg: '#0C1411', surface: '#16211C', surface2: '#24332B', ink: '#EDF2EE', muted: '#A3B0A8', line: '#26342D',
+        brandText: '#5FD896', navBg: '#111A16', segOn: '#3A4D43', starOn: '#EDF2EE', starOff: '#3E4D45'
+      }, shared),
+      slate: Object.assign({
+        bg: '#0F1318', surface: '#181E25', surface2: '#232B34', ink: '#E8EDF2', muted: '#9AA6B2', line: '#29323C',
+        brandText: '#5EDB9C', navBg: '#12171D', segOn: '#34404C', starOn: '#E8EDF2', starOff: '#3A4652'
+      }, shared),
+      graphite: Object.assign({
+        bg: '#151514', surface: '#1F1F1D', surface2: '#2B2B28', ink: '#F0EFEA', muted: '#A8A69E', line: '#33332F',
+        brandText: '#6FD6A3', navBg: '#181816', segOn: '#3C3C38', starOn: '#F0EFEA', starOff: '#45453F'
+      }, shared)
+    };
+    const PITCH_DARK = {
+      pitch: { bg: '#14402B', stripe: '#174A32', line: 'rgba(255,255,255,0.45)' },
+      slate: { bg: '#1B4D36', stripe: '#1F573D', line: 'rgba(255,255,255,0.5)' },
+      graphite: { bg: '#2A5A40', stripe: '#2F6447', line: 'rgba(255,255,255,0.5)' }
+    };
+    const pal = 'graphite';
+    const t = dark ? DARK[pal] : {
+      bg: '#F4F3EE', surface: '#FFFFFF', surface2: '#ECEBE4', ink: '#121A15', muted: '#56625B', line: '#E2E1D9',
+      brandText: '#0E4D32', navBg: '#FFFFFF', okBg: '#DCFCE7', okFg: '#166534', segOn: '#FFFFFF',
+      starOn: '#121A15', starOff: '#D3D3CA',
+      amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C'
+    };
+    const pitch = dark
+      ? PITCH_DARK[pal]
+      : { bg: '#1E6B45', stripe: '#23774D', line: 'rgba(255,255,255,0.65)' };
+    const view = this.state.view ?? this.props.view ?? 'table';
+    const three = String(this.props.teams ?? '3') !== '2';
+    const isTable = view === 'table';
+
+    const P = {
+      MB: ['Marco Bellini', 5, 'ATT'], PN: ['Priya Nair', 3, 'DEF'], DM: ['Daniel Mensah', 4, 'DEF'], KA: ['Kofi Asante', 2, 'ATT', 'U'],
+      LF: ['Lena Fischer', 3, 'ATT'], SW: ['Sam Whitfield', 2, 'DEF', 'M'], S: ['Sim', 4, 'DEF'],
+      TR: ['Tomás Rivera', 5, 'DEF'], AB: ['Aisha Bello', 4, 'ATT'], JL: ['Jordan Lee', 3, 'DEF', 'U'], MC: ['Mei Chen', 2, 'ATT'],
+      CN: ['Chris Novak', 3, 'ATT'], OB: ['Owen Barker', 2, 'DEF'], NH: ['Nadia Haddad', 4, 'ATT'],
+      HK: ['Hassan Karimi', 5, 'ATT'], EP: ['Elena Petrova', 4, 'DEF'], DO: ['Diego Ortiz', 4, 'ATT', 'M'], GL: ['Grace Liu', 3, 'DEF', 'U'],
+      BC: ['Ben Carter', 3, 'ATT'], YD: ['Yusuf Demir', 3, 'DEF']
+    };
+    const TC = {
+      Blue: { fill: '#2563EB', fg: '#FFFFFF' },
+      Yellow: { fill: '#F5C518', fg: '#1F1A05' },
+      Red: { fill: '#DC2626', fg: '#FFFFFF' }
+    };
+    const lineup = three
+      ? [['Blue', ['MB', 'PN', 'DM', 'KA', 'LF', 'SW', 'S']], ['Yellow', ['TR', 'AB', 'JL', 'MC', 'CN', 'OB', 'NH']], ['Red', ['HK', 'EP', 'DO', 'GL', 'BC', 'YD']]]
+      : [['Blue', ['MB', 'LF', 'KA', 'DO', 'BC', 'PN', 'DM', 'SW', 'S', 'EP']], ['Yellow', ['AB', 'MC', 'CN', 'NH', 'HK', 'TR', 'JL', 'OB', 'GL', 'YD']]];
+
+    const isAdmin = this.props.role === 'admin';
+    const flagOf = (f) => f === 'M' ? [{ label: 'Morning of', bg: t.amberBg, fg: t.amberFg }]
+      : (f === 'U' && isAdmin) ? [{ label: 'Unpaid', bg: t.redBg, fg: t.redFg }] : [];
+    const placeLine = (ids, xBase, team, mirror) => ids.map((id, i) => {
+      const [name, , pos, f0] = P[id];
+      const f = (f0 === 'U' && !isAdmin) ? '' : f0;
+      const k = ids.length;
+      const zig = (three && k >= 4) ? (i % 2 ? 6 : -6) : 0;
+      return {
+        ini: id, label: name + ', ' + team + ', ' + pos,
+        x: (xBase + zig) + '%', y: ((i + 1) / (k + 1) * 100).toFixed(1) + '%',
+        fill: TC[team].fill, fg: TC[team].fg,
+        hasFlag: !!f, flagColor: f === 'M' ? '#F59E0B' : '#DC2626'
+      };
+    });
+
+    const fullDots = [];
+    const teams = lineup.map(([team, ids], ti) => {
+      const rows = ids.map((id, i) => {
+        const [name, s, pos, f] = P[id];
+        return {
+          name, ini: id, pos, you: (id === 'DM' && !isAdmin) ? ' · You' : '',
+          starLabel: s + ' of 5 stars',
+          stars: [1, 2, 3, 4, 5].map((k) => ({ c: k <= s ? t.starOn : t.starOff })),
+          posBg: pos === 'ATT' ? t.ink : 'transparent', posFg: pos === 'ATT' ? t.bg : t.ink,
+          divider: i === 0 ? 'none' : '1px solid ' + t.line,
+          flags: flagOf(f)
+        };
+      });
+      const att = ids.filter((id) => P[id][2] === 'ATT');
+      const def = ids.filter((id) => P[id][2] === 'DEF');
+      const total = ids.reduce((a, id) => a + P[id][1], 0);
+      let dots = [];
+      if (three) {
+        dots = placeLine(def, 22, team).concat(placeLine(att, 66, team));
+      } else {
+        const left = ti === 0;
+        placeLine(def, left ? 11 : 89, team).concat(placeLine(att, left ? 35 : 65, team)).forEach((d) => fullDots.push(d));
+      }
+      return {
+        name: team, fill: TC[team].fill, fg: TC[team].fg,
+        count: ids.length, total, ratio: att.length + ':' + def.length,
+        meta: isAdmin
+          ? ids.length + ' players · ★ ' + total + ' · ' + att.length + ':' + def.length
+          : ids.length + ' players · ATT:DEF ' + att.length + ':' + def.length,
+        meta2: isAdmin ? '★ ' + total + ' total · ' + att.length + ':' + def.length : 'ATT:DEF ' + att.length + ':' + def.length,
+        rows, dots
+      };
+    });
+
+    const seg = (on) => ({
+      bg: on ? t.segOn : 'transparent', fg: on ? t.ink : t.muted, pressed: on ? 'true' : 'false',
+      shadow: on ? '0 1px 3px rgba(0,0,0,0.12)' : 'none'
+    });
+    return {
+      t, pitch, teams, fullDots, isAdmin,
+      sub: three ? 'Sat Feb 13 · 6:30 AM · 7855 Finch Ave W' : 'Sat May 15 · 7:00 AM · 32 Kennedy Rd N',
+      publishedAt: three ? '5:30 AM' : '6:00 AM',
+      footCols: isAdmin ? 'repeat(3, minmax(0, 1fr))' : 'repeat(2, minmax(0, 1fr))',
+      isTable, isField: !isTable,
+      isFieldThree: !isTable && three, isFieldTwo: !isTable && !three,
+      rootH: isTable ? (three ? '1590px' : '1480px') : '844px',
+      segTable: seg(isTable), segField: seg(!isTable),
+      setTable: () => this.setState({ view: 'table' }),
+      setField: () => this.setState({ view: 'field' })
+    };
+  }
+}
+</script>
+</body>
+</html>

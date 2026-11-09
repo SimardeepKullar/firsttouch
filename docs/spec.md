@@ -8,7 +8,7 @@ FirstTouch v1 is a mobile-first web app, hosted on Cloudflare Pages with Supabas
 
 **In scope for v1**
 
-- Open sign-up: anyone with the link signs in with Google (email sign-in comes later).
+- Open sign-up: anyone with the link signs in with Google. Email and password sign-in (with "Forgot password?") is designed but switched off until a domain and Resend are set up.
 - Admins create all of a season's Saturday and Sunday runs, plus long-weekend holiday Mondays, at once, see the full list ahead of time, and can edit the time or address of any run or delete it; players toggle "I'm in".
 - RSVPs lock automatically 1 hour before the start time; teams are generated and published at that same moment.
 - "Morning of" flag for a yes made on the run's own date (Toronto time).
@@ -42,7 +42,7 @@ Row-level security in Postgres decides what each signed-in user can see and chan
 | Web app | Expo (React Native for web), Expo Router, TypeScript, NativeWind, TanStack Query, react-native-svg | All screens; RSVP toggle; team table and field diagram; admin tools |
 | Service worker + manifest | Plain JS in public/ | Home Screen install; receives and shows push notifications |
 | Static hosting | Cloudflare Pages (free plan) | Serves the built app over HTTPS; preview URL per branch |
-| Auth | Supabase Auth | Google sign-in; issues the session token used by RLS |
+| Auth | Supabase Auth | Google sign-in and email + password (sign-up, confirmation and password-reset emails); issues the session token used by RLS |
 | Database | Supabase Postgres with RLS | All data, permissions, morning-of trigger, roster view with flags |
 | Live updates | Supabase Realtime | Pushes RSVP count changes to open screens |
 | Server logic | Supabase Edge Functions (Deno) | generate-teams, send-push |
@@ -199,7 +199,7 @@ Field positions are not stored: the client draws them from team, position and sl
 
 ## Access control
 
-Every table has row-level security switched on, so the browser can talk to Postgres directly and still only see or change what its role allows. Admin checks go through one helper function. The Supabase projects are created with "Automatically expose new tables" turned off and automatic RLS turned on, so the migration grants access explicitly: tables and views to the authenticated role only, nothing to anon. This keeps signed-out visitors away from player\_directory and run\_roster.
+Every table has row-level security switched on, so the browser can talk to Postgres directly and still only see or change what its role allows. Admin checks go through one helper function. The Supabase projects are created with "Automatically expose new tables" turned off and automatic RLS turned on, so the migration grants access explicitly: tables and views to the authenticated role only, nothing to anon. This keeps signed-out visitors away from player\_directory and run\_roster. Any signed-in user can read every rsvps row, including "no" answers, because Realtime only delivers changes on rows the reader can see; the table holds no stars or payment data. service\_role has no table grants yet; the Edge Functions milestone adds the ones generate-teams and send-push need. The column guard trigger lets calls with no signed-in user through (SQL editor, service role, seed), which is how the first admin is set by hand.
 
 ```sql
 create function is_admin() returns boolean
@@ -246,7 +246,8 @@ Two Edge Functions (TypeScript on Deno), seven database functions (plus the holi
 | publish\_teams(run\_id) | generate-teams | Sets status published and published\_at; sends "Teams are up" the first time, "Teams updated" after a reshuffle |
 | update\_my\_name(text) | Player, Settings | Changes the caller's full\_name only |
 | guard\_profile\_columns() | Before update on profiles | Blocks changes to role, plays, stars, position by non-admins |
-| handle\_new\_user() | After insert on auth.users | Creates the profile row (3 stars, attack, plays) from the Google name and email |
+| handle\_new\_user() | After insert on auth.users | Creates the profile row (3 stars, attack, plays). The name comes from the Google profile, or from the full\_name typed on the sign-up form, falling back to the part of the email before the @ |
+| my\_plays() | RSVP policies | Returns the caller's plays flag; needed because players cannot read profiles directly |
 
 ### Scheduled jobs (pg\_cron)
 
@@ -362,6 +363,20 @@ These dates are what the function produces. Check them once against Ontario's of
 3. RLS allows it only for the player's own row, only while the run is open and before run\_lock\_at, and only if the profile has plays = true.
 4. The set\_morning\_of trigger compares the Toronto date of the response with the run date and sets the flag.
 5. Realtime broadcasts the change; other open screens update the "going" count.
+
+**Admins and RSVPs.** Playing admins (John, Sim) RSVP like any player: they are in a run's roster and teams only when they said yes, so an admin skipping a run changes nothing. Admin tools work the same whether or not the admin is going. The manage-only admin (Coach, plays = false) sees every run card without the "I'm in" toggle, with the line "You're managing this run" in its place, and is never counted or placed in teams.
+
+### Email and password sign-in
+
+**Status: designed, switched off.** v1 launches with Google sign-in only. The screens below are designed now and built behind the EXPO\_PUBLIC\_EMAIL\_AUTH switch, so turning email sign-in on later needs no new code, only the domain, Resend and the dashboard setting.
+
+1. **Create account:** the player enters name, email and password (at least 8 characters). The app calls supabase.auth.signUp with the name in options.data.full\_name, so handle\_new\_user can use it. Supabase emails a confirmation link; the account works once it is clicked.
+2. **Sign in:** email and password through supabase.auth.signInWithPassword. A wrong password and an unknown email show the same message, so the screen never reveals who has an account.
+3. **Forgot password:** the player enters their email; the app calls supabase.auth.resetPasswordForEmail with redirectTo set to the app's /reset-password page. The screen always says "If that email has an account, we've sent a link".
+4. **Reset password:** the link opens /reset-password signed in for recovery only (the PASSWORD\_RECOVERY auth event). The player types a new password; the app calls supabase.auth.updateUser({ password }) and then goes to Home.
+5. **Change password:** in Settings, while signed in, through the same updateUser call.
+
+Google and email accounts with the same address: if someone signs in with Google using an email that already has a confirmed password account, Supabase links both to one user, so there is still one profile. The redirect URL pattern http://localhost:8081/\*\* already covers /reset-password.
 
 ### Lock and publish, step by step
 
@@ -479,12 +494,12 @@ One app, one package.json; no workspaces. Vitest runs from the root (npm test) a
 | --- | --- |
 | Build command | npx expo export --platform web |
 | Output directory | dist |
-| Environment variables | EXPO\_PUBLIC\_SUPABASE\_URL, EXPO\_PUBLIC\_SUPABASE\_PUBLISHABLE\_KEY, EXPO\_PUBLIC\_VAPID\_PUBLIC\_KEY (different values for preview and production) |
+| Environment variables | EXPO\_PUBLIC\_SUPABASE\_URL, EXPO\_PUBLIC\_SUPABASE\_PUBLISHABLE\_KEY, EXPO\_PUBLIC\_VAPID\_PUBLIC\_KEY, EXPO\_PUBLIC\_EMAIL\_AUTH ("false" until email sign-in is switched on) (different values for preview and production) |
 | Routing | Single-page app: unknown paths serve index.html |
 
 ### Supabase settings
 
-- **Auth providers:** Google only, for v1 (OAuth client from Google Cloud, with Supabase's callback URL; its consent screen needs the app name, a support email and the privacy policy URL). Email sign-in stays off.
+- **Auth providers:** Google (OAuth client from Google Cloud, with Supabase's callback URL; its consent screen needs the app name, a support email and the privacy policy URL). Email with password is designed but OFF for now: the Email provider stays disabled in the Supabase dashboard (so the server refuses email sign-ups and sign-ins) and the app hides the email form while EXPO\_PUBLIC\_EMAIL\_AUTH is not "true". To turn it on: set up the domain and Resend, enable the Email provider with "Confirm email" on, and set EXPO\_PUBLIC\_EMAIL\_AUTH=true. For background, the built-in Supabase sender: it delivers only to members of the Supabase team (so only to Simar) and only about 2 emails an hour. So a custom sender is required before email sign-in can be switched on, or players would never receive confirmation or reset emails: buy a domain, verify it in Resend (free: 100 emails a day, 3,000 a month) and set Resend as Supabase's custom SMTP. Locally, every email goes to Mailpit, the test inbox that runs with supabase start.
 - **Redirect URLs:** the prod domain and the preview URL pattern.
 - **Secrets:** VAPID private key, used only by send-push.
 - **Extensions:** pg\_cron and pg\_net enabled.
@@ -532,6 +547,7 @@ The balancing function and the permission rules carry the most risk, so they get
 | Edge Functions | Deno tests against the dev project | generate-teams rejects anyone but the job or an admin, publishes and pushes; with 3 players it leaves the run locked and alerts admins; the evening reminder targets only runs dated tomorrow, including holiday Mondays; send-push removes expired subscriptions |
 | End to end | Playwright on the preview URL | Sign in, RSVP, lock time passes (test run set to start soon), teams appear, admin swaps a player, player never sees stars |
 | Manual | iPhone and Android phones | Add to Home Screen, enable notifications, receive "Teams are up", field diagram readable outdoors |
+| Email sign-in | Local stack + Mailpit; Playwright | Sign-up creates a profile with the typed name; sign-in fails until the email is confirmed; wrong password and unknown email show the same message; reset link opens /reset-password and the new password works; the old one does not |
 
 ## Later and open items
 
@@ -546,9 +562,10 @@ Each later feature fits the current design without reworking the schema.
 | In-app season pass payment | Stripe Checkout from an Edge Function; a Stripe webhook marks season\_passes paid with method 'stripe'. Cloudflare's free plan allows this |
 | Match rotation | New matches table (run, team A, team B, result, minute); rules: 5-minute games, scorer stays on, on a draw the team on longest goes off |
 | App Store and Google Play | EAS builds from the same code; Expo push path in send-push; Sign in with Apple; personal developer accounts, Google 14-day closed test |
-| Email sign-in | Buy a domain, verify it in Resend (free: 100 emails a day, 3,000 a month), set Resend as Supabase's custom SMTP, and turn on email one-time codes |
+| Email sign-in | Now part of v1 (see Key flows). Still needed before launch: a custom email sender (see Open items) |
 
 **Open items**
 
+- [ ] To switch on email sign-in (not needed for launch): a domain plus Resend as Supabase's custom email sender, then enable the Email provider and set EXPO\_PUBLIC\_EMAIL\_AUTH=true. Until then players sign in with Google only.
 - [ ] Real indoor and outdoor season start and end dates; generate\_season\_runs needs them before any runs exist (sample dates are fine for building and testing).
 - [ ] Check firsttouch.pages.dev is free when creating the Cloudflare project.

@@ -1,0 +1,78 @@
+/* FirstTouch theme — light by default, Graphite dark via .dark on <html> or the OS setting */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font-sans: 'Archivo', system-ui, sans-serif;
+
+  --brand: #0E4D32;
+  --brand-pressed: #0A3A26;
+  --on-brand: #FFFFFF;
+  --brand-text: #0E4D32;
+  --brand-soft: #DCEBE2;
+
+  --bg: #F4F3EE;
+  --surface: #FFFFFF;
+  --surface-2: #ECEBE4;
+  --line: #E2E1D9;
+  --input-border: #D6D5CC;
+  --ink: #121A15;
+  --muted: #56625B;
+  --star-on: #121A15;
+  --star-off: #D3D3CA;
+  --switch-off: #B9BDB5;
+  --nav-bg: #FFFFFF;
+
+  --paid-bg: #DCFCE7;       --paid-fg: #166534;
+  --morning-bg: #FEF3C7;    --morning-fg: #92400E;  --morning-dot: #F59E0B;
+  --unpaid-bg: #FEE2E2;     --unpaid-fg: #B91C1C;   --unpaid-dot: #DC2626;
+  --unpaid-row-bg: #FEF2F2; --unpaid-row-border: #FCA5A5;
+  --locked-bg: #E7E5E1;     --locked-fg: #3D3A35;
+
+  --team-blue: #2563EB;   --on-team-blue: #FFFFFF;
+  --team-yellow: #F5C518; --on-team-yellow: #1F1A05;
+  --team-red: #DC2626;    --on-team-red: #FFFFFF;
+
+  --pitch-grass: #1E6B45;
+  --pitch-stripe: #23774D;
+  --pitch-lines: rgba(255, 255, 255, 0.65);
+
+  --logo-touch-green: #62CC7E;
+
+  --radius-badge: 8px;
+  --radius-input: 16px;
+  --radius-card: 22px;
+  --radius-card-lg: 24px;
+  --tap-target: 44px;
+}
+
+:root.dark {
+  --brand: #4CC38A;
+  --on-brand: #062113;
+  --brand-text: #6FD6A3;
+  --brand-soft: #1E2E25;
+
+  --bg: #151514;
+  --surface: #1F1F1D;
+  --surface-2: #2B2B28;
+  --line: #33332F;
+  --ink: #F0EFEA;
+  --muted: #A8A69E;
+  --star-on: #F0EFEA;
+  --star-off: #45453F;
+  --nav-bg: #181816;
+
+  --paid-bg: #0F3320;    --paid-fg: #6EE7A0;
+  --morning-bg: #3A2A08; --morning-fg: #FCD34D;
+  --unpaid-bg: #3B1414;  --unpaid-fg: #FCA5A5;
+
+  --pitch-grass: #2A5A40;
+  --pitch-stripe: #2F6447;
+  --pitch-lines: rgba(255, 255, 255, 0.5);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
