@@ -330,7 +330,7 @@ begin
     new.id,
     coalesce(nullif(trim(new.raw_user_meta_data ->> 'full_name'), ''),
              nullif(trim(new.raw_user_meta_data ->> 'name'), ''),
-             split_part(coalesce(new.email, ''), '@', 1),
+             nullif(split_part(coalesce(new.email, ''), '@', 1), ''),
              'Player'),
     coalesce(new.email, '')
   );
