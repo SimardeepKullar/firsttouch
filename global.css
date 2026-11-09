@@ -1,3 +1,157 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* FirstTouch V2 theme (copied from docs/design/tokens/theme.css).
+   Light is the default. Dark applies with .dark on <html>; Appearance = System puts
+   .system on <html> and the phone's setting decides (the prefers-color-scheme block).
+   src/lib/theme.ts sets those classes. Differences from theme.css: no Google Fonts @import
+   (Inter loads through expo-font) and --font-sans names the expo-font family. */
+:root {
+  --font-sans: 'Inter_400Regular', system-ui, sans-serif;
+
+  --page: radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%);
+  --bg: #F2F6F3;
+  --surface: #FFFFFF;
+  --surface-2: #EDF2EF;
+  --line: #E0E7E3;
+  --input-border: #CFD9D3;
+  --ink: #0D1A14;
+  --ink-2: #33433A;
+  --muted: #56665D;
+  --muted-2: #8A9A91;
+
+  --brand: #0B7A45;
+  --brand-text: #0B7A45;
+  --on-brand: #FFFFFF;
+  --brand-soft: #DDF4E7;
+  --brand-line: #A8DEC1;
+  --button: linear-gradient(90deg, #13965B 0%, #0B7A45 100%);
+  --hero: linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%);
+
+  --nav: rgba(255, 255, 255, 0.96);
+  --switch-off: #C5CFC9;
+  --shadow: 0 8px 24px rgba(13, 26, 20, 0.08);
+  --watermark: rgba(13, 26, 20, 0.05);
+  --star-on: #0D1A14;
+  --star-off: #D3DAD6;
+
+  --ok-bg: #DCFCE7;      --ok-fg: #166534;
+  --amber-bg: #FEF3C7;   --amber-fg: #92400E;   --morning-dot: #F59E0B;
+  --red-bg: #FEE2E2;     --red-fg: #B91C1C;     --unpaid-dot: #DC2626;
+  --red-row-bg: #FEF2F2; --red-row-border: #FCA5A5;
+  --locked-bg: #E7E9E6;  --locked-fg: #3D4640;
+  --drop-bg: #FFF8D6;
+
+  --team-blue: #2563EB;   --on-team-blue: #FFFFFF;   --team-blue-text: #1D4ED8; --team-blue-soft: #DBE6FF;
+  --team-yellow: #F5C518; --on-team-yellow: #1F1A05; --team-yellow-text: #7A5B00; --team-yellow-soft: #FFF3C4;
+  --team-red: #DC2626;    --on-team-red: #FFFFFF;    --team-red-text: #B91C1C;  --team-red-soft: #FEE2E2;
+
+  --pitch-grass: linear-gradient(180deg, #2B8A55 0%, #1F7346 100%);
+  --pitch-stripe: rgba(255, 255, 255, 0.06);
+  --pitch-lines: rgba(255, 255, 255, 0.75);
+
+  --radius-badge: 8px;
+  --radius-input: 16px;
+  --radius-card: 24px;
+  --radius-hero: 28px;
+  --radius-nav: 26px;
+  --tap-target: 44px;
+}
+
+:root.dark {
+  --page: radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%);
+  --bg: #08130E;
+  --surface: #0F1C16;
+  --surface-2: #172720;
+  --line: #20332A;
+  --input-border: #2A3E35;
+  --ink: #F1F5F2;
+  --ink-2: #C9D3CD;
+  --muted: #93A39A;
+  --muted-2: #6E7F76;
+
+  --brand: #3EE08F;
+  --brand-text: #4BE59A;
+  --on-brand: #04150F;
+  --brand-soft: rgba(62, 224, 143, 0.12);
+  --brand-line: rgba(62, 224, 143, 0.38);
+  --button: linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%);
+  --hero: linear-gradient(160deg, #134A31 0%, #0B2A1D 100%);
+
+  --nav: rgba(11, 21, 16, 0.96);
+  --switch-off: #33443B;
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --watermark: rgba(255, 255, 255, 0.05);
+  --star-on: #F1F5F2;
+  --star-off: #33443B;
+
+  --ok-bg: rgba(62, 224, 143, 0.14);     --ok-fg: #5BE8A3;
+  --amber-bg: rgba(245, 158, 11, 0.18);  --amber-fg: #FCC85A;
+  --red-bg: rgba(239, 68, 68, 0.18);     --red-fg: #FF8A8A;
+  --red-row-bg: rgba(239, 68, 68, 0.08); --red-row-border: rgba(239, 68, 68, 0.45);
+  --locked-bg: #24342C;                  --locked-fg: #C9D3CD;
+  --drop-bg: rgba(245, 197, 24, 0.12);
+
+  --team-blue-text: #93B4FF;   --team-blue-soft: rgba(37, 99, 235, 0.22);
+  --team-yellow-text: #F5C518; --team-yellow-soft: rgba(245, 197, 24, 0.18);
+  --team-red-text: #FF8A8A;    --team-red-soft: rgba(220, 38, 38, 0.22);
+
+  --pitch-grass: linear-gradient(180deg, #1E7A46 0%, #145834 100%);
+  --pitch-stripe: rgba(255, 255, 255, 0.05);
+  --pitch-lines: rgba(255, 255, 255, 0.6);
+}
+
+/* Appearance = System: add .system to <html>; the phone's light/dark setting decides. */
+@media (prefers-color-scheme: dark) {
+  :root.system {
+    --page: radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%);
+    --bg: #08130E;
+    --surface: #0F1C16;
+    --surface-2: #172720;
+    --line: #20332A;
+    --input-border: #2A3E35;
+    --ink: #F1F5F2;
+    --ink-2: #C9D3CD;
+    --muted: #93A39A;
+    --muted-2: #6E7F76;
+  
+    --brand: #3EE08F;
+    --brand-text: #4BE59A;
+    --on-brand: #04150F;
+    --brand-soft: rgba(62, 224, 143, 0.12);
+    --brand-line: rgba(62, 224, 143, 0.38);
+    --button: linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%);
+    --hero: linear-gradient(160deg, #134A31 0%, #0B2A1D 100%);
+  
+    --nav: rgba(11, 21, 16, 0.96);
+    --switch-off: #33443B;
+    --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    --watermark: rgba(255, 255, 255, 0.05);
+    --star-on: #F1F5F2;
+    --star-off: #33443B;
+  
+    --ok-bg: rgba(62, 224, 143, 0.14);     --ok-fg: #5BE8A3;
+    --amber-bg: rgba(245, 158, 11, 0.18);  --amber-fg: #FCC85A;
+    --red-bg: rgba(239, 68, 68, 0.18);     --red-fg: #FF8A8A;
+    --red-row-bg: rgba(239, 68, 68, 0.08); --red-row-border: rgba(239, 68, 68, 0.45);
+    --locked-bg: #24342C;                  --locked-fg: #C9D3CD;
+    --drop-bg: rgba(245, 197, 24, 0.12);
+  
+    --team-blue-text: #93B4FF;   --team-blue-soft: rgba(37, 99, 235, 0.22);
+    --team-yellow-text: #F5C518; --team-yellow-soft: rgba(245, 197, 24, 0.18);
+    --team-red-text: #FF8A8A;    --team-red-soft: rgba(220, 38, 38, 0.22);
+  
+    --pitch-grass: linear-gradient(180deg, #1E7A46 0%, #145834 100%);
+    --pitch-stripe: rgba(255, 255, 255, 0.05);
+    --pitch-lines: rgba(255, 255, 255, 0.6);
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}

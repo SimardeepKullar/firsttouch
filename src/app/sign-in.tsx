@@ -27,7 +27,7 @@ export default function SignIn() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-white px-6">
+    <View className="flex-1 items-center justify-center px-6">
       <Text className="text-4xl font-bold text-green-900">FirstTouch</Text>
       <Text className="mt-2 text-base text-gray-600">Weekend runs, balanced teams</Text>
 
