@@ -1,13 +1,14 @@
 # FirstTouch — ticket plan
 
-Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-02) and #2 (T-03).
+Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, the T-01 PR) and the **FirstTouch** project board (Todo / In progress / Done).
 
 **How to read this file**
 
-- Every ticket is titled `T-NN · <verb> …` (the AGENTS.md convention). T-numbers follow dependency order. The `#` GitHub number gets filled in once the issues are created.
+- Every ticket is titled `T-NN · <verb> …` (the AGENTS.md convention). T-numbers follow dependency order. Each ticket's GitHub issue number is in brackets. T-NN is issue #NN, except T-02 (#1) and T-03 (#2), which existed before the plan.
 - **Sources:** `docs/spec.md` (behaviour, data, rules, permissions), `docs/design/` (look and layout), `docs/privacy.md`. Where they disagree, the spec wins on behaviour and permissions and the design wins on visuals. See [Spec and design disagreements](#spec-and-design-disagreements) at the end.
 - **Sizes:** S = one sitting. M = one or two sittings. L = two full sittings (used rarely).
 - **Labels:** `database`, `functions`, `player UI`, `admin UI`, `infra`, `tests`, `design`, `later`. `design` marks a ticket that also fills a gap with no mockup (it reuses existing patterns, and the gap is spelled out in the ticket).
+- **Designs:** this plan follows **Version 2** of the designs (`docs/design/README.md`, pushed Nov 9, 2026): Inter, green gradients, a floating bottom nav, and an Appearance setting.
 - **Expo docs:** the app is on Expo SDK 58, so "Expo docs" in the learning notes means `https://docs.expo.dev/versions/v58.0.0/`, not memory or older tutorials.
 
 **Already done (no tickets):** Expo app with NativeWind and Expo Router in `src/app`; Vitest; the `balance.ts` placeholder and test; the first migration (tables, RLS, views, holiday functions, `generate_season_runs`, `set_holiday_active`, triggers, `update_my_name`, `delete_my_account`, grants, Realtime on `rsvps`) and `seed.sql`, pushed to dev.
@@ -19,104 +20,104 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 ## Order of work
 
 ### Foundation
-1. T-02 · Add database tests for RLS, grants and guard functions *(exists as #1)*
-2. T-04 · Finish Google sign-in
-3. T-05 · Add the design tokens, Archivo font and dark mode
-4. T-06 · Replace the app icon, favicon and splash with the FirstTouch logo
-5. T-07 · Build the display components: chips, badges, position tag, avatar, stars
-6. T-08 · Build the input components: switch, segmented control, star picker, fields, buttons
-7. T-09 · Build the bottom tab bar and the Admin sub-tabs
-8. T-10 · Add the public /privacy page
-9. T-11 · Restyle the sign-in screen to match the design
-10. T-12 · Add pgTAP tests for lock time, morning-of and season run generation
-11. T-13 · Extend seed.sql with runs, RSVPs, passes and teams
+1. T-02 · Add database tests for RLS, grants and guard functions (#1)
+2. T-04 · Finish Google sign-in (#4)
+3. T-05 · Add the design tokens, Inter font and light/dark themes (#5)
+4. T-06 · Replace the app icon, favicon and splash with the FirstTouch logo (#6)
+5. T-07 · Build the display components: chips, badges, position tag, avatar, stars (#7)
+6. T-08 · Build the input components: switch, segmented control, star picker, fields, buttons (#8)
+7. T-09 · Build the bottom tab bar and the Admin sub-tabs (#9)
+8. T-10 · Add the public /privacy page (#10)
+9. T-11 · Restyle the sign-in screen to match the design (#11)
+10. T-12 · Add pgTAP tests for lock time, morning-of and season run generation (#12)
+11. T-13 · Extend seed.sql with runs, RSVPs, passes and teams (#13)
 
 ### RSVP loop
-12. T-14 · Build the Home screen run cards
-13. T-15 · Add the "I'm in" RSVP toggle with instant feedback
-14. T-16 · Update going counts live with Supabase Realtime
-15. T-17 · Show Coach's Home for admins who don't play
-16. T-18 · Build the Run detail screen (player view)
-17. T-19 · Add the admin view of Run detail
-18. T-20 · Build the Settings screen: profile, name, privacy, sign out, delete account
-19. T-21 · Build the Admin · Players list with search and filters
-20. T-22 · Let admins set stars, position and Plays
-21. T-23 · Let admins make or remove other admins
-22. T-24 · Build the season card on Admin · Runs
-23. T-25 · List every run of the season on Admin · Runs
-24. T-26 · Add the edit-run sheet: time, address, cancel and delete
-25. T-27 · Build the Admin · Holidays screen
-26. T-28 · Let admins add a one-off holiday date
+12. T-14 · Build the Home screen run cards (#14)
+13. T-15 · Add the "I'm in" RSVP toggle with instant feedback (#15)
+14. T-16 · Update going counts live with Supabase Realtime (#16)
+15. T-17 · Show Coach's Home for admins who don't play (#17)
+16. T-18 · Build the Run detail screen (player view) (#18)
+17. T-19 · Add the admin view of Run detail (#19)
+18. T-20 · Build the Settings screen: profile, name, appearance, privacy, sign out, delete account (#20)
+19. T-21 · Build the Admin · Players list with search and filters (#21)
+20. T-22 · Let admins set stars, position and Plays (#22)
+21. T-23 · Let admins make or remove other admins (#23)
+22. T-24 · Build the season card on Admin · Runs (#24)
+23. T-25 · List every run of the season on Admin · Runs (#25)
+24. T-26 · Add the edit-run sheet: time, address, cancel and delete (#26)
+25. T-27 · Build the Admin · Holidays screen (#27)
+26. T-28 · Let admins add a one-off holiday date (#28)
 
 ### Teams
-27. T-29 · Implement balanceTeams: team count, sizes and snake draft
-28. T-30 · Finish balanceTeams: swaps, restarts, slots and output checks
-29. T-31 · Add the web manifest, service worker and VAPID keys
-30. T-32 · Let players turn on notifications in Settings
-31. T-33 · Show the "Add to Home Screen" banner on iPhone
-32. T-34 · Build the send-push Edge Function
-33. T-35 · Add save_teams, publish_teams and the service_role grants
-34. T-36 · Build the generate-teams Edge Function
-35. T-37 · Schedule the lock-and-publish job with pg_cron
-36. T-38 · Build the Teams screen table view
-37. T-39 · Draw the indoor Field view (three half-pitches)
-38. T-40 · Draw the outdoor Field view (full pitch)
-39. T-41 · Show "Teams are up" on Home and Run detail
-40. T-42 · Push team and run changes live with Realtime
-41. T-43 · Add the Next run card to Admin · Runs
-42. T-44 · Build the Admin · Team builder: summary, team count and Reshuffle
-43. T-45 · Let admins drag players between teams with the fairness bar
-44. T-46 · Build the desktop Team builder with the admin sidebar
-45. T-47 · Schedule the evening reminder job
-46. T-48 · Send pushes when a run is moved, cancelled or deleted
-47. T-49 · Schedule the yearly holiday fill job
-48. T-50 · Add Deno tests for generate-teams and send-push
+27. T-29 · Implement balanceTeams: team count, sizes and snake draft (#29)
+28. T-30 · Finish balanceTeams: swaps, restarts, slots and output checks (#30)
+29. T-31 · Add the web manifest, service worker and VAPID keys (#31)
+30. T-32 · Let players turn on notifications in Settings (#32)
+31. T-33 · Show the "Add to Home Screen" banner on iPhone (#33)
+32. T-34 · Build the send-push Edge Function (#34)
+33. T-35 · Add save_teams, publish_teams and the service_role grants (#35)
+34. T-36 · Build the generate-teams Edge Function (#36)
+35. T-37 · Schedule the lock-and-publish job with pg_cron (#37)
+36. T-38 · Build the Teams screen table view (#38)
+37. T-39 · Draw the indoor Field view (three half-pitches) (#39)
+38. T-40 · Draw the outdoor Field view (full pitch) (#40)
+39. T-41 · Show "Teams are up" on Home and Run detail (#41)
+40. T-42 · Push team and run changes live with Realtime (#42)
+41. T-43 · Add the Next run card to Admin · Runs (#43)
+42. T-44 · Build the Admin · Team builder: summary, team count and Reshuffle (#44)
+43. T-45 · Let admins drag players between teams with the fairness bar (#45)
+44. T-46 · Build the desktop Team builder with the admin sidebar (#46)
+45. T-47 · Schedule the evening reminder job (#47)
+46. T-48 · Send pushes when a run is moved, cancelled or deleted (#48)
+47. T-49 · Schedule the yearly holiday fill job (#49)
+48. T-50 · Add Deno tests for generate-teams and send-push (#50)
 
 ### Season passes and flags
-49. T-51 · Record who marked a pass paid, with a trigger and tests
-50. T-52 · Build the Admin · Season passes screen
-51. T-53 · Add the Flagged list to Admin · Runs
+49. T-51 · Record who marked a pass paid, with a trigger and tests (#51)
+50. T-52 · Build the Admin · Season passes screen (#52)
+51. T-53 · Add the Flagged list to Admin · Runs (#53)
 
 ### Web launch
-52. T-54 · Create the prod Supabase project and GitHub production environment
-53. T-03 · Deploy the website from CI, after prod migrations *(exists as #2)*
-54. T-55 · Deploy Edge Functions and their secrets from CI
-55. T-56 · Add the real seasons to prod with a data migration
-56. T-57 · Back up the prod database weekly to firsttouch-backups
-57. T-58 · Show failed jobs and pushes on the admin screen
-58. T-59 · Add the EXPO_PUBLIC_EMAIL_AUTH switch and the email sign-in form
-59. T-60 · Build the Create account screen
-60. T-61 · Build the Forgot password and Set a new password screens
-61. T-62 · Add Change password to Settings
-62. T-63 · Test email sign-in locally with Mailpit and Playwright
-63. T-64 · Add a Playwright end-to-end test against the preview URL
-64. T-65 · Publish the Google sign-in app out of Testing mode
-65. T-66 · Run the launch checklist
+52. T-54 · Create the prod Supabase project and GitHub production environment (#54)
+53. T-03 · Deploy the website from CI, after prod migrations (#2)
+54. T-55 · Deploy Edge Functions and their secrets from CI (#55)
+55. T-56 · Add the real seasons to prod with a data migration (#56)
+56. T-57 · Back up the prod database weekly to firsttouch-backups (#57)
+57. T-58 · Show failed jobs and pushes on the admin screen (#58)
+58. T-59 · Add the EXPO_PUBLIC_EMAIL_AUTH switch and the email sign-in form (#59)
+59. T-60 · Build the Create account screen (#60)
+60. T-61 · Build the Forgot password and Set a new password screens (#61)
+61. T-62 · Add Change password to Settings (#62)
+62. T-63 · Test email sign-in locally with Mailpit and Playwright (#63)
+63. T-64 · Add a Playwright end-to-end test against the preview URL (#64)
+64. T-65 · Publish the Google sign-in app out of Testing mode (#65)
+65. T-66 · Run the launch checklist (#66)
 
 ### Later (no milestone, label `later`)
-- T-67 · Switch on email sign-in with a domain and Resend
-- T-68 · Send a weekly reminder about unpaid season passes
-- T-69 · Add season join codes
-- T-70 · Let admins add walk-ins to a locked or published run
-- T-71 · Let admins mark no-shows
-- T-72 · Add a player cap and waitlist
-- T-73 · Take season pass payments in the app with Stripe
-- T-74 · Add match rotation and scores
-- T-75 · Ship App Store and Google Play builds
-- T-76 · Let admins deactivate players
+- T-67 · Switch on email sign-in with a domain and Resend (#67)
+- T-68 · Send a weekly reminder about unpaid season passes (#68)
+- T-69 · Add season join codes (#69)
+- T-70 · Let admins add walk-ins to a locked or published run (#70)
+- T-71 · Let admins mark no-shows (#71)
+- T-72 · Add a player cap and waitlist (#72)
+- T-73 · Take season pass payments in the app with Stripe (#73)
+- T-74 · Add match rotation and scores (#74)
+- T-75 · Ship App Store and Google Play builds (#75)
+- T-76 · Let admins deactivate players (#76)
 
 ---
 
 ## Foundation
 
-### T-02 · Add database tests for RLS, grants and guard functions
+### T-02 · Add database tests for RLS, grants and guard functions (#1)
 *Exists as #1. Keep its body as written. Phase 4 only adds the milestone, labels and board.*
 **Milestone:** Foundation · **Labels:** database, tests · **Size:** M
 **Depends on:** T-01 merged
 
 ---
 
-### T-04 · Finish Google sign-in
+### T-04 · Finish Google sign-in (#4)
 **Milestone:** Foundation · **Labels:** player UI, infra · **Size:** S
 
 **Summary:** Google sign-in, the Supabase client, protected routes and a placeholder Home (name plus Admin badge) are already on `main`. This ticket finishes the plumbing so every later screen can rely on it: a single profile hook, clear errors, and sign-in confirmed on the dev project. Restyling the screen is T-11.
@@ -140,32 +141,33 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-05 · Add the design tokens, Archivo font and dark mode
+### T-05 · Add the design tokens, Inter font and light/dark themes (#5)
 **Milestone:** Foundation · **Labels:** design, infra · **Size:** M
 
-**Summary:** Move the design's colours, radii and sizes from `docs/design/tokens/` into `tailwind.config.js` and `global.css`, so screens use names like `bg-surface` and `text-muted` instead of hex values. Load Archivo (400–800) and switch to the Graphite dark palette when the phone is in dark mode.
+**Summary:** Move the V2 design's colours, gradients, shadows, radii and sizes from `docs/design/tokens/` into `tailwind.config.js` and `global.css`, so screens use names like `bg-surface` and `text-muted` instead of hex values. Load Inter (400–800). Light is the default; dark switches on with a `.dark` class, and "System" follows the phone. The Settings control that picks the mode comes in T-20; this ticket builds the switch it flips.
 
 **Spec:** Architecture (NativeWind); Non-functional requirements › Accessibility
-**Design:** `README.md` › Global rules, Brand; `tokens/tokens.json`, `tokens/theme.css`, `tokens/tailwind.theme.js`; `02-home` and `04-teams` with `dark = true` to check the result
+**Design:** `README.md` › Global rules, Brand; `tokens/tokens.json` (`theme.light`, `theme.dark`), `tokens/theme.css` (including the `prefers-color-scheme` block for System), `tokens/tailwind.theme.js`; any screen with `theme = light | dark` to check the result
 **Depends on:** T-01 merged
 
 **Acceptance criteria**
-- [ ] `tailwind.config.js` extends the theme with every colour, radius and min-size from `tailwind.theme.js`. `global.css` holds the light variables and the `.dark` Graphite overrides from `theme.css`.
-- [ ] Archivo loads at weights 400, 500, 600, 700 and 800. Headings use 800 with −0.02em letter-spacing.
-- [ ] Dark mode follows the phone or computer setting (there's no in-app switch in the designs). Switching the OS setting flips the colours without a reload.
-- [ ] Team colours and flag colours are identical in light and dark.
-- [ ] A temporary test page (removed before merge, or kept under a dev-only route) shows the colour swatches in both modes.
+- [ ] `tailwind.config.js` extends the theme with every colour, background image (`page`, `button`, `hero`, `grass`), shadow, radius and size from `tailwind.theme.js`. `global.css` holds the light variables and the `.dark` overrides from `theme.css`.
+- [ ] Inter loads at weights 400, 500, 600, 700 and 800. Headings use 800 with −0.03em letter-spacing, and body text is 15–16 px.
+- [ ] Screens sit on the `page` background (the soft green glow in the top-right corner over `bg`).
+- [ ] One small theme module (for example `src/lib/theme.ts`) sets the mode to `light`, `dark` or `system`, remembers it on the device, and applies it before the first paint, so there's no flash of the wrong theme. `system` follows the OS setting and updates live when it changes.
+- [ ] Team fill colours are identical in both themes. Team text and soft tint colours use their light or dark values.
+- [ ] A temporary test page (removed before merge, or kept under a dev-only route) shows the swatches and gradients in both themes.
 - [ ] `npm run verify` passes.
 
 **Learning notes**
-- NativeWind v4: theme with CSS variables, and `darkMode: 'class'` vs the system setting
-- Tailwind `theme.extend`
-- Expo Fonts (`expo-font`, or the `@expo-google-fonts/archivo` package) in the Expo docs
-- CSS custom properties (`var(--brand)`)
+- NativeWind v4: theme with CSS variables, `darkMode: 'class'`, and `colorScheme.set()` / `useColorScheme`
+- CSS gradients and `box-shadow` through Tailwind on web (native would need `expo-linear-gradient`; not needed for v1)
+- Expo Fonts (`expo-font`, or the `@expo-google-fonts/inter` package) in the Expo docs
+- CSS custom properties and the `prefers-color-scheme` media query
 
 ---
 
-### T-06 · Replace the app icon, favicon and splash with the FirstTouch logo
+### T-06 · Replace the app icon, favicon and splash with the FirstTouch logo (#6)
 **Milestone:** Foundation · **Labels:** design, infra · **Size:** S
 
 **Summary:** Swap the Expo template icons for the FirstTouch logo and rename the app "FirstTouch". The design only ships a 232 px icon with transparent rounded corners, which is too small for a 512 px web app icon and wrong for an iPhone Home Screen icon (iOS rounds the corners itself), so this ticket also asks for a larger, square export.
@@ -175,7 +177,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 **Depends on:** T-05
 
 **Acceptance criteria**
-- [ ] `app.json` has name "FirstTouch". The favicon, icon and splash use the logo, and the splash background is a brand colour (Pitch green `#0E4D32` or Deep pitch `#04150F`), not the template blue.
+- [ ] `app.json` has name "FirstTouch". The favicon, icon and splash use the logo, and the splash background is a brand colour (the dark end of the `hero` gradient, `#0A3F27`, or Deep pitch `#04150F`), not the template blue.
 - [ ] A square, full-bleed 1024 × 1024 icon is exported from the design (no transparent corners) and saved in `assets/images/`. Until it exists, the 232 px file is used and this box stays open.
 - [ ] Sizes needed later by the web manifest (T-31) are generated from it: 192, 512, and a 180 px Apple touch icon.
 - [ ] The browser tab shows the new favicon on `npx expo start --web`.
@@ -186,20 +188,20 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-07 · Build the display components: chips, badges, position tag, avatar, stars
+### T-07 · Build the display components: chips, badges, position tag, avatar, stars (#7)
 **Milestone:** Foundation · **Labels:** player UI, design · **Size:** M
 
 **Summary:** Build the small, read-only pieces every screen reuses, in `src/components/`: status chip, flag badge, Admin badge, position tag, avatar, and the read-only star rating. Each takes simple props, so screens never repeat styling.
 
 **Spec:** Access control (stars and Unpaid are admin-only); Overview (flags)
-**Design:** README › Shared components, Flags; status chips in `07-admin-runs` (`status` prop) and `02-home` (pass chip); badges in `03-run-detail`; position tags in `04-teams`
+**Design:** README › Shared components, Flags; status chips in `07-admin-runs` (`status` prop), `02-home` (pass chip) and `04-teams` (Published pill); badges in `03-run-detail`; position tags in `04-teams`; stacked avatars in `02-home`
 **Depends on:** T-05
 
 **Acceptance criteria**
-- [ ] `StatusChip`: pass (Paid / Not paid) and run status (Open green, Locked grey, Teams published pitch green with white text, Cancelled red), 28–32 tall, dot plus label.
-- [ ] `FlagBadge` (Morning of amber, Unpaid red) and `AdminBadge` (pitch green): 20–22 tall, 11 px weight-800 label.
-- [ ] `PositionTag`: 42 × 26, radius 8, 1.5 px ink border. ATT filled, DEF outline only.
-- [ ] `Avatar`: a circle with initials on `surface-2`, in at least the sizes the mockups use.
+- [ ] `StatusChip`: pass (Paid / Not paid) and run status (Open, Locked, Teams published, Cancelled) using the `ok-*`, `locked-*`, `brand` and `red-*` tokens, 28–32 tall, dot plus label. Also the Teams "Published" pill: a filled check circle with a `brand-line` border.
+- [ ] `FlagBadge` (Morning of `amber-*`, Unpaid `red-*`): 20–22 tall, 11 px weight-700 label. `AdminBadge`: same size, on the `hero` gradient with white text.
+- [ ] `PositionTag`: 40 × 24, radius 8. ATT is filled `ink` with `bg`-coloured text. DEF is an outline in `input-border` with `ink-2` text.
+- [ ] `Avatar`: a circle with initials on `surface-2` (Home uses `brand-text` initials), in the sizes the mockups use, plus the stacked-avatars group with a "+n" circle.
 - [ ] `StarRating` (read-only): five 12–13 px stars in `star-on` / `star-off`, with an accessible label such as "4 of 5 stars".
 - [ ] Every component looks right in light and dark.
 - [ ] These components don't decide who sees stars or Unpaid. Screens decide that from the data.
@@ -211,21 +213,21 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-08 · Build the input components: switch, segmented control, star picker, fields, buttons
+### T-08 · Build the input components: switch, segmented control, star picker, fields, buttons (#8)
 **Milestone:** Foundation · **Labels:** player UI, admin UI, design · **Size:** M
 
 **Summary:** Build the interactive controls: switch (normal and compact), segmented control, the editable star picker, a text field, a password field with show/hide, and primary/secondary/danger buttons. They follow the design's sizes and the accessibility rules (real roles, 44 × 44 tap targets, dimmed disabled state).
 
 **Spec:** Non-functional requirements › Accessibility
-**Design:** README › Global rules (Tap targets, Accessibility), Shared components; switch in `05-settings` and `06-admin-players` (compact Plays switch); segmented control in `04-teams`; star picker in `06-admin-players`; password field in `01-sign-in` (`emailAuth = on`) and `01b-create-account`
+**Design:** README › Global rules (Tap targets, Accessibility), Shared components; switch in `05-settings` and `06-admin-players` (compact Plays switch); segmented control in `04-teams` and `05-settings` (Appearance); star picker in `06-admin-players`; password field in `01-sign-in` (`emailAuth = on`) and `01b-create-account`
 **Depends on:** T-05
 
 **Acceptance criteria**
-- [ ] `Switch`: 52 × 32 with a 26 px knob (compact 46 × 28). Track is `brand` when on, `switch-off` when off. `role="switch"` with `aria-checked`.
-- [ ] `SegmentedControl`: `surface-2` track, 4 px padding, selected segment on `surface` with a small shadow. Each segment reports pressed state.
+- [ ] `Switch`: 52 × 32 with a 26 px white knob (compact 46 × 28). Track is the brand gradient when on, `switch-off` when off. `role="switch"` with `aria-checked`.
+- [ ] `SegmentedControl`: a pill track in `surface` with a `line` border; the selected segment uses the `button` gradient with `on-brand` text. Each segment reports pressed state. It also works as a radio group (needed for Appearance in T-20).
 - [ ] `StarPicker`: five 40 × 44 buttons with 26 px stars, each labelled "Set N stars".
 - [ ] `TextField` and `PasswordField`: 56 tall, radius 16, a label above, an optional hint below. The password field has a 44 × 44 eye button labelled "Show password" / "Hide password".
-- [ ] `Button`: primary is 56 tall, radius 16. Disabled buttons are dimmed and marked disabled.
+- [ ] `Button`: primary is 56 tall, radius 16, on the `button` gradient. Secondary and danger variants. Smaller buttons follow the mockups (the `size.button` token says 48; the README and mockups use 56 for primary). Disabled buttons are dimmed and marked disabled.
 - [ ] Keyboard Tab reaches every control on web, and Space/Enter operates it.
 
 **Learning notes**
@@ -235,18 +237,19 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-09 · Build the bottom tab bar and the Admin sub-tabs
+### T-09 · Build the bottom tab bar and the Admin sub-tabs (#9)
 **Milestone:** Foundation · **Labels:** player UI, admin UI · **Size:** M
 
 **Summary:** Set up the signed-in routes: Home, Teams and Settings tabs for players, plus an Admin tab for admins. Inside Admin, the pill sub-tabs switch between Players, Runs, Team builder and Passes. Non-admins can't reach any admin route, even by typing the URL.
 
 **Spec:** Access control (admins); Key flows › Admins and RSVPs
-**Design:** README › Navigation; bottom nav in `02-home` (`plays` on/off shows 3 or 4 tabs); sub-tabs in `06-admin-players`, `07-admin-runs`, `08-admin-team-builder`, `09-admin-season-passes`; Holidays reached from Runs (`11-admin-holidays`)
+**Design:** README › Navigation; bottom nav in `02-home` (`plays` on/off shows 3 or 4 tabs) and `04-teams` (`role = admin` shows 4); sub-tabs in `06-admin-players`, `07-admin-runs`, `08-admin-team-builder`, `09-admin-season-passes`; Holidays reached from Runs (`11-admin-holidays`)
 **Depends on:** T-04, T-05, T-07
 
 **Acceptance criteria**
 - [ ] Routes live under `src/app/(app)/`. Tabs: Home, Teams, Settings, and Admin only when the user is an admin. Each screen can be a placeholder for now.
-- [ ] Bottom nav is 84 tall with a 26 px icon over a 12 px label. The active tab uses `brand` at weight 800. Line icons with a 2 px stroke.
+- [ ] The bottom nav is a floating bar: 76 tall, radius 26, inset 12 px from the sides and 14 px from the bottom, in the `nav` colour with a `line` border and `shadow`. Each tab is a 24 px icon over a 12 px label. The active tab is `brand-text` with a 22 × 3 `brand` underline. Icons: house (Home), trophy (Teams), shield (Admin), gear (Settings), as 2 px line icons.
+- [ ] Screen content scrolls underneath the floating bar without the last item being hidden behind it.
 - [ ] Admin opens on Players. The sub-tab row (Players, Runs, Team builder, Passes) highlights the current page. Holidays is a route under Runs, with a back link.
 - [ ] A player who types an admin URL lands on Home. (RLS already blocks the data. This is the UI guard.)
 - [ ] The admin header shows "Admin" plus the ADMIN tag, as in the mockups.
@@ -256,16 +259,17 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 - Expo Router: groups `(app)`, `Tabs` layouts, nested layouts, and `Stack.Protected` for the admin group (Expo docs › Router)
 - `useSegments` / `usePathname` to highlight the active sub-tab
 - Icons: `@expo/vector-icons` or an SVG icon set with 2 px strokes
+- Safe-area insets (`react-native-safe-area-context`) for a floating bar
 
 ---
 
-### T-10 · Add the public /privacy page
+### T-10 · Add the public /privacy page (#10)
 **Milestone:** Foundation · **Labels:** player UI · **Size:** S
 
 **Summary:** Publish `docs/privacy.md` at `/privacy`, readable without signing in, because Google's consent screen needs a public privacy policy URL. Link to it from the sign-in screen and from Settings.
 
 **Spec:** Deployment and environments › Supabase settings (consent screen needs the privacy URL); Non-functional requirements › Privacy
-**Design:** No mockup. Use the tokens: `bg` background, `ink` text, Archivo, a phone-width column, a back link
+**Design:** No mockup. Use the tokens: `page` background, `ink` text, Inter, a phone-width column, a back link
 **Depends on:** T-05
 
 **Acceptance criteria**
@@ -282,7 +286,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-11 · Restyle the sign-in screen to match the design
+### T-11 · Restyle the sign-in screen to match the design (#11)
 **Milestone:** Foundation · **Labels:** player UI · **Size:** S
 
 **Summary:** Make the sign-in screen match the launch design: the logo at 112 px, the FirstTouch wordmark, the tagline, a "Continue with Google" button that follows Google's branding rules, and the privacy link at the bottom. No email section yet (that's T-59).
@@ -293,7 +297,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 **Acceptance criteria**
 - [ ] Layout, spacing and sizes match `01-sign-in` (default), in light and dark.
-- [ ] The wordmark is "First" in `ink` plus "Touch" in `#0E4D32` (light) or `#62CC7E` (dark).
+- [ ] The wordmark is "First" in `ink` plus "Touch" in `brand-text`, weight 800.
 - [ ] The Google button uses Google's official "G" mark and wording.
 - [ ] "Privacy policy" opens `/privacy`.
 - [ ] The error message from T-04 still shows under the button.
@@ -301,11 +305,11 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 **Learning notes**
 - Google Identity "Sign in with Google" branding guidelines
 - `expo-image` for the logo
-- `useColorScheme` for colours that differ by theme but aren't tokens
+- Using theme tokens instead of hard-coded colours, so both themes work for free
 
 ---
 
-### T-12 · Add pgTAP tests for lock time, morning-of and season run generation
+### T-12 · Add pgTAP tests for lock time, morning-of and season run generation (#12)
 **Milestone:** Foundation · **Labels:** database, tests · **Size:** M
 
 **Summary:** T-02 covers permissions. This ticket covers the rest of the spec's database testing plan: the lock time across daylight-saving changes, the morning-of trigger, and `generate_season_runs` with holiday Mondays.
@@ -329,7 +333,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-13 · Extend seed.sql with runs, RSVPs, passes and teams
+### T-13 · Extend seed.sql with runs, RSVPs, passes and teams (#13)
 **Milestone:** Foundation · **Labels:** database · **Size:** S
 
 **Summary:** Local Supabase has seasons and 28 users but no runs, so every screen would be empty. Add sample runs around "this weekend", RSVPs (some morning-of), season passes (some unpaid) and one published run with teams, so screens can be built against realistic data.
@@ -354,22 +358,26 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ## RSVP loop
 
-### T-14 · Build the Home screen run cards
+### T-14 · Build the Home screen run cards (#14)
 **Milestone:** RSVP loop · **Labels:** player UI · **Size:** M
 
-**Summary:** Build Home for a playing member: pass chip, avatar, greeting, the season subtitle, and one card per upcoming run with date, time, address, the "RSVPs close" line, stacked avatars and the going count. The "I'm in" toggle is drawn here but wired up in T-15.
+**Summary:** Build Home for a playing member: the V2 header (app icon and pass chip), the greeting with its underline, the season subtitle, an "Upcoming runs" list with one card per run (date, time, address, the "RSVPs close" line, stacked avatars, going count), and the "Auto team creation" card. The "I'm in" button is drawn here but wired up in T-15.
 
 **Spec:** Key flows (lifecycle; RSVP until 1 hour before); Lock time and player-facing views (`run_lock_at`); Long-weekend Mondays
-**Design:** `02-home` with `plays = on`, `pass = paid | unpaid`, `dark = false | true`. Cards: open, closed (toggle dimmed), holiday ("Holiday Monday" kicker, "Mon Feb 15 · Family Day")
+**Design:** `02-home` with `plays = on`, `pass = paid | unpaid`, `theme = light | dark`. README › Shared components › Run card. Cards: open, closed (left bar muted, button dimmed), holiday (day kicker plus the holiday name)
 **Depends on:** T-09, T-13
 
 **Acceptance criteria**
-- [ ] Shows runs from today through the next 7 days, in date order. (The spec doesn't say how far ahead. This matches the mockup's "three runs this week".)
+- [ ] Header: the 44 px app icon on the left and the pass chip on the right. No bell: the mockup's notification bell is left out (decision D4).
+- [ ] "Morning, {first name}" with the 40 × 3 `brand` underline and the season subtitle.
+- [ ] "Upcoming runs" shows runs from today through the next 7 days, in date order. *Design gap:* "View all" expands the list to every upcoming run in the season (the mockup links it to Run detail as a placeholder).
 - [ ] Each card shows the run's own time and address (not hard-coded), and "RSVPs close h:mm AM", which is start time minus 1 hour in Toronto time. Once that time passes, it reads "RSVPs closed h:mm AM" and the toggle is dimmed and disabled.
-- [ ] A holiday Monday shows the "Holiday Monday" kicker and the holiday name from the `holidays` table.
+- [ ] Each card has the 4 px `brand` bar on its left edge (muted once RSVPs close), the day kicker (SAT, SUN, MON), the large date and a Details pill. A holiday Monday adds the holiday name from the `holidays` table next to the kicker.
+- [ ] Stacked avatars show the first three people going plus a "+n" circle.
 - [ ] "{n} going" counts yes RSVPs from players with Plays on. The note reads "Including you" or "You haven't replied".
 - [ ] The pass chip reads "Indoor pass: Paid" or "Indoor pass: Not paid" for the current season (no `season_passes` row means Not paid). The greeting uses your first name.
 - [ ] "Details" opens Run detail (a placeholder until T-18).
+- [ ] After the run cards, the hero-gradient "Auto team creation" card reads "Teams are made automatically when RSVPs close, 1 hour before kickoff."
 - [ ] Matches the mockup in light and dark.
 
 **Learning notes**
@@ -379,17 +387,17 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-15 · Add the "I'm in" RSVP toggle with instant feedback
+### T-15 · Add the "I'm in" RSVP toggle with instant feedback (#15)
 **Milestone:** RSVP loop · **Labels:** player UI · **Size:** S
 
 **Summary:** Make the toggle work. Tapping it updates the card at once, saves your `rsvps` row, and rolls back with a message if the database refuses (for example because RSVPs just closed).
 
 **Spec:** Key flows › RSVP request, step by step; Access control (rsvps row); Non-functional requirements › Performance (optimistic UI)
-**Design:** `02-home` (the toggle's on, off and disabled states)
+**Design:** `02-home` (the button's states: off is a `brand-line` outline with a plus icon and "I'm in?"; on is the gradient with a check and "I'm in"; closed is dimmed)
 **Depends on:** T-14
 
 **Acceptance criteria**
-- [ ] Tapping toggles at once (optimistic), then upserts `{ run_id, player_id, going }`.
+- [ ] Tapping toggles at once (optimistic) between "I'm in?" and "I'm in", then upserts `{ run_id, player_id, going }`. The button reports its state with `aria-pressed`.
 - [ ] If the save fails (after lock, or a network error), the toggle flips back and a short message explains why.
 - [ ] The count and "Including you" update with the toggle.
 - [ ] Saying yes on the run's own date shows you with the Morning of badge in Run detail (the trigger does this; check it).
@@ -402,7 +410,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-16 · Update going counts live with Supabase Realtime
+### T-16 · Update going counts live with Supabase Realtime (#16)
 **Milestone:** RSVP loop · **Labels:** player UI · **Size:** S
 
 **Summary:** When someone else says yes or no, every open Home and Run detail screen updates its count without a refresh.
@@ -423,17 +431,17 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-17 · Show Coach's Home for admins who don't play
+### T-17 · Show Coach's Home for admins who don't play (#17)
 **Milestone:** RSVP loop · **Labels:** player UI, admin UI · **Size:** S
 
-**Summary:** An admin with Plays off (Coach) sees the same run cards without the "I'm in" toggle. In its place is the muted line "You're managing this run". The top chip reads "Admin · manages runs", and the Admin tab is in the nav.
+**Summary:** An admin with Plays off (Coach) sees the same run cards without the "I'm in" toggle. In its place is the muted line "You're managing this run". The top chip reads "Admin", and the Admin tab is in the nav.
 
 **Spec:** Key flows › Admins and RSVPs; Access control › Admins
 **Design:** `02-home` with `plays = off`
 **Depends on:** T-14
 
 **Acceptance criteria**
-- [ ] With Plays off: no toggle, "You're managing this run" instead, and the chip reads "Admin · manages runs".
+- [ ] With Plays off: no toggle, "You're managing this run" instead, and the chip reads "Admin" (the V2 mockup; the README still says "Admin · manages runs", see disagreements).
 - [ ] The note under the count reads "RSVPs open", or "RSVPs are closed" after the lock.
 - [ ] A playing admin (John, Sim) sees the normal player Home with a pass chip, plus the Admin tab.
 - [ ] Turning Plays on or off for an admin (T-22) switches their Home on the next load.
@@ -444,17 +452,17 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-18 · Build the Run detail screen (player view)
+### T-18 · Build the Run detail screen (player view) (#18)
 **Milestone:** RSVP loop · **Labels:** player UI, design · **Size:** M
 
-**Summary:** Build Run detail: the pitch-green header with date, time, address and three stat tiles, your own RSVP panel, and "Who's coming" in RSVP order with position tags and Morning of badges. Players never see stars or Unpaid here.
+**Summary:** Build Run detail: the floating hero-gradient header card with date, time, address and three glass stat tiles, your own RSVP panel, and "Who's coming" in RSVP order with position tags and Morning of badges. Players never see stars or Unpaid here.
 
 **Spec:** Lock time and player-facing views (`run_roster`); Access control (stars and Unpaid admin-only); Key flows › Admins and RSVPs
 **Design:** `03-run-detail` with `role = player`, `locked = false | true`, `going = true | false`
 **Depends on:** T-15
 
 **Acceptance criteria**
-- [ ] The header shows "{Day} run · Indoor/Outdoor", the date, start time, address, and tiles for going, attackers and defenders.
+- [ ] The header is a floating card (inset 12 px, radius 28) on the `hero` gradient with a faint ball watermark. It shows "SUNDAY RUN · INDOOR" (day and season type), the date, start time, address, and translucent tiles for going, attackers and defenders.
 - [ ] Your RSVP: "You're in" with a "Change" button, or "You're not going" with an "I'm in" button. Both toggle your RSVP in place (the mockup's "Change" link to Home is a placeholder).
 - [ ] After the lock: "RSVPs closed h:mm AM" and a disabled "Locked" button with a lock icon.
 - [ ] *Design gap:* for an admin with Plays off, the RSVP panel is replaced by the line "You're managing this run" (as on Home).
@@ -468,7 +476,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-19 · Add the admin view of Run detail
+### T-19 · Add the admin view of Run detail (#19)
 **Milestone:** RSVP loop · **Labels:** admin UI · **Size:** S
 
 **Summary:** For admins, each row on Run detail also shows the star rating and the Unpaid badge, and the list note reads "In order of RSVP · admin view". The data already comes back filled in for admins and empty for players.
@@ -488,31 +496,40 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-20 · Build the Settings screen: profile, name, privacy, sign out, delete account
-**Milestone:** RSVP loop · **Labels:** player UI, design · **Size:** M
+### T-20 · Build the Settings screen: profile, name, appearance, privacy, sign out, delete account (#20)
+**Milestone:** RSVP loop · **Labels:** player UI, database, design · **Size:** L
 
-**Summary:** Build Settings without the notifications section (T-32): profile card with avatar, name, pass chip and email; a pencil button to change your display name; the privacy link; Sign out; and Delete account with a confirmation.
+**Summary:** Build Settings without the Notifications section (T-32): profile card with avatar, name, pass chip and email; a pencil button to change your display name; the Appearance control (Light, Dark or System); the privacy link; Sign out; and Delete account with a confirmation. The Appearance choice is saved per player in a new `player_settings` table, which T-32 later adds the notification switches to.
 
-**Spec:** Database functions (`update_my_name`); Non-functional requirements › Privacy (Delete account); Access control (players change only their name)
-**Design:** `05-settings` with `emailAuth = off` (profile card, Privacy, Account). The edit-name sheet and delete confirmation have no mockup: reuse the bottom sheet and confirm dialog from `07-admin-runs` (`overlay = sheet | confirm`)
-**Depends on:** T-09, T-10
+**Spec:** Database functions (`update_my_name`); Non-functional requirements › Privacy (Delete account); Access control (players change only their name; own-row pattern like `push_subscriptions`). Appearance isn't in the spec (new in the V2 design)
+**Design:** `05-settings` with `emailAuth = off` and `theme = light | dark` (profile card, Appearance between Notifications and Privacy, Privacy, Account); README › Global rules › Light and dark. The edit-name sheet and delete confirmation have no mockup: reuse the bottom sheet and confirm dialog from `07-admin-runs` (`overlay = sheet | confirm`)
+**Depends on:** T-05, T-08, T-09, T-10
 
 **Acceptance criteria**
+
+*Profile and account*
 - [ ] The profile card shows avatar, name, email, and a "Paid" or "Not paid" chip for the current season. *Design gap:* for an admin with Plays off, show the Admin badge instead of a pass chip.
 - [ ] The pencil opens a sheet with a Name field. Saving calls `update_my_name`, and an empty name shows an error. The new name shows on Home and in lists.
 - [ ] "Privacy policy" opens `/privacy`.
 - [ ] Sign out returns to sign-in.
-- [ ] "Delete account" (red `#B91C1C`) asks "Delete your account?" with what gets deleted. Confirming calls `delete_my_account`, signs out, and shows sign-in. Your RSVPs disappear from other screens.
+- [ ] "Delete account" (red) asks "Delete your account?" with what gets deleted. Confirming calls `delete_my_account`, signs out, and shows sign-in. Your RSVPs disappear from other screens.
 - [ ] Your email isn't editable here (it comes from Google).
 
+*Appearance*
+- [ ] New migration: `player_settings` (one row per player, `theme` = `light` | `dark` | `system`, default `light`). RLS: players read and write only their own row; no access for `anon`. pgTAP tests prove a player can't read or change anyone else's row. `npm run db:types` is re-run and committed.
+- [ ] The three-option control (a radio group built on the T-08 segmented control) shows the saved choice. Picking one switches the theme at once (using the T-05 theme module) and saves it.
+- [ ] The hint changes with the choice: "Light is the default. Dark mode is optional." or, for System, "Follows your phone's light or dark setting."
+- [ ] Signing in on a new browser applies the saved theme. Before sign-in (sign-in and /privacy), the device's last choice is used, or Light.
+
 **Learning notes**
-- supabase-js `rpc()` for database functions
+- supabase-js `rpc()` for database functions, and `upsert` for a one-row-per-player table
+- Writing your own migration with a table and RLS policies (`npx supabase migration new`)
 - A reusable bottom sheet and confirm dialog (React Native `Modal`, or a portal on web)
-- What `on delete cascade` does in the schema
+- Keeping a saved setting and the device in step (TanStack Query plus `localStorage`)
 
 ---
 
-### T-21 · Build the Admin · Players list with search and filters
+### T-21 · Build the Admin · Players list with search and filters (#21)
 **Milestone:** RSVP loop · **Labels:** admin UI, design · **Size:** M
 
 **Summary:** List everyone in the group for admins: admins first (Coach, John, Sim), then everyone else A to Z. It has a search field, the All / Flagged / ATT / DEF filters, and each card's name, Admin badge, flag badges and current stars and position. Editing comes in T-22.
@@ -535,7 +552,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-22 · Let admins set stars, position and Plays
+### T-22 · Let admins set stars, position and Plays (#22)
 **Milestone:** RSVP loop · **Labels:** admin UI · **Size:** S
 
 **Summary:** Make the Players cards editable: tap a star to set the rating, tap Attack or Defend, flip Plays. Each change saves at once with optimistic UI.
@@ -556,7 +573,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-23 · Let admins make or remove other admins
+### T-23 · Let admins make or remove other admins (#23)
 **Milestone:** RSVP loop · **Labels:** admin UI, design, database · **Size:** S
 
 **Summary:** The spec says admins promote others from the Players screen, but the mockup has no control for it. Add one using existing patterns: tapping a player's name opens a small sheet with an "Admin" switch. An admin can't remove their own admin role, so the group never loses its last admin by accident.
@@ -577,7 +594,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-24 · Build the season card on Admin · Runs
+### T-24 · Build the season card on Admin · Runs (#24)
 **Milestone:** RSVP loop · **Labels:** admin UI, design · **Size:** M
 
 **Summary:** The Season section of Admin · Runs: pick Indoor or Outdoor, set the season's start and end dates, and tap "Create runs", which calls `generate_season_runs` and reports how many runs it added. It also has the Holidays link and a way to choose the current season.
@@ -601,7 +618,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-25 · List every run of the season on Admin · Runs
+### T-25 · List every run of the season on Admin · Runs (#25)
 **Milestone:** RSVP loop · **Labels:** admin UI · **Size:** M
 
 **Summary:** Under the season card, list the season's runs, past and upcoming. Each row shows day and date, holiday name, time and address, "{n} going" (or a reason), and a status chip. Tapping a row opens the edit sheet (T-26).
@@ -622,7 +639,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-26 · Add the edit-run sheet: time, address, cancel and delete
+### T-26 · Add the edit-run sheet: time, address, cancel and delete (#26)
 **Milestone:** RSVP loop · **Labels:** admin UI, design · **Size:** M
 
 **Summary:** Tapping a run opens a bottom sheet to change its start time and address, or delete it. Deleting a run that has yes RSVPs asks for confirmation first. The sheet also has "Cancel run" (decision D2), which keeps the run but marks it cancelled. The pushes for these changes come in T-48.
@@ -645,7 +662,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-27 · Build the Admin · Holidays screen
+### T-27 · Build the Admin · Holidays screen (#27)
 **Milestone:** RSVP loop · **Labels:** admin UI, design · **Size:** M
 
 **Summary:** List the holiday Mondays from the `holidays` table with the season each falls in and an on/off switch. Switching one off deletes its run (with a confirmation if players said yes). Switching it back on adds the run again.
@@ -666,7 +683,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-28 · Let admins add a one-off holiday date
+### T-28 · Let admins add a one-off holiday date (#28)
 **Milestone:** RSVP loop · **Labels:** admin UI, database, design · **Size:** S
 
 **Summary:** The "Add date" button opens a sheet for a Monday and a name. A new database function inserts it and, as with switching a holiday on, adds its run straight away if it falls inside a season that already has runs.
@@ -690,7 +707,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ## Teams
 
-### T-29 · Implement balanceTeams: team count, sizes and snake draft
+### T-29 · Implement balanceTeams: team count, sizes and snake draft (#29)
 **Milestone:** Teams · **Labels:** functions, tests · **Size:** M
 
 **Summary:** First half of the balancing algorithm in `supabase/functions/_shared/balance.ts`: a seeded random number generator, the team-count and team-size rules, and the snake draft. Vitest tests cover each rule.
@@ -714,7 +731,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-30 · Finish balanceTeams: swaps, restarts, slots and output checks
+### T-30 · Finish balanceTeams: swaps, restarts, slots and output checks (#30)
 **Milestone:** Teams · **Labels:** functions, tests · **Size:** M
 
 **Summary:** Second half: score a split, improve it by trying every two-player swap, repeat from 20 seeded starting orders, assign slots, and check the output before returning. A test checks it runs well under a second for 27 players.
@@ -738,7 +755,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-31 · Add the web manifest, service worker and VAPID keys
+### T-31 · Add the web manifest, service worker and VAPID keys (#31)
 **Milestone:** Teams · **Labels:** infra · **Size:** M
 
 **Summary:** Make the site installable and ready for push: a web manifest with name, icons, start URL and standalone display; a service worker at the site root that shows pushes and opens the right screen when tapped; and a VAPID key pair (public key in the app's env, private key as a Supabase secret).
@@ -761,7 +778,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-32 · Let players turn on notifications in Settings
+### T-32 · Let players turn on notifications in Settings (#32)
 **Milestone:** Teams · **Labels:** player UI, database, design · **Size:** M
 
 **Summary:** Add the Notifications section to Settings. Until this browser is subscribed it shows an "Enable notifications" button (the permission prompt must come from a tap, which iOS requires). After that it shows the design's three switches. The subscription is saved to `push_subscriptions`, and the switches are saved per player (see decision D1).
@@ -772,7 +789,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 **Acceptance criteria**
 - [ ] Tapping "Enable notifications" asks for permission, subscribes with the VAPID public key, and saves `endpoint`, `p256dh` and `auth` to `push_subscriptions`. If permission is denied, it explains how to allow it in the browser.
-- [ ] *(D1)* New migration: a `notification_prefs` table (one row per player, all on by default; own read and write; admins read). Players can't read anyone else's row. pgTAP tests prove it.
+- [ ] *(D1)* New migration: three boolean columns on `player_settings` (from T-20), all on by default: `notify_reminder`, `notify_teams`, `notify_changes`. pgTAP tests prove players still can't read anyone else's row.
 - [ ] The three switches save to it. Hints: "The evening before a run you haven't answered" (the mockup's "each run you're in" contradicts the spec), "When RSVPs close and teams are set", "Time, address or cancelled runs".
 - [ ] A "Turn off on this device" link deletes this browser's subscription.
 - [ ] Browsers without Push support (and iPhone Safari outside the Home Screen, see T-33) don't show the button.
@@ -785,7 +802,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-33 · Show the "Add to Home Screen" banner on iPhone
+### T-33 · Show the "Add to Home Screen" banner on iPhone (#33)
 **Milestone:** Teams · **Labels:** player UI · **Size:** S
 
 **Summary:** On an iPhone in a normal Safari tab, push can't work until FirstTouch is added to the Home Screen. Show the design's dismissible banner on Home, and show the same message in Settings in place of the "Enable notifications" button.
@@ -806,7 +823,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-34 · Build the send-push Edge Function
+### T-34 · Build the send-push Edge Function (#34)
 **Milestone:** Teams · **Labels:** functions, database · **Size:** M
 
 **Summary:** A Deno Edge Function that sends Web Push messages to a list of players. It's called by the database (through pg_net) or by an admin, respects each player's notification switches, deletes subscriptions the push service says are gone, and logs failures to `job_errors`.
@@ -820,7 +837,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 - [ ] Only the service role key or a signed-in admin can call it. Anyone else gets 401/403.
 - [ ] Players who switched that category off are skipped. Admin alerts always send.
 - [ ] Subscriptions that return HTTP 404 or 410 are deleted. Other failures write a `job_errors` row with `source = 'send-push'`.
-- [ ] New migration: `service_role` gets only what this function needs (read `push_subscriptions` and `notification_prefs`, delete `push_subscriptions`, insert `job_errors`, read `profiles` for the admin check). pgTAP checks the grants.
+- [ ] New migration: `service_role` gets only what this function needs (read `push_subscriptions` and `player_settings`, delete `push_subscriptions`, insert `job_errors`, read `profiles` for the admin check). pgTAP checks the grants.
 - [ ] Works locally with `npx supabase functions serve` and a real browser subscription.
 
 **Learning notes**
@@ -831,7 +848,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-35 · Add save_teams, publish_teams and the service_role grants
+### T-35 · Add save_teams, publish_teams and the service_role grants (#35)
 **Milestone:** Teams · **Labels:** database, tests · **Size:** M
 
 **Summary:** Database side of team generation. `save_teams(run_id, teams jsonb)` replaces a run's team assignments and calls `publish_teams` in one transaction (an Edge Function can't run a multi-step transaction through supabase-js). `publish_teams(run_id)` marks the run published and sends "Teams are up" or "Teams updated" through send-push.
@@ -855,7 +872,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-36 · Build the generate-teams Edge Function
+### T-36 · Build the generate-teams Edge Function (#36)
 **Milestone:** Teams · **Labels:** functions · **Size:** M
 
 **Summary:** The function the lock job and the Reshuffle button call. It checks the caller, loads who is going and the season type, runs `balanceTeams`, and saves through `save_teams`. With fewer than 4 players it leaves the run locked and alerts the admins.
@@ -879,7 +896,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-37 · Schedule the lock-and-publish job with pg_cron
+### T-37 · Schedule the lock-and-publish job with pg_cron (#37)
 **Milestone:** Teams · **Labels:** database · **Size:** M
 
 **Summary:** Every 5 minutes, a database job finds open runs whose lock time has passed, sets them to locked, and calls generate-teams for each with a random seed. This is what makes teams appear by themselves 1 hour before kick-off.
@@ -902,19 +919,20 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-38 · Build the Teams screen table view
+### T-38 · Build the Teams screen table view (#38)
 **Milestone:** Teams · **Labels:** player UI, admin UI, design · **Size:** M
 
 **Summary:** The Teams tab shows the next run's published teams: run summary, the Table / Field switch, "Published h:mm AM", and one card per team with rows and a footer. Admins also see stars, star totals and Unpaid badges.
 
 **Spec:** Access control (team_assignments readable once published; stars and Unpaid admin-only)
-**Design:** `04-teams` with `view = table`, `role = player | admin`, `teams = 3 | 2`, `dark = false | true`
+**Design:** `04-teams` with `view = table`, `role = player | admin`, `teams = 3 | 2`, `theme = light | dark`; README › Shared components › Team card
 **Depends on:** T-07, T-08, T-37
 
 **Acceptance criteria**
 - [ ] Shows the soonest run (today or later) with published teams, or the most recent published run if none are upcoming.
-- [ ] Each team card has a header strip in the team colour with the team name always written out, rows with avatar, name (plus " · You" for yourself), Morning of badge and position tag, and a footer with Players and ATT : DEF.
-- [ ] Admin: rows add stars and Unpaid, and the footer adds Total stars. The Admin tab shows in the nav (the mockup's 3-tab nav in admin view is wrong; see disagreements).
+- [ ] Each team card (radius 24, `surface`) has a 4 px left bar in the team colour with a soft glow fading right, a faint ball watermark, a team dot with a soft ring, the team name always written out, and a "{n} players" chip in the team's soft colour. Rows show avatar, name (plus " · You" for yourself), Morning of badge and position tag. The footer shows Players and ATT / DEF.
+- [ ] Admin: rows add stars and Unpaid, and the footer adds Total stars. The Admin tab shows in the nav.
+- [ ] The top shows the run summary, the Table / Field pill control, and the "Published h:mm AM" pill.
 - [ ] *Design gap:* with nothing published yet, show "Teams publish automatically at {lock time}" for the next run. If it's locked with fewer than 4 players, show "Not enough players — no teams made".
 - [ ] The Table/Field control switches views (Field is T-39 and T-40).
 
@@ -925,17 +943,18 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-39 · Draw the indoor Field view (three half-pitches)
+### T-39 · Draw the indoor Field view (three half-pitches) (#39)
 **Milestone:** Teams · **Labels:** player UI, admin UI · **Size:** M
 
 **Summary:** The Field view for a run with three teams: one half-pitch card per team with defenders on a back line near the goal and attackers on a front line, as 32 px circles with initials in the team colour. Flag dots and a legend show only what the viewer may see.
 
 **Spec:** Data model ("Field positions are not stored: the client draws them from team, position and slot")
-**Design:** `04-teams` with `view = field`, `teams = 3`, `role = player | admin`, `dark`
+**Design:** `04-teams` with `view = field`, `teams = 3`, `role = player | admin`, `theme`; README › Shared components › Pitch
 **Depends on:** T-38
 
 **Acceptance criteria**
-- [ ] The pitch is drawn with react-native-svg (grass, stripes, lines, goal box) in the light or dark pitch colours.
+- [ ] The pitch is drawn with react-native-svg (the `grass` gradient, stripes, `pitch-lines`, goal box), radius 14–16, in the light or dark values.
+- [ ] Player dots are 32 px team-coloured circles with initials, a white border and a 3 px team-colour glow.
 - [ ] Defenders sit at 22% across and attackers at 66%, spread evenly down the line by slot, and zig-zagged when a line has 4 or more.
 - [ ] Each circle is labelled "{name}, {team}, {position}" for screen readers.
 - [ ] Flag dots: amber Morning of for everyone, red Unpaid for admins only. The legend lists only the flags the viewer can see, plus "Back line DEF · front line ATT".
@@ -948,7 +967,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-40 · Draw the outdoor Field view (full pitch)
+### T-40 · Draw the outdoor Field view (full pitch) (#40)
 **Milestone:** Teams · **Labels:** player UI, admin UI · **Size:** S
 
 **Summary:** For two-team runs (outdoor, or an indoor run with 18 or fewer), draw one full pitch with Blue on the left and Yellow on the right, plus a summary card per team.
@@ -967,7 +986,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-41 · Show "Teams are up" on Home and Run detail
+### T-41 · Show "Teams are up" on Home and Run detail (#41)
 **Milestone:** Teams · **Labels:** player UI, design · **Size:** S
 
 **Summary:** Once teams are published, a closed run card on Home shows a team-colour dot, "Teams are up — you're on {team}" and a "View teams" button. Coach, and players who aren't going, see "Teams are up" with no team.
@@ -987,7 +1006,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-42 · Push team and run changes live with Realtime
+### T-42 · Push team and run changes live with Realtime (#42)
 **Milestone:** Teams · **Labels:** database, player UI · **Size:** S
 
 **Summary:** The spec says players see a moved player or a reshuffle "at once". Add `team_assignments` and `runs` to the Realtime publication and refresh the Teams screen, Home cards and the Team builder when they change.
@@ -1008,7 +1027,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-43 · Add the Next run card to Admin · Runs
+### T-43 · Add the Next run card to Admin · Runs (#43)
 **Milestone:** Teams · **Labels:** admin UI · **Size:** M
 
 **Summary:** At the top of Admin · Runs, a card for the next run shows its status chip, stat tiles (going, ATT : DEF, flagged) and a line that changes with the state. A "View teams" button appears once teams are published.
@@ -1028,7 +1047,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-44 · Build the Admin · Team builder: summary, team count and Reshuffle
+### T-44 · Build the Admin · Team builder: summary, team count and Reshuffle (#44)
 **Milestone:** Teams · **Labels:** admin UI, design · **Size:** M
 
 **Summary:** The mobile Team builder opens on the published teams. It shows a summary card (run, "Published h:mm", season, 2/3 team picker, Reshuffle), the flag legend, and one card per team with a fairness bar and two columns of player chips. Dragging comes in T-45.
@@ -1050,7 +1069,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-45 · Let admins drag players between teams with the fairness bar
+### T-45 · Let admins drag players between teams with the fairness bar (#45)
 **Milestone:** Teams · **Labels:** admin UI · **Size:** L
 
 **Summary:** Admins drag a player chip onto another team. While dragging, the old slot is dashed and faded, the chip is lifted, and the target team gets a highlight ring and a "Drop here" slot. The fairness bars preview the change, and an amber line warns when the move widens the star spread. Dropping saves at once and doesn't send a push.
@@ -1073,7 +1092,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-46 · Build the desktop Team builder with the admin sidebar
+### T-46 · Build the desktop Team builder with the admin sidebar (#46)
 **Milestone:** Teams · **Labels:** admin UI, design · **Size:** M
 
 **Summary:** On a wide screen, the admin area gets the pitch-green sidebar (logo, Players / Runs / Team builder / Passes, "Back to player view"). The Team builder uses the desktop layout: a top bar, a fairness strip, three team columns with full names, and a bottom bar with the note and warning.
@@ -1094,7 +1113,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-47 · Schedule the evening reminder job
+### T-47 · Schedule the evening reminder job (#47)
 **Milestone:** Teams · **Labels:** database · **Size:** S
 
 **Summary:** At 6 PM Toronto time every day, push "Run tomorrow at {6:30 AM} — are you in? Tap to RSVP." to every playing member who hasn't answered for tomorrow's run, including holiday Mondays.
@@ -1115,7 +1134,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-48 · Send pushes when a run is moved, cancelled or deleted
+### T-48 · Send pushes when a run is moved, cancelled or deleted (#48)
 **Milestone:** Teams · **Labels:** database, tests · **Size:** M
 
 **Summary:** Tell the players who said yes when an admin changes a run's time or address, cancels it, or deletes it (including switching a holiday off). Database triggers do it, so every path (sheet, holiday switch, SQL) sends the same message.
@@ -1136,7 +1155,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-49 · Schedule the yearly holiday fill job
+### T-49 · Schedule the yearly holiday fill job (#49)
 **Milestone:** Teams · **Labels:** database · **Size:** S
 
 **Summary:** On December 1 at 6 AM Toronto time, call `fill_holidays(next year)` so the coming year's holiday Mondays show on the Holidays screen early.
@@ -1156,7 +1175,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-50 · Add Deno tests for generate-teams and send-push
+### T-50 · Add Deno tests for generate-teams and send-push (#50)
 **Milestone:** Teams · **Labels:** functions, tests · **Size:** M
 
 **Summary:** Automated tests for the two Edge Functions, run against the local Supabase stack in CI.
@@ -1179,7 +1198,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ## Season passes and flags
 
-### T-51 · Record who marked a pass paid, with a trigger and tests
+### T-51 · Record who marked a pass paid, with a trigger and tests (#51)
 **Milestone:** Season passes and flags · **Labels:** database, tests · **Size:** S
 
 **Summary:** When an admin marks a pass paid or unpaid, the database fills in who did it and when, so "Marked paid by John · Nov 2" can be trusted. Also add tests for who can see pass status.
@@ -1199,7 +1218,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-52 · Build the Admin · Season passes screen
+### T-52 · Build the Admin · Season passes screen (#52)
 **Milestone:** Season passes and flags · **Labels:** admin UI · **Size:** M
 
 **Summary:** For the chosen season: a pitch-green card with the price, "{n} of {total} paid", the amount still owed and a progress bar; All / Not paid filters; and one row per player with a Paid switch. Unpaid rows are tinted red.
@@ -1221,7 +1240,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-53 · Add the Flagged list to Admin · Runs
+### T-53 · Add the Flagged list to Admin · Runs (#53)
 **Milestone:** Season passes and flags · **Labels:** admin UI · **Size:** S
 
 **Summary:** Under the Next run card, list the next run's flagged players with the reason and their badge: "Said yes 4:58 AM" (Morning of) or "No indoor pass" (Unpaid). Flagged players still play.
@@ -1244,7 +1263,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ## Web launch
 
-### T-54 · Create the prod Supabase project and GitHub production environment
+### T-54 · Create the prod Supabase project and GitHub production environment (#54)
 **Milestone:** Web launch · **Labels:** infra · **Size:** S
 
 **Summary:** Do steps 1–3 of `docs/environments.md`: protect `main`, create `firsttouch-prod` in Canada with Google sign-in, and give GitHub the prod credentials so the `deploy-prod` job starts running. No prod key goes in any file.
@@ -1267,14 +1286,14 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-03 · Deploy the website from CI, after prod migrations
+### T-03 · Deploy the website from CI, after prod migrations (#2)
 *Exists as #2. Keep its body. Phase 4 only adds the milestone, labels and board.* Two notes to add when you pick it up: set `EXPO_PUBLIC_VAPID_PUBLIC_KEY` and `EXPO_PUBLIC_EMAIL_AUTH=false` alongside the Supabase vars, and check that unknown paths (for example `/privacy` on a fresh load) serve the app (Cloudflare Pages treats a site with no `404.html` as a single-page app).
 **Milestone:** Web launch · **Labels:** infra · **Size:** M
 **Depends on:** T-54
 
 ---
 
-### T-55 · Deploy Edge Functions and their secrets from CI
+### T-55 · Deploy Edge Functions and their secrets from CI (#55)
 **Milestone:** Web launch · **Labels:** infra, functions · **Size:** M
 
 **Summary:** Extend `deploy-prod` so a merge to `main` also deploys generate-teams and send-push to prod, and document the one-time prod secrets: the VAPID private key, and the Vault entries the cron jobs use to call the functions.
@@ -1296,7 +1315,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-56 · Add the real seasons to prod with a data migration
+### T-56 · Add the real seasons to prod with a data migration (#56)
 **Milestone:** Web launch · **Labels:** database · **Size:** S
 
 **Summary:** Prod has no seed, so the two real seasons (with the real addresses, times and price) go in through a migration. Admins then set the dates and tap "Create runs" in the app. Also check the generated holiday Mondays against Ontario's official list once.
@@ -1317,7 +1336,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-57 · Back up the prod database weekly to firsttouch-backups
+### T-57 · Back up the prod database weekly to firsttouch-backups (#57)
 **Milestone:** Web launch · **Labels:** infra · **Size:** M
 
 **Summary:** The free plan has no automatic backups. A weekly GitHub Action runs `pg_dump` against prod and commits the dump to a separate private repo, `firsttouch-backups`, keeping the last 8.
@@ -1340,7 +1359,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-58 · Show failed jobs and pushes on the admin screen
+### T-58 · Show failed jobs and pushes on the admin screen (#58)
 **Milestone:** Web launch · **Labels:** admin UI, design · **Size:** S
 
 **Summary:** The spec says failed jobs and pushes are logged to `job_errors` and shown on the admin screen, but there's no mockup. Add a small amber card at the top of Admin · Runs listing recent failures, so problems on a Saturday morning are visible.
@@ -1358,7 +1377,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-59 · Add the EXPO_PUBLIC_EMAIL_AUTH switch and the email sign-in form
+### T-59 · Add the EXPO_PUBLIC_EMAIL_AUTH switch and the email sign-in form (#59)
 **Milestone:** Web launch · **Labels:** player UI, infra · **Size:** M
 
 **Summary:** Build email and password sign-in now but keep it hidden. When `EXPO_PUBLIC_EMAIL_AUTH` is "true", the sign-in screen adds the "or" divider, Email and Password fields, "Forgot password?", "Sign in", and "New here? Create an account". Otherwise it's the Google-only screen.
@@ -1381,7 +1400,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-60 · Build the Create account screen
+### T-60 · Build the Create account screen (#60)
 **Milestone:** Web launch · **Labels:** player UI · **Size:** M
 
 **Summary:** Name, Email and Password (at least 8 characters) sign-up that sends a confirmation email, then the "Check your email to confirm your account" state with Resend. Hidden unless the email switch is on.
@@ -1403,7 +1422,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-61 · Build the Forgot password and Set a new password screens
+### T-61 · Build the Forgot password and Set a new password screens (#61)
 **Milestone:** Web launch · **Labels:** player UI · **Size:** M
 
 **Summary:** "Forgot password?" sends a reset link and always says "If that email has an account, we've sent a link". The link opens `/reset-password`, where the player sets a new password and goes to Home.
@@ -1425,7 +1444,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-62 · Add Change password to Settings
+### T-62 · Add Change password to Settings (#62)
 **Milestone:** Web launch · **Labels:** player UI · **Size:** S
 
 **Summary:** When email sign-in is switched on, Settings › Account shows "Change password", which opens the Set a new password screen for a signed-in user.
@@ -1444,7 +1463,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-63 · Test email sign-in locally with Mailpit and Playwright
+### T-63 · Test email sign-in locally with Mailpit and Playwright (#63)
 **Milestone:** Web launch · **Labels:** tests · **Size:** M
 
 **Summary:** Automate the spec's email sign-in tests against the local stack: sign up, confirm through Mailpit, sign in, reset the password.
@@ -1465,7 +1484,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-64 · Add a Playwright end-to-end test against the preview URL
+### T-64 · Add a Playwright end-to-end test against the preview URL (#64)
 **Milestone:** Web launch · **Labels:** tests, infra · **Size:** M
 
 **Summary:** One end-to-end test of the main loop on a branch's preview site (dev database): sign in, RSVP, pass the lock time with a run set to start soon, see teams, have an admin move a player, and confirm a player never sees stars.
@@ -1487,7 +1506,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-65 · Publish the Google sign-in app out of Testing mode
+### T-65 · Publish the Google sign-in app out of Testing mode (#65)
 **Milestone:** Web launch · **Labels:** infra · **Size:** S
 
 **Summary:** In Testing mode only listed test users can sign in. Fill in the OAuth consent screen (app name, support email, logo, homepage, privacy policy URL, authorized domain) and publish it, so anyone with the link can sign in with Google.
@@ -1508,7 +1527,7 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 ---
 
-### T-66 · Run the launch checklist
+### T-66 · Run the launch checklist (#66)
 **Milestone:** Web launch · **Labels:** tests, infra · **Size:** S
 
 **Summary:** Last checks before sharing the link: the manual phone checklist from the spec, the admin accounts set up in prod, and the privacy policy's effective date filled in.
@@ -1535,49 +1554,49 @@ Draft for review, Nov 8, 2026. Nothing below exists on GitHub yet except #1 (T-0
 
 Each of these has the `later` label, a one-line summary and the spec reference. Full acceptance criteria get written when one is picked up.
 
-### T-67 · Switch on email sign-in with a domain and Resend
+### T-67 · Switch on email sign-in with a domain and Resend (#67)
 **Labels:** later, infra · **Size:** M · **Spec:** Supabase settings; Open items · **Design:** `01-sign-in` (`emailAuth = on`), 01b–01d · **Depends on:** T-63
 Buy a domain, verify it in Resend, set Resend as Supabase's custom SMTP, enable the Email provider with "Confirm email" on in dev, then prod, and set `EXPO_PUBLIC_EMAIL_AUTH=true` in Cloudflare.
 **Learning notes:** DNS records (SPF, DKIM); Supabase custom SMTP; Resend domains.
 
-### T-68 · Send a weekly reminder about unpaid season passes
+### T-68 · Send a weekly reminder about unpaid season passes (#68)
 **Labels:** later, database · **Size:** S · **Spec:** Notifications › Messages ("Weekly, optional") · **Design:** No mockup · **Depends on:** T-47
 A weekly pg_cron job pushes "Your Indoor season pass is still unpaid." to players without a paid pass for the current season. It needs its own category or switch.
 **Learning notes:** pg_cron weekly schedules; adding a notification category.
 
-### T-69 · Add season join codes
+### T-69 · Add season join codes (#69)
 **Labels:** later, database, player UI · **Size:** L · **Spec:** Later and open items (Season join code) · **Design:** No mockup
 Add `join_code` to seasons and a `season_members` table. A player enters the code once per season, and the RSVP policies also check membership.
 **Learning notes:** RLS with membership tables; migrating policies safely in prod.
 
-### T-70 · Let admins add walk-ins to a locked or published run
+### T-70 · Let admins add walk-ins to a locked or published run (#70)
 **Labels:** later, admin UI, database · **Size:** M · **Spec:** Later (Walk-ins) · **Design:** No mockup
 Add an existing player or a named guest to a locked or published run. They go on the smallest team, or the admin taps Reshuffle.
 **Learning notes:** nullable guest rows vs profile rows; extending `team_assignments`.
 
-### T-71 · Let admins mark no-shows
+### T-71 · Let admins mark no-shows (#71)
 **Labels:** later, admin UI, database · **Size:** M · **Spec:** Later (No-shows) · **Design:** No mockup
 Mark a player as a no-show, with an option to rebalance the remaining players, and keep a no-show count per player.
 
-### T-72 · Add a player cap and waitlist
+### T-72 · Add a player cap and waitlist (#72)
 **Labels:** later, database, player UI · **Size:** L · **Spec:** Later (Player cap and waitlist) · **Design:** No mockup
 `max_players` on runs. Yes RSVPs past the cap join a waitlist in order and move up when someone drops.
 
-### T-73 · Take season pass payments in the app with Stripe
+### T-73 · Take season pass payments in the app with Stripe (#73)
 **Labels:** later, functions, player UI · **Size:** L · **Spec:** Later (In-app season pass payment) · **Design:** No mockup
 Stripe Checkout from an Edge Function. A Stripe webhook marks `season_passes` paid with method 'stripe'.
 **Learning notes:** Stripe Checkout; verifying webhook signatures in Deno.
 
-### T-74 · Add match rotation and scores
+### T-74 · Add match rotation and scores (#74)
 **Labels:** later, database, admin UI · **Size:** L · **Spec:** Later (Match rotation) · **Design:** No mockup
 A new `matches` table (run, team A, team B, result, minute). 5-minute games, the scorer stays on, and on a draw the team that's been on longest goes off.
 
-### T-75 · Ship App Store and Google Play builds
+### T-75 · Ship App Store and Google Play builds (#75)
 **Labels:** later, infra · **Size:** L · **Spec:** Later (App Store and Google Play) · **Design:** all screens
 EAS builds from the same code, an Expo Push path in send-push, Sign in with Apple, personal developer accounts, and Google's 14-day closed test.
 **Learning notes:** EAS Build and Submit; expo-notifications; Sign in with Apple requirements.
 
-### T-76 · Let admins deactivate players
+### T-76 · Let admins deactivate players (#76)
 **Labels:** later, admin UI · **Size:** S · **Spec:** Data model (`profiles.active`; `player_directory` filters on it) · **Design:** No mockup
 `active` exists in the schema, but no screen sets it. Add a "Deactivate" option to the T-23 player sheet so people who leave the group drop off lists without deleting their history.
 
@@ -1585,15 +1604,16 @@ EAS builds from the same code, an Expo Push path in send-push, Sign in with Appl
 
 ## Spec and design disagreements
 
-Rule used: **the spec wins on behaviour and permissions, the design wins on visuals.** The three decisions below were settled on Nov 9, 2026 (all three recommendations accepted). Everything else is resolved as described and already written into the tickets.
+Rule used: **the spec wins on behaviour and permissions, the design wins on visuals.** All four decisions were settled on Nov 9, 2026. Everything else is resolved as described and already written into the tickets.
 
-### Decisions (settled)
+### Decisions
 
 | # | Question | Decision | Affects |
 | --- | --- | --- | --- |
-| D1 | Settings shows three notification switches (Night-before, Teams published, Changes and cancellations). The spec has only an "Enable notifications" button and nowhere to store per-type choices. | **Decided:** keep the switches (the design is clear, the privacy policy says "turn notifications off in Settings", and it's cheap). Store them in a new `notification_prefs` table (own read/write). Show "Enable notifications" first, switches after. Update the spec. | T-32, T-34, T-47, T-48 |
+| D1 | Settings shows three notification switches (Night-before, Teams published, Changes and cancellations). The spec has only an "Enable notifications" button and nowhere to store per-type choices. | **Decided:** keep the switches (the design is clear, the privacy policy says "turn notifications off in Settings", and it's cheap). Store them on the `player_settings` table (own read/write), which T-20 creates for the Appearance setting. Show "Enable notifications" first, switches after. Update the spec. | T-32, T-34, T-47, T-48 |
 | D2 | The design shows a **Cancelled** run state (chip, "Cancelled by an admin" row, Next-run card variant) but no Cancel button anywhere. The spec has `cancelled` status and a "run cancelled" push, but its admin flow only describes Delete. | **Decided:** add "Cancel run" to the edit sheet. It keeps the run visible as Cancelled (useful for rain-outs, so players can see it's off), while Delete removes it entirely. | T-26, T-43, T-48 |
 | D3 | Seasons: the spec says an admin "creates or opens a season". The design only lets you pick Indoor/Outdoor and edit dates, with no create-season or "current season" control. Prod has no seed. | **Decided:** prod seasons come from a data migration (T-56). Add a small "Current season" switch to the season card (T-24). Creating next year's seasons stays a migration until a later ticket. | T-24, T-56 |
+| D4 | V2 Home adds a **notification bell** with a green unread dot ("Notifications, 1 new"). The spec has push notifications only, with no in-app list of past messages to be "unread". | **Decided:** remove the bell. Notifications are push only (as the spec says), with no in-app list, so there's nothing for a bell to open. Turning notifications on and off stays in Settings. | T-14 |
 
 ### Spec vs design, resolved
 
@@ -1608,7 +1628,7 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 7 | spec Monitoring | `job_errors` is "shown on the admin screen". There's no design. | Amber "problems this week" card on Admin · Runs, reusing existing styles. (T-58) |
 | 8 | `03-run-detail` | No variant for an admin with Plays off. The spec says they can't RSVP. | Replace the RSVP panel with "You're managing this run", as on Home. (T-18) |
 | 9 | `03-run-detail` | "Change" is a link back to Home. | The spec's RSVP is a toggle: "Change" / "I'm in" toggles in place. (T-18) |
-| 10 | `04-teams` | `role = admin` still draws the 3-tab player nav. The README says admins have 4 tabs. | Design rule wins: one shared tab bar shows Admin for admins everywhere. (T-09, T-38) |
+| 10 | `04-teams` | *(Fixed in V2.)* The V1 mockup drew the 3-tab player nav for admins. V2 shows the Admin tab. | Nothing to resolve. One shared tab bar shows Admin for admins everywhere. (T-09, T-38) |
 | 11 | `04-teams`, `08-admin-team-builder` | No state for "teams not published yet" or "fewer than 4 players". | New empty states: "Teams publish automatically at {time}" and "Not enough players — no teams made" (wording from `07`). (T-38, T-44) |
 | 12 | `02-home` | The closed card is only drawn for a player on a team, and for Coach. Not for a player who said no, or a run locked with under 4. | Not going: Coach's "Teams are up" panel. Under 4: muted "Not enough players — no teams this time". (T-41) |
 | 13 | README "Drag to swap" vs `08` mockup | The mockup moves one player (team sizes become 6 and 8); the README calls it a swap. The spec says "drag players between teams". | Drag **moves** one player; a swap is two moves. Unequal sizes are allowed and shown. (T-45) |
@@ -1619,10 +1639,14 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 18 | `09-admin-season-passes` | Who is listed: 40 people, without Coach. The spec doesn't say. Design has no payment method picker; the spec stores `method`. | List active players with Plays on. The switch sets paid, amount (season price), `marked_by`/`marked_at` via trigger. Method stays empty for now. (T-51, T-52) |
 | 19 | `05-settings` | The profile card's "Paid" chip: Coach has no pass. Edit-name and delete-account confirmation have no mockup. | Coach gets the Admin badge instead. Edit name and delete reuse the `07` sheet and confirm dialog. (T-20) |
 | 20 | Desktop | Only the Team builder has a desktop layout, but its sidebar lists all admin sections. | At ≥1024 px every admin screen uses the sidebar; screens without a desktop mockup keep their phone-width content. (T-46) |
-| 21 | Dark mode | Only Home and Teams are drawn dark. `04-teams` also contains two unused dark palettes ("pitch", "slate"). | Graphite (per README and `theme.css`) everywhere via tokens. It follows the OS setting; there's no in-app toggle. (T-05) |
+| 21 | Dark mode | *(Changed in V2.)* V1 had Graphite dark following the OS. V2 has its own dark palette, every screen has a `theme` prop, and players choose Light / Dark / System in Settings. Saving the choice per player isn't in the spec. | Design wins on the look. The choice is stored in a new `player_settings` table (own read/write) and on the device. Update the spec's data model. (T-05, T-20) |
 | 22 | `assets/` | The icon is 232 px with transparent rounded corners. A web manifest needs 512 px, and iPhone Home Screen icons should be square and full-bleed. | Ask for a 1024 px square export; generate 180/192/512 from it. (T-06) |
 | 23 | `01b`, `01c` | "Back to sign in" links point to `SignInEmail`, which isn't in the canvas map. | It means `01-sign-in` with `emailAuth = on`. (T-60, T-61) |
 | 24 | `02-home` | How far ahead Home shows runs isn't specified. | Today through the next 7 days (matches "three runs this week"). (T-14) |
+| 25 | `02-home` README vs V2 mockup | The README's Home section still lists the avatar in the top row and the chip "Admin · manages runs". The V2 mockup replaces the avatar with the app icon and a bell, and Coach's chip reads just "Admin". | The V2 mockup is newer, so it wins: app icon on the left, chip on the right, Coach's chip "Admin". The bell is removed (D4). (T-14, T-17) |
+| 26 | `02-home` | "View all" next to "Upcoming runs" links to Run detail in the mockup. | Placeholder link. "View all" shows every upcoming run in the season. (T-14) |
+| 27 | `tokens.json` vs README | `size.button` is 48, but the README and the mockups' primary buttons are 56 tall. | Primary buttons are 56 (README and mockups). Smaller buttons follow each mockup. (T-08) |
+| 28 | `05-settings` | Appearance (Light / Dark / System) is new in V2 and not in the spec. | Built as designed, in the Settings ticket (T-20). |
 
 ### Spec internal gaps and spec vs repo
 
