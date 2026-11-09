@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch V2 · Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 1380px; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; min-height: 0; padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <img src="/_blob/3dfcf1bac4cf45bac56a39dd2306c225" alt="FirstTouch" width="44" height="44" style="width: 44px; height: 44px; display: block">
+      <div style="display: flex; align-items: center; gap: 8px">
+        <span style="height: 30px; padding: 0 12px; border-radius: 999px; background: {{chip.bg}}; color: {{chip.fg}}; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: {{chip.fg}}"></span>{{chip.label}}
+        </span>
+        <button type="button" aria-label="Notifications, 1 new" style="position: relative; width: 44px; height: 44px; border: 1px solid {{t.line}}; border-radius: 14px; background: {{t.surface}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg>
+          <span style="position: absolute; top: 9px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: {{t.brand}}; box-shadow: 0 0 0 2px {{t.surface}}"></span>
+        </button>
+      </div>
+    </div>
+    <div>
+      <h1 style="margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.03em">Morning, {{me.first}}</h1>
+      <p style="margin: 6px 0 0; font-size: 16px; color: {{t.muted}}">Indoor 2026–27 · three runs this week</p>
+      <div style="width: 40px; height: 3px; border-radius: 2px; background: {{t.brand}}; margin-top: 12px"></div>
+    </div>
+    <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 6px 12px 12px; border-radius: 20px; background: {{t.brandSoft}}; border: 1px solid {{t.brandLine}}">
+        <span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; background: {{t.btn}}; color: {{t.onBrand}}; display: flex; align-items: center; justify-content: center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"></rect><path d="M12 8v6M9 11h6"></path></svg>
+        </span>
+        <p style="margin: 0; flex-grow: 1; font-size: 14px; line-height: 1.35; font-weight: 600">Add FirstTouch to your Home Screen for notifications</p>
+        <button type="button" aria-label="Dismiss" onClick="{{ dismiss }}" style="width: 44px; height: 44px; flex-shrink: 0; border: none; background: transparent; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+    </sc-if>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.01em">Upcoming runs</h2>
+      <a href="V2RunDetail.dc.html" style="min-height: 44px; color: {{t.brandText}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px">View all
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+    <sc-for list="{{ runs }}" as="run" hint-placeholder-count="3">
+      <article style="position: relative; border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; padding: 18px 18px 18px 22px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+        <span style="position: absolute; left: 0; top: 18px; bottom: 18px; width: 4px; border-radius: 0 4px 4px 0; background: {{run.bar}}"></span>
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span style="font-size: 13px; font-weight: 800; letter-spacing: 0.1em; color: {{t.brandText}}">{{run.dow}}</span>
+              <sc-if value="{{ run.hasHoliday }}" hint-placeholder-val="{{ false }}">
+                <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{t.brandSoft}}; color: {{t.brandText}}; font-size: 12px; font-weight: 700; display: flex; align-items: center">{{run.holiday}}</span>
+              </sc-if>
+            </div>
+            <div style="font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-top: 2px">{{run.date}}</div>
+          </div>
+          <a href="V2RunDetail.dc.html" style="height: 36px; flex-shrink: 0; padding: 0 12px 0 14px; border-radius: 999px; background: {{t.surface2}}; border: 1px solid {{t.line}}; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px">Details
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 7px; font-size: 15px; color: {{t.muted}}">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+            <span style="color: {{t.ink}}; font-weight: 600">6:30 AM</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>
+            7855 Finch Ave W, Brampton
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+            {{run.closeLine}}
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="display: flex">
+              <span style="width: 32px; height: 32px; border-radius: 50%; background: {{t.surface2}}; color: {{t.brandText}}; border: 2px solid {{t.surface}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">MB</span>
+              <span style="width: 32px; height: 32px; margin-left: -10px; border-radius: 50%; background: {{t.surface2}}; color: {{t.brandText}}; border: 2px solid {{t.surface}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">TR</span>
+              <span style="width: 32px; height: 32px; margin-left: -10px; border-radius: 50%; background: {{t.surface2}}; color: {{t.brandText}}; border: 2px solid {{t.surface}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">HK</span>
+              <span style="width: 32px; height: 32px; margin-left: -10px; border-radius: 50%; background: {{t.surface2}}; color: {{t.ink2}}; border: 2px solid {{t.surface}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{run.more}}</span>
+            </div>
+            <div>
+              <div style="font-size: 17px; font-weight: 800; line-height: 1.1">{{run.count}} going</div>
+              <div style="font-size: 12px; color: {{t.muted}}; margin-top: 2px">{{run.note}}</div>
+            </div>
+          </div>
+          <sc-if value="{{ isCoach }}" hint-placeholder-val="{{ false }}">
+            <span style="max-width: 130px; text-align: right; font-size: 13px; font-weight: 600; line-height: 1.3; color: {{t.muted}}">You're managing this run</span>
+          </sc-if>
+          <sc-if value="{{ isPlayer }}" hint-placeholder-val="{{ true }}">
+            <button type="button" aria-pressed="{{run.inStr}}" aria-disabled="{{run.disabledStr}}" onClick="{{ run.toggle }}" style="height: 48px; flex-shrink: 0; padding: 0 16px 0 12px; border-radius: 999px; border: 1.5px solid {{run.btnBorder}}; background: {{run.btnBg}}; color: {{run.btnFg}}; opacity: {{run.btnOpacity}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; cursor: {{run.cursor}}">
+              <span style="width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid currentColor; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{run.icon}}"></path></svg>
+              </span>
+              {{run.btnLabel}}
+            </button>
+          </sc-if>
+        </div>
+        <sc-if value="{{ run.closed }}" hint-placeholder-val="{{ false }}">
+          <div style="border-radius: 16px; background: {{t.surface2}}; border: 1px solid {{t.line}}; padding: 10px 10px 10px 14px; display: flex; align-items: center; gap: 10px">
+            <sc-if value="{{ isPlayer }}" hint-placeholder-val="{{ true }}">
+              <span style="width: 14px; height: 14px; flex-shrink: 0; border-radius: 50%; background: #2563EB; box-shadow: 0 0 0 4px rgba(37,99,235,0.25)"></span>
+            </sc-if>
+            <span style="flex-grow: 1; font-size: 14px; font-weight: 700; line-height: 1.3">{{teamsLine}}</span>
+            <a href="V2Teams.dc.html" style="height: 44px; flex-shrink: 0; padding: 0 14px; border-radius: 12px; background: {{t.btn}}; color: {{t.onBrand}}; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">View teams</a>
+          </div>
+        </sc-if>
+      </article>
+    </sc-for>
+    <section aria-label="Auto team creation" style="position: relative; border-radius: 24px; background: {{t.hero}}; color: #FFFFFF; padding: 20px; overflow: hidden; min-height: 128px; box-sizing: border-box">
+      <svg width="170" height="120" viewBox="0 0 170 120" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" style="position: absolute; right: -6px; bottom: -4px" aria-hidden="true"><path d="M20 110V30h130v80"></path><path d="M20 30l18 18h94l18-18M38 48v62M132 48v62"></path><path d="M38 66h94M38 84h94M62 48v62M86 48v62M110 48v62" stroke="rgba(255,255,255,0.15)"></path></svg>
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#4BE59A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14.2c2.8.3 5 2.7 5 5.8"></path></svg>
+      <div style="font-size: 19px; font-weight: 800; margin-top: 10px">Auto team creation</div>
+      <p style="margin: 6px 0 0; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.78); max-width: 220px">Teams are made automatically when RSVPs close, 1 hour before kickoff.</p>
+    </section>
+  </div>
+  <nav aria-label="Main" style="flex-shrink: 0; margin: 0 12px 14px; height: 76px; box-sizing: border-box; padding: 6px 8px; border-radius: 26px; background: {{t.nav}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: grid; grid-template-columns: {{navCols}}">
+    <a href="V2Home.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 700">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+      <span style="width: 22px; height: 3px; border-radius: 2px; background: {{t.brand}}"></span>
+    </a>
+    <a href="V2Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"></path><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4v4h-4z"></path></svg>Teams
+      <span style="width: 22px; height: 3px"></span>
+    </a>
+    <sc-if value="{{ isCoach }}" hint-placeholder-val="{{ false }}">
+      <a href="V2AdminPlayers.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Admin
+        <span style="width: 22px; height: 3px"></span>
+      </a>
+    </sc-if>
+    <a href="V2Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>Settings
+      <span style="width: 22px; height: 3px"></span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"plays":{"editor":"enum","options":["on","off"],"default":"on"},"pass":{"editor":"enum","options":["paid","unpaid"],"default":"paid"},"$preview":{"width":390,"height":1380}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sun: true, mon: false, banner: true };
+  }
+  tok() {
+    const light = this.props.theme !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
+      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
+      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const t = this.tok();
+    const coach = this.props.plays === 'off';
+    const paid = (this.props.pass ?? 'paid') === 'paid';
+    const chip = coach ? { bg: t.brandSoft, fg: t.brandText, label: 'Admin' }
+      : paid ? { bg: t.okBg, fg: t.okFg, label: 'Indoor pass: Paid' } : { bg: t.redBg, fg: t.redFg, label: 'Indoor pass: Not paid' };
+    const mk = (key, dow, date, holiday, base, closed) => {
+      const on = closed ? true : this.state[key];
+      const count = base + (on && !closed ? 1 : 0);
+      return {
+        dow, date, holiday, hasHoliday: !!holiday, closed, count,
+        more: '+' + (count - 3),
+        bar: closed ? t.muted2 : t.brand,
+        closeLine: closed ? 'RSVPs closed 5:30 AM' : 'RSVPs close 5:30 AM',
+        note: closed ? 'RSVPs are closed' : coach ? 'RSVPs open' : (on ? 'Including you' : 'You haven’t replied'),
+        inStr: on ? 'true' : 'false', disabledStr: closed ? 'true' : 'false',
+        btnLabel: on ? 'I’m in' : 'I’m in?',
+        icon: on ? 'M5 12.5l4.5 4.5L19 7.5' : 'M12 5v14M5 12h14',
+        btnBg: on ? t.btn : 'transparent', btnFg: on ? t.onBrand : t.brandText, btnBorder: on ? 'transparent' : t.brandLine,
+        btnOpacity: closed ? '0.45' : '1', cursor: closed ? 'not-allowed' : 'pointer',
+        toggle: () => { if (!closed) this.setState({ [key]: !this.state[key] }); }
+      };
+    };
+    return {
+      t, chip,
+      isCoach: coach, isPlayer: !coach,
+      me: coach ? { first: 'Coach' } : { first: 'Daniel' },
+      teamsLine: coach ? 'Teams are up' : 'Teams are up — you’re on Blue',
+      navCols: coach ? 'repeat(4, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))',
+      showBanner: this.state.banner,
+      dismiss: () => this.setState({ banner: false }),
+      runs: [
+        mk('sat', 'SAT', 'Feb 13', '', 20, true),
+        mk('sun', 'SUN', 'Feb 14', '', 19, false),
+        mk('mon', 'MON', 'Feb 15', 'Family Day', 8, false)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

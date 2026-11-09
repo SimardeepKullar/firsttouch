@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch V2 · Run detail</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: {{rootH}}; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="position: relative; margin: 12px 12px 0; border-radius: 28px; background: {{t.hero}}; color: #FFFFFF; padding: 12px 16px 18px; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
+    <svg width="200" height="200" viewBox="0 0 64 64" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5" style="position: absolute; right: -50px; top: -30px" aria-hidden="true"><circle cx="32" cy="32" r="30"></circle><path d="M32 20l11.4 8.3-4.4 13.4H25l-4.4-13.4z"></path><path d="M32 20V3M43.4 28.3l16-5.2M39 41.7l10 13.8M25 41.7l-10 13.8M20.6 28.3l-16-5.2"></path></svg>
+    <a href="V2Home.dc.html" aria-label="Back to Home" style="position: relative; width: 44px; height: 44px; margin-left: -6px; border-radius: 14px; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+    </a>
+    <div style="position: relative">
+      <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.1em; color: #4BE59A">SUNDAY RUN · INDOOR</div>
+      <h1 style="margin: 4px 0 0; font-size: 30px; font-weight: 800; letter-spacing: -0.03em">Sunday, Feb 14</h1>
+      <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: rgba(255,255,255,0.82)">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>6:30 AM start
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>7855 Finch Ave W, Brampton
+        </div>
+      </div>
+    </div>
+    <div style="position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+      <div style="border-radius: 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); padding: 10px 12px">
+        <div style="font-size: 24px; font-weight: 800">20</div><div style="font-size: 12px; color: rgba(255,255,255,0.75)">going</div>
+      </div>
+      <div style="border-radius: 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); padding: 10px 12px">
+        <div style="font-size: 24px; font-weight: 800">10</div><div style="font-size: 12px; color: rgba(255,255,255,0.75)">attackers</div>
+      </div>
+      <div style="border-radius: 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); padding: 10px 12px">
+        <div style="font-size: 24px; font-weight: 800">10</div><div style="font-size: 12px; color: rgba(255,255,255,0.75)">defenders</div>
+      </div>
+    </div>
+  </header>
+  <div style="flex-grow: 1; padding: 16px 16px 12px; display: flex; flex-direction: column; gap: 14px; min-height: 0">
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 12px 16px; border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}">
+      <div>
+        <div style="font-size: 16px; font-weight: 800">{{rsvpTitle}}</div>
+        <div style="font-size: 13px; color: {{t.muted}}; display: flex; align-items: center; gap: 6px; margin-top: 3px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>{{closeLine}}
+        </div>
+      </div>
+      <sc-if value="{{ isOpen }}" hint-placeholder-val="{{ true }}">
+        <a href="V2Home.dc.html" style="height: 44px; padding: 0 18px; border-radius: 999px; background: {{t.btn}}; color: {{t.onBrand}}; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center">{{changeLabel}}</a>
+      </sc-if>
+      <sc-if value="{{ isLocked }}" hint-placeholder-val="{{ false }}">
+        <button type="button" disabled style="height: 44px; padding: 0 14px; border: 1px solid {{t.line}}; border-radius: 999px; background: {{t.surface2}}; color: {{t.muted}}; font-family: inherit; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: not-allowed">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Locked
+        </button>
+      </sc-if>
+    </div>
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 4px">
+      <h2 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.01em">Who's coming</h2>
+      <span style="font-size: 13px; color: {{t.muted}}; font-weight: 600">{{listNote}}</span>
+    </div>
+    <ul style="list-style: none; margin: 0; padding: 4px 0; border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: flex; flex-direction: column">
+      <sc-for list="{{ players }}" as="p" hint-placeholder-count="20">
+        <li style="display: flex; align-items: center; gap: 12px; padding: 8px 16px; min-height: 48px; border-top: {{p.divider}}">
+          <span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; background: {{t.surface2}}; color: {{t.brandText}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{p.ini}}</span>
+          <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+            <div style="font-size: 15px; font-weight: 600">{{p.name}}</div>
+            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap">
+              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                <span role="img" aria-label="{{p.starLabel}}" style="display: flex; gap: 1px">
+                  <sc-for list="{{ p.stars }}" as="st" hint-placeholder-count="5">
+                    <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="{{st.c}}"></path></svg>
+                  </sc-for>
+                </span>
+              </sc-if>
+              <sc-for list="{{ p.flags }}" as="f" hint-placeholder-count="0">
+                <span style="height: 20px; padding: 0 8px; border-radius: 999px; background: {{f.bg}}; color: {{f.fg}}; font-size: 11px; font-weight: 700; display: flex; align-items: center">{{f.label}}</span>
+              </sc-for>
+            </div>
+          </div>
+          <span style="flex-shrink: 0; width: 40px; height: 24px; border-radius: 8px; box-sizing: border-box; background: {{p.posBg}}; color: {{p.posFg}}; border: 1px solid {{p.posBorder}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; letter-spacing: 0.04em">{{p.pos}}</span>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+  <nav aria-label="Main" style="flex-shrink: 0; margin: 0 12px 14px; height: 76px; box-sizing: border-box; padding: 6px 8px; border-radius: 26px; background: {{t.nav}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: grid; grid-template-columns: {{navCols}}">
+    <a href="V2Home.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 700">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+      <span style="width: 22px; height: 3px; border-radius: 2px; background: {{t.brand}}"></span>
+    </a>
+    <a href="V2Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"></path><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4v4h-4z"></path></svg>Teams
+      <span style="width: 22px; height: 3px"></span>
+    </a>
+    <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+      <a href="V2AdminPlayers.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Admin
+        <span style="width: 22px; height: 3px"></span>
+      </a>
+    </sc-if>
+    <a href="V2Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>Settings
+      <span style="width: 22px; height: 3px"></span>
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"role":{"editor":"enum","options":["player","admin"],"default":"player"},"locked":{"editor":"boolean","default":false},"going":{"editor":"boolean","default":true},"$preview":{"width":390,"height":1720}}'>
+class Component extends DCLogic {
+  tok() {
+    const light = this.props.theme !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
+      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
+      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const t = this.tok();
+    const isAdmin = this.props.role === 'admin';
+    const locked = !!this.props.locked;
+    const going = this.props.going !== false;
+    const raw = [
+      ['Marco Bellini', 5, 'ATT'], ['Tomás Rivera', 5, 'DEF'], ['Priya Nair', 3, 'DEF'], ['Daniel Mensah', 4, 'DEF'],
+      ['Aisha Bello', 4, 'ATT'], ['Hassan Karimi', 5, 'ATT'], ['Kofi Asante', 2, 'ATT', 'U'], ['Elena Petrova', 4, 'DEF'],
+      ['Lena Fischer', 3, 'ATT'], ['Jordan Lee', 3, 'DEF', 'U'], ['Sim', 4, 'DEF'], ['Mei Chen', 2, 'ATT'],
+      ['Grace Liu', 3, 'DEF', 'U'], ['Chris Novak', 3, 'ATT'], ['Owen Barker', 2, 'DEF'], ['Nadia Haddad', 4, 'ATT'],
+      ['Ben Carter', 3, 'ATT'], ['Yusuf Demir', 3, 'DEF'], ['Sam Whitfield', 2, 'DEF', 'M'], ['Diego Ortiz', 4, 'ATT', 'M']
+    ];
+    const players = raw.map(([name, s, pos, flag], i) => ({
+      name,
+      ini: name.indexOf(' ') > 0 ? name.split(' ').map((w) => w[0]).join('') : name.slice(0, 2).toUpperCase(),
+      starLabel: s + ' of 5 stars',
+      stars: [1, 2, 3, 4, 5].map((k) => ({ c: k <= s ? t.starOn : t.starOff })),
+      pos,
+      posBg: pos === 'ATT' ? t.ink : 'transparent', posFg: pos === 'ATT' ? t.bg : t.ink2, posBorder: pos === 'ATT' ? t.ink : t.inputBorder,
+      divider: i === 0 ? 'none' : '1px solid ' + t.line,
+      flags: flag === 'M' ? [{ label: 'Morning of', bg: t.amberBg, fg: t.amberFg }]
+        : (flag === 'U' && isAdmin) ? [{ label: 'Unpaid', bg: t.redBg, fg: t.redFg }] : []
+    }));
+    return {
+      t, players, isAdmin,
+      isOpen: !locked, isLocked: locked,
+      rsvpTitle: going ? 'You’re in' : 'You’re not going',
+      changeLabel: going ? 'Change' : 'I’m in',
+      closeLine: locked ? 'RSVPs closed 5:30 AM' : 'RSVPs close 5:30 AM',
+      listNote: isAdmin ? 'In order of RSVP · admin view' : 'In order of RSVP',
+      navCols: isAdmin ? 'repeat(4, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))',
+      rootH: isAdmin ? '1780px' : '1720px'
+    };
+  }
+}
+</script>
+</body>
+</html>

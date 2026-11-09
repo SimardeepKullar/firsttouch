@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch V2 · Create account</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.page}}; font-family: 'Inter', system-ui, sans-serif; color: {{t.ink}}; display: flex; flex-direction: column; padding: 16px 24px 32px; overflow: hidden">
+  <a href="V2SignInEmail.dc.html" style="color: {{t.brandText}}; align-self: flex-start; height: 44px; padding: 0 14px 0 8px; margin-left: -8px; font-size: 16px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>Back to sign in
+  </a>
+  <sc-if value="{{ isForm }}" hint-placeholder-val="{{ true }}">
+    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 20px">
+      <img src="/_blob/3dfcf1bac4cf45bac56a39dd2306c225" alt="" width="56" height="56" style="width: 56px; height: 56px; display: block">
+      <h1 style="margin: 12px 0 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Create your account</h1>
+      <p style="margin: 0; font-size: 16px; line-height: 1.45; color: {{t.muted}}">Use the name your teammates know you by.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 28px">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label for="ca-name" style="font-size: 14px; font-weight: 700">Name</label>
+        <input id="ca-name" type="text" autocomplete="name" placeholder="First and last name" style="height: 56px; border-radius: 16px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 16px; font-family: inherit; font-size: 17px; color: {{t.ink}}; box-sizing: border-box">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label for="ca-email" style="font-size: 14px; font-weight: 700">Email</label>
+        <input id="ca-email" type="email" autocomplete="email" placeholder="you@example.com" style="height: 56px; border-radius: 16px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 16px; font-family: inherit; font-size: 17px; color: {{t.ink}}; box-sizing: border-box">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label for="ca-pass" style="font-size: 14px; font-weight: 700">Password</label>
+        <div style="position: relative">
+          <input id="ca-pass" type="{{passType}}" autocomplete="new-password" aria-describedby="ca-hint" style="width: 100%; height: 56px; border-radius: 16px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 56px 0 16px; font-family: inherit; font-size: 17px; color: {{t.ink}}; box-sizing: border-box">
+          <button type="button" aria-label="{{eyeLabel}}" onClick="{{ toggleEye }}" style="position: absolute; right: 6px; top: 6px; width: 44px; height: 44px; border: none; background: transparent; color: {{t.muted}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path d="{{slash}}"></path></svg>
+          </button>
+        </div>
+        <span id="ca-hint" style="font-size: 13px; color: {{t.muted}}">At least 8 characters</span>
+      </div>
+      <button type="button" onClick="{{ submit }}" style="margin-top: 4px; height: 56px; border-radius: 16px; border: none; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 17px; font-weight: 700; cursor: pointer">Create account</button>
+    </div>
+    <p style="margin: auto 0 0; font-size: 15px; color: {{t.muted}}; text-align: center">Already have an account? <a href="V2SignInEmail.dc.html" style="color: {{t.brandText}}; font-weight: 700; text-decoration: none">Sign in</a></p>
+  </sc-if>
+  <sc-if value="{{ isSent }}" hint-placeholder-val="{{ false }}">
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 56px">
+      <div style="width: 56px; height: 56px; border-radius: 18px; background: {{t.brandSoft}}; display: flex; align-items: center; justify-content: center">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="{{t.brandText}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path d="M4 7l8 6 8-6"></path></svg>
+      </div>
+      <h1 style="margin: 12px 0 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15">Check your email to confirm your account</h1>
+      <p style="margin: 0; font-size: 16px; line-height: 1.45; color: {{t.muted}}">We sent a confirmation link to <strong style="color: {{t.ink}}">daniel@example.com</strong>. Open it to finish creating your account.</p>
+    </div>
+    <button type="button" style="margin-top: 32px; height: 56px; border-radius: 16px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; color: {{t.ink}}; font-family: inherit; font-size: 17px; font-weight: 700; cursor: pointer">Resend email</button>
+    <a href="V2SignInEmail.dc.html" style="margin-top: 12px; height: 56px; border-radius: 16px; background: {{t.btn}}; color: {{t.onBrand}}; font-size: 17px; font-weight: 700; text-decoration: none; display: flex; align-items: center; justify-content: center">Back to sign in</a>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"step":{"editor":"enum","options":["form","sent"],"default":"form"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: null, show: false };
+  }
+  renderVals0() {
+    const T = this.tok();
+    const step = this.state.step ?? this.props.step ?? 'form';
+    return {
+      isForm: step === 'form', isSent: step === 'sent',
+      submit: () => this.setState({ step: 'sent' }),
+      slash: this.state.show ? "" : "M3 3l18 18",
+      passType: this.state.show ? 'text' : 'password',
+      eyeLabel: this.state.show ? 'Hide password' : 'Show password',
+      toggleEye: () => this.setState({ show: !this.state.show })
+    };
+  }
+  tok() {
+    const light = this.props.theme !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
+      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
+      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const v = this.renderVals0();
+    v.t = this.tok();
+    return v;
+  }
+}
+</script>
+</body>
+</html>

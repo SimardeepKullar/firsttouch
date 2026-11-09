@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch V2 · Admin players</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; min-height: 0; padding: 16px 16px 0; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Admin</h1>
+      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{t.hero}}; color: #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; letter-spacing: 0.04em">ADMIN</span>
+    </div>
+    <nav aria-label="Admin sections" style="display: flex; gap: 6px">
+      <a href="V2AdminPlayers.dc.html" aria-current="page" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.ink}}; color: {{t.onBrand}}; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Players</a>
+      <a href="V2RunManager.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Runs</a>
+      <a href="V2TeamBuilder.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Team builder</a>
+      <a href="V2SeasonPasses.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Passes</a>
+    </nav>
+    <div style="position: relative">
+      <label for="player-search" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search players</label>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2.2" stroke-linecap="round" style="position: absolute; left: 16px; top: 16px" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <input id="player-search" type="search" placeholder="Search 41 people" value="{{query}}" onChange="{{ onQuery }}" style="width: 100%; height: 52px; box-sizing: border-box; border-radius: 16px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 16px 0 46px; font-family: inherit; font-size: 16px; color: {{t.ink}}">
+    </div>
+    <div role="group" aria-label="Filter" style="display: flex; gap: 6px">
+      <sc-for list="{{ filters }}" as="fl" hint-placeholder-count="4">
+        <button type="button" aria-pressed="{{fl.pressed}}" onClick="{{ fl.pick }}" style="height: 40px; padding: 0 14px; border-radius: 12px; border: 1.5px solid {{fl.border}}; background: {{fl.bg}}; color: {{fl.fg}}; font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 6px">{{fl.label}}</button>
+      </sc-for>
+    </div>
+    <div style="font-size: 13px; font-weight: 700; color: {{t.muted}}; margin-top: 2px">{{countLabel}} · tap stars to rate</div>
+    <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+      <sc-for list="{{ rows }}" as="p" hint-placeholder-count="6">
+        <li style="border-radius: 18px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span style="width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: {{t.surface2}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{p.ini}}</span>
+            <div style="flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap">
+              <span id="{{p.id}}" style="font-size: 16px; font-weight: 800">{{p.name}}</span>
+              <sc-if value="{{ p.isAdmin }}" hint-placeholder-val="{{ false }}">
+                <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{t.hero}}; color: #FFFFFF; font-size: 11px; font-weight: 800; display: flex; align-items: center">Admin</span>
+              </sc-if>
+              <sc-for list="{{ p.flags }}" as="f" hint-placeholder-count="0">
+                <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{f.bg}}; color: {{f.fg}}; font-size: 11px; font-weight: 800; display: flex; align-items: center">{{f.label}}</span>
+              </sc-for>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0">
+              <span style="font-size: 12px; font-weight: 700; color: {{t.muted}}">Plays</span>
+              <button type="button" role="switch" aria-checked="{{p.playsStr}}" aria-label="{{p.playsLabel}}" onClick="{{ p.togglePlays }}" style="width: 46px; height: 28px; border: none; border-radius: 999px; padding: 3px; box-sizing: border-box; background: {{p.playsTrack}}; display: flex; justify-content: {{p.playsSide}}; cursor: pointer">
+                <span style="width: 22px; height: 22px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span>
+              </button>
+            </div>
+          </div>
+          <sc-if value="{{ p.notPlaying }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size: 13px; color: {{t.muted}}; margin-top: -4px">Manages only · never placed in teams</div>
+          </sc-if>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; opacity: {{p.ratingOpacity}}">
+            <div role="group" aria-label="Rating for {{p.name}}" style="display: flex">
+              <sc-for list="{{ p.stars }}" as="st" hint-placeholder-count="5">
+                <button type="button" aria-label="{{st.label}}" onClick="{{ st.set }}" style="width: 40px; height: 44px; border: none; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer">
+                  <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="{{st.fill}}" stroke="{{st.stroke}}" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+                </button>
+              </sc-for>
+            </div>
+            <div role="group" aria-label="Position for {{p.name}}" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; padding: 3px; border-radius: 12px; background: {{t.surface2}}; width: 124px; box-sizing: border-box">
+              <button type="button" aria-pressed="{{p.attPressed}}" onClick="{{ p.setAtt }}" style="height: 38px; border: none; border-radius: 9px; background: {{p.attBg}}; color: {{p.attFg}}; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer">Attack</button>
+              <button type="button" aria-pressed="{{p.defPressed}}" onClick="{{ p.setDef }}" style="height: 38px; border: none; border-radius: 9px; background: {{p.defBg}}; color: {{p.defFg}}; font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer">Defend</button>
+            </div>
+          </div>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 8px 20px; background: {{t.surface}}; border-top: 1px solid {{t.line}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="V2Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+    </a>
+    <a href="V2Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 3 6l2 5 3-1v11h8V10l3 1 2-5-5-3c-.5 1.5-2 2.5-4 2.5S8.5 4.5 8 3z"></path></svg>Teams
+    </a>
+    <a href="V2AdminPlayers.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 800">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Admin
+    </a>
+    <a href="V2Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"></path><circle cx="15" cy="6" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Settings
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"filter":{"editor":"enum","options":["all","flagged","att","def"],"default":"all"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const raw = [
+      ['Marco Bellini', 5, 'ATT'], ['Priya Nair', 3, 'DEF'], ['Daniel Mensah', 4, 'DEF'], ['Kofi Asante', 2, 'ATT', 'U'],
+      ['Lena Fischer', 3, 'ATT'], ['Sam Whitfield', 2, 'DEF', 'M'], ['Sim', 4, 'DEF'], ['Tomás Rivera', 5, 'DEF'],
+      ['Aisha Bello', 4, 'ATT'], ['Jordan Lee', 3, 'DEF', 'U'], ['Mei Chen', 2, 'ATT'], ['Chris Novak', 3, 'ATT'],
+      ['Owen Barker', 2, 'DEF'], ['Nadia Haddad', 4, 'ATT'], ['Hassan Karimi', 5, 'ATT'], ['Elena Petrova', 4, 'DEF'],
+      ['Diego Ortiz', 4, 'ATT', 'M'], ['Grace Liu', 3, 'DEF', 'U'], ['Ben Carter', 3, 'ATT'], ['Yusuf Demir', 3, 'DEF'],
+      ['Felix Wagner', 3, 'DEF'], ['Isla Murray', 2, 'ATT'], ['Arjun Mehta', 4, 'ATT'], ['Chloe Martin', 3, 'DEF', 'U'],
+      ['Noah Kim', 2, 'DEF'], ['Sofia Ramos', 4, 'ATT'], ["Liam O'Brien", 3, 'ATT', 'U'], ['Zara Ali', 3, 'DEF'],
+      ['Ethan Brooks', 1, 'DEF', 'U'], ['Maya Patel', 2, 'ATT'], ['Lucas Silva', 5, 'ATT'], ['Hana Sato', 3, 'DEF'],
+      ['Victor Moreau', 2, 'DEF', 'U'], ['Amara Obi', 4, 'DEF'], ['Pedro Costa', 3, 'ATT', 'U'], ['Ruby Hughes', 1, 'ATT'],
+      ['Kai Tanaka', 3, 'DEF'], ['Leo Grant', 2, 'ATT', 'U'], ['Ines Duarte', 4, 'DEF'], ['John', 3, 'DEF']
+    ];
+    const admins = ['John', 'Sim'];
+    const list = raw.map(([name, s, pos, flag]) => ({ name, s, pos, flag: flag || '', admin: admins.includes(name), plays: true }));
+    list.push({ name: 'Coach', s: 3, pos: 'ATT', flag: '', admin: true, plays: false });
+    this.state = {
+      query: '',
+      filter: null,
+      players: list.sort((a, b) => (b.admin - a.admin) || a.name.localeCompare(b.name))
+    };
+  }
+  update(name, patch) {
+    this.setState({ players: this.state.players.map((p) => p.name === name ? Object.assign({}, p, patch) : p) });
+  }
+  renderVals0() {
+    const T = this.tok();
+    const filter = this.state.filter ?? this.props.filter ?? 'all';
+    const all = this.state.players;
+    const flaggedCount = all.filter((p) => p.flag).length;
+    const q = this.state.query.trim().toLowerCase();
+    const shown = all.filter((p) => {
+      if (q && !p.name.toLowerCase().includes(q)) return false;
+      if (filter === 'flagged') return !!p.flag;
+      if (filter === 'att') return p.pos === 'ATT';
+      if (filter === 'def') return p.pos === 'DEF';
+      return true;
+    });
+    const fdefs = [['all', 'All ' + all.length], ['flagged', 'Flagged ' + flaggedCount], ['att', 'ATT'], ['def', 'DEF']];
+    const filters = fdefs.map(([id, label]) => {
+      const on = id === filter;
+      return {
+        label, pressed: on ? 'true' : 'false',
+        bg: on ? T.brand : T.surface, fg: on ? T.onBrand : T.ink, border: on ? T.brand : T.inputBorder,
+        pick: () => this.setState({ filter: id })
+      };
+    });
+    const rows = shown.map((p, idx) => ({
+      name: p.name,
+      id: 'pl-' + idx,
+      isAdmin: p.admin,
+      notPlaying: !p.plays,
+      playsStr: p.plays ? 'true' : 'false',
+      playsLabel: 'Plays: ' + p.name,
+      playsTrack: p.plays ? T.brand : T.switchOff,
+      playsSide: p.plays ? 'flex-end' : 'flex-start',
+      ratingOpacity: p.plays ? '1' : '0.4',
+      togglePlays: () => this.update(p.name, { plays: !p.plays }),
+      ini: p.name.split(' ').map((w) => w[0]).join(''),
+      flags: p.flag === 'M' ? [{ label: 'Morning of', bg: T.amberBg, fg: T.amberFg }]
+        : p.flag === 'U' ? [{ label: 'Unpaid', bg: T.redBg, fg: T.redFg }] : [],
+      stars: [1, 2, 3, 4, 5].map((k) => ({
+        label: 'Set ' + k + (k === 1 ? ' star' : ' stars'),
+        fill: k <= p.s ? T.brand : 'transparent',
+        stroke: k <= p.s ? T.brand : T.muted2,
+        set: () => this.update(p.name, { s: k })
+      })),
+      attPressed: p.pos === 'ATT' ? 'true' : 'false',
+      defPressed: p.pos === 'DEF' ? 'true' : 'false',
+      attBg: p.pos === 'ATT' ? T.ink : 'transparent', attFg: p.pos === 'ATT' ? T.onBrand : T.muted,
+      defBg: p.pos === 'DEF' ? T.surface : 'transparent', defFg: p.pos === 'DEF' ? T.ink : T.muted,
+      setAtt: () => this.update(p.name, { pos: 'ATT' }),
+      setDef: () => this.update(p.name, { pos: 'DEF' })
+    }));
+    return {
+      query: this.state.query,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      filters, rows,
+      countLabel: shown.length + (shown.length === 1 ? ' player' : ' players')
+    };
+  }
+  tok() {
+    const light = this.props.theme !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
+      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
+      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const v = this.renderVals0();
+    v.t = this.tok();
+    return v;
+  }
+}
+</script>
+</body>
+</html>

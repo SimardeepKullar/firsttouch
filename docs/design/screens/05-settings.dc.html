@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch V2 · Settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 960px; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; min-height: 0; padding: 16px 16px 12px; display: flex; flex-direction: column; gap: 10px">
+    <h1 style="margin: 0 0 4px; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Settings</h1>
+    <div style="display: flex; align-items: center; gap: 14px; padding: 14px 8px 14px 16px; border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}">
+      <span style="width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; background: {{t.hero}}; color: #FFFFFF; font-size: 17px; font-weight: 800; display: flex; align-items: center; justify-content: center">DM</span>
+      <div style="flex-grow: 1; min-width: 0">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <span style="font-size: 17px; font-weight: 800">Daniel Mensah</span>
+          <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{t.okBg}}; color: {{t.okFg}}; font-size: 11px; font-weight: 800; display: flex; align-items: center">Paid</span>
+        </div>
+        <div style="font-size: 14px; color: {{t.muted}}">daniel@example.com</div>
+      </div>
+      <button type="button" aria-label="Edit display name" style="width: 44px; height: 44px; flex-shrink: 0; border: none; border-radius: 12px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path><path d="M13.5 6.5l4 4"></path></svg>
+      </button>
+    </div>
+
+    <h2 style="margin: 10px 4px 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.muted}}">Notifications</h2>
+    <div style="border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 0 16px">
+      <sc-for list="{{ toggles }}" as="tg" hint-placeholder-count="3">
+        <div style="min-height: 56px; display: flex; align-items: center; gap: 12px; border-top: {{tg.divider}}">
+          <div style="flex-grow: 1">
+            <div id="{{tg.id}}" style="font-size: 16px; font-weight: 700">{{tg.label}}</div>
+            <div style="font-size: 13px; color: {{t.muted}}">{{tg.hint}}</div>
+          </div>
+          <button type="button" role="switch" aria-checked="{{tg.checked}}" aria-labelledby="{{tg.id}}" onClick="{{ tg.flip }}" style="width: 52px; height: 32px; flex-shrink: 0; border: none; border-radius: 999px; padding: 3px; box-sizing: border-box; background: {{tg.track}}; display: flex; justify-content: {{tg.side}}; cursor: pointer">
+            <span style="width: 26px; height: 26px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span>
+          </button>
+        </div>
+      </sc-for>
+    </div>
+
+    <h2 style="margin: 10px 4px 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.muted}}">Appearance</h2>
+    <div role="radiogroup" aria-label="Appearance" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 18px; background: {{t.surface}}; border: 1px solid {{t.line}}">
+      <sc-for list="{{ appearance }}" as="ap" hint-placeholder-count="3">
+        <button type="button" role="radio" aria-checked="{{ap.checked}}" onClick="{{ ap.pick }}" style="height: 48px; border: none; border-radius: 14px; background: {{ap.bg}}; color: {{ap.fg}}; font-family: inherit; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ap.icon}}"></path></svg>{{ap.label}}
+        </button>
+      </sc-for>
+    </div>
+    <p style="margin: -2px 4px 0; font-size: 13px; color: {{t.muted}}">{{appearanceHint}}</p>
+
+    <h2 style="margin: 10px 4px 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.muted}}">Privacy</h2>
+    <div style="border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 0 16px">
+      <a href="#" style="min-height: 52px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: {{t.ink}}; font-size: 16px; font-weight: 700">Privacy policy
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+
+    <h2 style="margin: 10px 4px 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.muted}}">Account</h2>
+    <div style="border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 0 16px">
+      <sc-if value="{{ emailOn }}" hint-placeholder-val="{{ false }}">
+        <a href="V2NewPassword.dc.html" style="min-height: 52px; border-bottom: 1px solid {{t.line}}; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: {{t.ink}}; font-size: 16px; font-weight: 700">Change password
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </a>
+      </sc-if>
+      <button type="button" style="width: 100%; min-height: 52px; border: none; background: transparent; padding: 0; font-family: inherit; font-size: 16px; font-weight: 700; color: {{t.ink}}; text-align: left; cursor: pointer">Sign out</button>
+      <button type="button" style="width: 100%; min-height: 52px; border: none; border-top: 1px solid {{t.line}}; background: transparent; padding: 0; font-family: inherit; font-size: 16px; font-weight: 800; color: {{t.redFg}}; text-align: left; cursor: pointer">Delete account</button>
+    </div>
+  </div>
+  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 12px 20px; background: {{t.surface}}; border-top: 1px solid {{t.line}}; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))">
+    <a href="V2Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+    </a>
+    <a href="V2Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 3 6l2 5 3-1v11h8V10l3 1 2-5-5-3c-.5 1.5-2 2.5-4 2.5S8.5 4.5 8 3z"></path></svg>Teams
+    </a>
+    <a href="V2Settings.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 800">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"></path><circle cx="15" cy="6" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Settings
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"emailAuth":{"editor":"enum","options":["off","on"],"default":"off"},"$preview":{"width":390,"height":960}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { nightBefore: true, teams: true, changes: true };
+  }
+  renderVals0() {
+    const T = this.tok();
+    const defs = [
+      ['nightBefore', 'Night-before reminder', 'The evening before each run you’re in'],
+      ['teams', 'Teams published', 'When RSVPs close and teams are set'],
+      ['changes', 'Changes and cancellations', 'Time, address or cancelled runs']
+    ];
+    const toggles = defs.map(([key, label, hint], i) => {
+      const on = this.state[key];
+      return {
+        id: 'n-' + key, label, hint,
+        checked: on ? 'true' : 'false',
+        track: on ? T.brand : T.switchOff,
+        side: on ? 'flex-end' : 'flex-start',
+        divider: i === 0 ? 'none' : '1px solid #ECEBE4',
+        flip: () => this.setState({ [key]: !this.state[key] })
+      };
+    });
+    return { toggles, emailOn: (this.props.emailAuth ?? 'off') === 'on' };
+  }
+  tok() {
+    const mode = (this.state && this.state.appearance) || this.props.theme || 'light';
+    const light = mode !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
+      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
+      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const v = this.renderVals0();
+    v.t = this.tok();
+    const cur = (this.state && this.state.appearance) || this.props.theme || 'light';
+    const sel = (this.state && this.state.appearanceChoice) || cur;
+    const icons = { light: 'M12 4V2M12 22v-2M4 12H2M22 12h-2M5 5 3.6 3.6M20.4 20.4 19 19M5 19l-1.4 1.4M20.4 3.6 19 5M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z', dark: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z', system: 'M3 5h18v11H3zM8 20h8M12 16v4' };
+    v.appearance = [['light', 'Light'], ['dark', 'Dark'], ['system', 'System']].map(([id, label]) => ({
+      label, icon: icons[id], checked: sel === id ? 'true' : 'false',
+      bg: sel === id ? v.t.btn : 'transparent', fg: sel === id ? v.t.onBrand : v.t.muted,
+      pick: () => this.setState({ appearanceChoice: id, appearance: id === 'system' ? 'light' : id })
+    }));
+    v.appearanceHint = sel === 'system' ? 'Follows your phone\u2019s light or dark setting.' : 'Light is the default. Dark mode is optional.';
+    return v;
+  }
+}
+</script>
+</body>
+</html>
