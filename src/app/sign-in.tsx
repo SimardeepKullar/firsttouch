@@ -1,10 +1,21 @@
-import { useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Platform, Pressable, Text, View } from 'react-native';
 import { useAuth } from '../lib/auth';
+import { parseAuthError, stripAuthErrorFromUrl } from '../lib/authError';
 
 export default function SignIn() {
   const { signInWithGoogle } = useAuth();
-  const [error, setError] = useState<string | null>(null);
+  // If Google sent the user back with an error in the URL (e.g. they pressed Cancel), show it.
+  const [error, setError] = useState<string | null>(() =>
+    Platform.OS === 'web' && typeof window !== 'undefined' ? parseAuthError(window.location.href) : null
+  );
+
+  // Then tidy the address bar so reloading the page doesn't show the same error again.
+  useEffect(() => {
+    if (Platform.OS === 'web' && parseAuthError(window.location.href)) {
+      window.history.replaceState(null, '', stripAuthErrorFromUrl(window.location.href));
+    }
+  }, []);
 
   async function handlePress() {
     setError(null);
