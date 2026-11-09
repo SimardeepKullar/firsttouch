@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FirstTouch · Season passes</title>
+<title>FirstTouch V2 · Season passes</title>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 body{margin:0}
-a{color:#0E4D32}a:hover{color:#0A3A26}
+a{color:inherit}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F4F3EE; color: #121A15; font-family: 'Archivo', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
   <div style="flex-grow: 1; min-height: 0; padding: 16px 16px 0; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
     <div style="display: flex; align-items: center; justify-content: space-between">
       <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Admin</h1>
-      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: #0E4D32; color: #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; letter-spacing: 0.04em">ADMIN</span>
+      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{t.hero}}; color: #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; letter-spacing: 0.04em">ADMIN</span>
     </div>
     <nav aria-label="Admin sections" style="display: flex; gap: 6px">
-      <a href="AdminPlayers.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E2E1D9; box-sizing: border-box; color: #121A15; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Players</a>
-      <a href="RunManager.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E2E1D9; box-sizing: border-box; color: #121A15; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Runs</a>
-      <a href="TeamBuilder.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E2E1D9; box-sizing: border-box; color: #121A15; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Team builder</a>
-      <a href="SeasonPasses.dc.html" aria-current="page" style="height: 44px; padding: 0 14px; border-radius: 999px; background: #121A15; color: #FFFFFF; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Passes</a>
+      <a href="V2AdminPlayers.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Players</a>
+      <a href="V2RunManager.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Runs</a>
+      <a href="V2TeamBuilder.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Team builder</a>
+      <a href="V2SeasonPasses.dc.html" aria-current="page" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.ink}}; color: {{t.onBrand}}; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Passes</a>
     </nav>
 
-    <section aria-label="Season" style="border-radius: 22px; background: #0E4D32; color: #FFFFFF; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+    <section aria-label="Season" style="border-radius: 22px; background: {{t.hero}}; color: #FFFFFF; padding: 14px; display: flex; flex-direction: column; gap: 12px">
       <div role="group" aria-label="Season type" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: rgba(255,255,255,0.12)">
         <sc-for list="{{ seasons }}" as="s" hint-placeholder-count="2">
           <button type="button" aria-pressed="{{s.pressed}}" onClick="{{ s.pick }}" style="height: 40px; border: none; border-radius: 10px; background: {{s.bg}}; color: {{s.fg}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{s.label}}</button>
@@ -43,7 +43,7 @@ a{color:#0E4D32}a:hover{color:#0A3A26}
           <span style="font-size: 14px; font-weight: 600; color: #DDEDE3">{{outstanding}}</span>
         </div>
         <div role="img" aria-label="{{paidCount}} of 40 paid" style="margin-top: 8px; height: 10px; border-radius: 999px; background: rgba(255,255,255,0.18); overflow: hidden">
-          <div style="width: {{paidPct}}; height: 10px; border-radius: 999px; background: #FFFFFF"></div>
+          <div style="width: {{paidPct}}; height: 10px; border-radius: 999px; background: {{t.surface}}"></div>
         </div>
       </div>
     </section>
@@ -62,7 +62,7 @@ a{color:#0E4D32}a:hover{color:#0A3A26}
             <div id="{{p.id}}" style="font-size: 15px; font-weight: 800">{{p.name}}</div>
             <div style="font-size: 12px; font-weight: 700; color: {{p.statusFg}}">{{p.status}}</div>
             <sc-if value="{{ p.paid }}" hint-placeholder-val="{{ true }}">
-              <div style="font-size: 12px; color: #56625B; margin-top: 1px">{{p.marked}}</div>
+              <div style="font-size: 12px; color: {{t.muted}}; margin-top: 1px">{{p.marked}}</div>
             </sc-if>
           </div>
           <button type="button" role="switch" aria-checked="{{p.checked}}" aria-labelledby="{{p.id}}" onClick="{{ p.flip }}" style="width: 52px; height: 32px; flex-shrink: 0; border: none; border-radius: 999px; padding: 3px; box-sizing: border-box; background: {{p.track}}; display: flex; justify-content: {{p.side}}; cursor: pointer">
@@ -72,23 +72,23 @@ a{color:#0E4D32}a:hover{color:#0A3A26}
       </sc-for>
     </ul>
   </div>
-  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 8px 20px; background: #FFFFFF; border-top: 1px solid #E2E1D9; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
-    <a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #56625B; font-size: 12px; font-weight: 600">
+  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 8px 20px; background: {{t.surface}}; border-top: 1px solid {{t.line}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="V2Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
     </a>
-    <a href="Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #56625B; font-size: 12px; font-weight: 600">
+    <a href="V2Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 3 6l2 5 3-1v11h8V10l3 1 2-5-5-3c-.5 1.5-2 2.5-4 2.5S8.5 4.5 8 3z"></path></svg>Teams
     </a>
-    <a href="AdminPlayers.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #0E4D32; font-size: 12px; font-weight: 800">
+    <a href="V2AdminPlayers.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 800">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Admin
     </a>
-    <a href="Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #56625B; font-size: 12px; font-weight: 600">
+    <a href="V2Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"></path><circle cx="15" cy="6" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Settings
     </a>
   </nav>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -103,7 +103,8 @@ class Component extends DCLogic {
     names.forEach((n) => { indoor[n] = !unpaid.includes(n); outdoor[n] = false; });
     this.state = { season: 'indoor', filter: 'all', names: names.slice().sort((a, b) => a.localeCompare(b)), paid: { indoor, outdoor } };
   }
-  renderVals() {
+  renderVals0() {
+    const T = this.tok();
     const season = this.state.season;
     const paidMap = this.state.paid[season];
     const info = season === 'indoor'
@@ -126,7 +127,7 @@ class Component extends DCLogic {
       const on = id === this.state.filter;
       return {
         label, pressed: on ? 'true' : 'false',
-        bg: on ? '#121A15' : '#FFFFFF', fg: on ? '#FFFFFF' : '#121A15', border: on ? '#121A15' : '#D6D5CC',
+        bg: on ? T.ink : T.surface, fg: on ? T.onBrand : T.ink, border: on ? T.ink : T.inputBorder,
         pick: () => this.setState({ filter: id })
       };
     });
@@ -139,12 +140,12 @@ class Component extends DCLogic {
           marked: 'Marked paid by John · ' + ['Nov 2', 'Oct 30', 'Nov 5'][i % 3],
           ini: n.split(' ').map((w) => w[0]).join(''),
           status: paid ? 'Paid' : 'Not paid',
-          statusFg: paid ? '#166534' : '#B91C1C',
-          bg: paid ? '#FFFFFF' : '#FEF2F2',
-          border: paid ? '#E2E1D9' : '#FCA5A5',
-          avBg: paid ? '#ECEBE4' : '#FEE2E2', avFg: paid ? '#121A15' : '#B91C1C',
+          statusFg: paid ? T.okFg : T.redFg,
+          bg: paid ? T.surface : T.redRowBg,
+          border: paid ? T.line : T.redRowBorder,
+          avBg: paid ? T.surface2 : T.redBg, avFg: paid ? T.ink : T.redFg,
           checked: paid ? 'true' : 'false',
-          track: paid ? '#0E4D32' : '#B9BDB5',
+          track: paid ? T.brand : T.switchOff,
           side: paid ? 'flex-end' : 'flex-start',
           flip: () => {
             const next = Object.assign({}, this.state.paid);
@@ -157,6 +158,41 @@ class Component extends DCLogic {
       seasons, filters, rows, season: info, paidCount, outstanding,
       paidPct: (paidCount / 40 * 100).toFixed(1) + '%'
     };
+  }
+  tok() {
+    const light = this.props.theme !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
+      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
+      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const v = this.renderVals0();
+    v.t = this.tok();
+    return v;
   }
 }
 </script>

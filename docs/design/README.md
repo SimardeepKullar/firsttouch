@@ -1,6 +1,8 @@
-# FirstTouch — design handoff
+# FirstTouch — design handoff (Version 2)
 
 Mobile-first web app for a recreational soccer group that plays pickup runs on Saturday and Sunday mornings, plus holiday Mondays. Players RSVP. RSVPs lock automatically 1 hour before the start, and teams are generated and published at that moment. Admins rate players, manage the season's runs and track season passes. This folder is the design reference for building it.
+
+**Version 2** is the current design: a cleaner, sporty look built on the Inter typeface, with **light mode as the default** and an **optional dark mode** that players choose in Settings › Appearance. The product rules are the same as Version 1.
 
 ## What's in this folder
 
@@ -8,7 +10,7 @@ Mobile-first web app for a recreational soccer group that plays pickup runs on S
 |---|---|
 | `README.md` | This spec: product rules, components and every screen |
 | `tokens/tokens.json` | All colours, type sizes, radii and sizes as data |
-| `tokens/theme.css` | The same values as CSS variables (light by default, Graphite dark under `:root.dark`) |
+| `tokens/theme.css` | The same values as CSS variables (light by default; dark under `:root.dark`; System follows the phone) |
 | `tokens/tailwind.theme.js` | Tailwind / NativeWind theme extension that points at those variables |
 | `assets/firsttouch-icon.png` | App icon, 232 × 232, rounded corners with a transparent background |
 | `assets/firsttouch-icon-original.png` | The original logo image, with its black surround |
@@ -23,17 +25,18 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Template syntax:** `{{name}}` is a value from `renderVals()`, `<sc-for>` is a loop and `<sc-if>` is a conditional.
 - **Props:** a screen's props are listed in `data-props` at the top of its script block (see "Screen props" below). They switch between variants and states.
 - **Images:** `/_blob/3dfcf1bac4cf45bac56a39dd2306c225` is the logo; use `assets/firsttouch-icon.png` instead.
-- **Links:** `href="X.dc.html"` links point to the canvas names. The mapping is: `Main` = 01-sign-in, `CreateAccount` = 01b, `ForgotPassword` = 01c, `NewPassword` = 01d, `Home` = 02, `RunDetail` = 03, `Teams` = 04, `Settings` = 05, `AdminPlayers` = 06, `RunManager` = 07-admin-runs, `TeamBuilder` = 08, `TeamBuilderDesktop` = 08b, `SeasonPasses` = 09, `Holidays` = 11.
+- **Links:** `href="X.dc.html"` links point to the canvas names. The mapping is: `V2Main` = 01-sign-in, `V2CreateAccount` = 01b, `V2ForgotPassword` = 01c, `V2NewPassword` = 01d, `V2Home` = 02, `V2RunDetail` = 03, `V2Teams` = 04, `V2Settings` = 05, `V2AdminPlayers` = 06, `V2RunManager` = 07-admin-runs, `V2TeamBuilder` = 08, `V2TeamBuilderDesktop` = 08b, `V2SeasonPasses` = 09, `V2Holidays` = 11.
+- **Colours in the files:** values appear as `{{t.name}}`; `name` is a key of the active theme in `tokens/tokens.json` (`theme.light` or `theme.dark`), and each file's `tok()` method lists them too.
 
 ### Screen props
 
 | Screen | Prop | Values | What it changes |
 |---|---|---|---|
+| Every screen | `theme` | `light` (default), `dark` | Light or dark mode |
 | 01 Sign in | `emailAuth` | `off` (default), `on` | `on` adds email/password sign-in under an "or" divider |
 | 01b Create account | `step` | `form`, `sent` | `sent` shows "Check your email to confirm your account" |
 | 01c Forgot password | `step` | `form`, `sent` | `sent` shows "If that email has an account, we've sent a link" |
 | 02 Home | `plays` | `on` (default), `off` | `off` = non-playing admin (Coach): no "I'm in" toggle, Admin tab shown |
-| 02 Home | `dark` | boolean | Graphite dark mode |
 | 02 Home | `pass` | `paid`, `unpaid` | Season pass chip |
 | 03 Run detail | `role` | `player` (default), `admin` | Admin adds stars and the Unpaid badge |
 | 03 Run detail | `locked` | boolean | The RSVP row shows "RSVPs closed" and a disabled "Locked" button |
@@ -41,7 +44,6 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 | 04 Teams | `role` | `player` (default), `admin` | Admin adds stars, star totals and Unpaid flags |
 | 04 Teams | `view` | `table`, `field` | Table or Field view |
 | 04 Teams | `teams` | `3`, `2` | 3 = indoor run; 2 = outdoor run |
-| 04 Teams | `dark` | boolean | Graphite dark mode |
 | 05 Settings | `emailAuth` | `off`, `on` | `on` adds the "Change password" row |
 | 06 Admin · Players | `filter` | `all`, `flagged`, `att`, `def` | Starting filter |
 | 07 Admin · Runs | `status` | `open`, `locked`, `published`, `cancelled`, `empty` | Next-run card state (`empty` = fewer than 4 players) |
@@ -67,17 +69,18 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 ## Global rules
 
 - **Phone first:** design width 390 × 844. Screens marked "full scroll" on the canvas are drawn at their full scrolled length; the bottom navigation stays fixed. One desktop layout exists, for the admin Team builder (1280 wide).
-- **Typeface:** one typeface, Archivo, weights 400–800. Headings are 800 weight with letter-spacing −0.02em.
-- **Light and dark:** light is the default. Dark mode is the Graphite palette (see `theme.css`). Team colours and the flag badge colours are the same in both.
+- **Typeface:** one typeface, Inter, weights 400–800. Headings are 800 weight with letter-spacing −0.03em; body text is 15–16px.
+- **Light and dark:** light is the default. Dark mode is optional, chosen in Settings › Appearance (Light / Dark / System, where System follows the phone). Every colour comes from the theme tokens; team fill colours are the same in both themes, while team text and tint colours have a light and a dark value.
+- **Page background:** a soft radial green glow in the top-right corner over `bg` (`page` token).
 - **Tap targets:** at least 44 × 44. Primary buttons are 56 tall with a 16 radius.
-- **Shapes:** cards have a 22–24 radius, a 1px `line` border and no shadow. Badges are pill-shaped. Bottom sheets have a 28 radius on the top corners over a 50% ink scrim.
+- **Shapes:** cards have a 24 radius, a 1px `line` border and the soft `shadow`. Hero cards (Run detail header, Season pass card, Auto team creation) use the `hero` green gradient with a 28 radius and white text. Primary buttons use the `button` gradient. Badges and segmented controls are pill-shaped. Bottom sheets have a 28 radius on the top corners over a 50% ink scrim.
 - **Icons:** simple 2px-stroke line icons. The mockups use inline SVG; any matching line-icon set is fine.
 - **Accessibility:** use real `<button>`, `<a>` and `<input>` elements with labels; give icon-only buttons an `aria-label`; switches use `role="switch"` with `aria-checked`; disabled controls are visibly dimmed and use `disabled` or `aria-disabled`. Text contrast is at least 4.5:1 in both themes.
 
 ## Brand
 
 - **App icon:** `assets/firsttouch-icon.png`. Use it for the sign-in screen (112px for Google-only, 72px with email), the auth screens (56px), the desktop sidebar (40px), the favicon and the Home Screen icon.
-- **Wordmark:** "First" in `ink` plus "Touch" in the accent colour, Archivo 800. The accent is `#0E4D32` on light backgrounds and `#62CC7E` on dark or pitch-green backgrounds.
+- **Wordmark:** "First" in `ink` plus "Touch" in `brand-text`, weight 800. On the green hero gradient, use white plus Touch green `#62CC7E`.
 - **Logo colours:** Touch green `#62CC7E`, White `#FFFFFF`, Pine `#34614E`, Forest `#1D472B`, Deep pitch `#04150F`.
 
 ## Fixed team colours
@@ -100,19 +103,22 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Players:** bottom tabs for Home, Teams and Settings.
 - **Admins:** bottom tabs for Home, Teams, Admin and Settings. Inside the Admin tab, a row of pill sub-tabs switches between **Players, Runs, Team builder, Passes**. Holidays opens from the Runs screen.
 - **Desktop sidebar:** the same sections (Players, Runs, Team builder, Passes), plus "Back to player view".
-- **Bottom nav:** 84 tall, with a 26px icon over a 12px label. The active tab uses the `brand` colour at weight 800.
+- **Bottom nav:** a floating bar, 76 tall with a 26 radius, inset 12px from the screen edges and 14px from the bottom, in the `nav` colour with a `line` border and `shadow`. Each tab is a 24px icon over a 12px label; the active tab is `brand-text` with a 22 × 3 `brand` underline. Icons: house (Home), trophy (Teams), shield (Admin), gear (Settings).
 
 ## Shared components
 
-- **Status chip:** a 28–32px pill with a dot and a label. Pass: Paid / Not paid. Runs: Open (green), Locked (grey), Teams published (pitch green, white text), Cancelled (red).
-- **Flag badge:** 20–22px tall, with an 11px weight-800 label.
-- **Admin badge:** the same size as a flag badge, pitch green with white text.
-- **Position tag:** 42 × 26, radius 8, 1.5px ink border. **ATT** is filled ink with light text; **DEF** is an outline only.
-- **Star rating (admin only):** five 12–13px stars, filled in `star-on`, empty in `star-off`. The editable version has tappable 40 × 44 buttons with 26px stars.
-- **Segmented control:** a `surface-2` track with 4px padding; the selected segment is `surface` with a small shadow.
-- **Switch:** 52 × 32 with a 26px white knob (46 × 28 for the compact Plays switch). The track is `brand` when on and `switch-off` when off.
+- **Status chip:** a 28–32px pill with a dot and a label. Pass: Paid / Not paid. Runs: Open, Locked, Teams published, Cancelled. Teams uses a "Published" pill with a filled check circle and a `brand-line` border.
+- **Flag badge:** 20–22px tall, 11px weight-700 label, using the status tokens (`amber-*` for Morning of, `red-*` for Unpaid).
+- **Admin badge:** the same size as a flag badge, on the `hero` gradient with white text.
+- **Position tag:** 40 × 24, radius 8. **ATT** is filled `ink` with `bg`-coloured text; **DEF** is an outline in `input-border` with `ink-2` text.
+- **Star rating (admin only):** five 12–13px stars in `star-on` / `star-off`. The editable version has tappable 40 × 44 buttons with 26px stars.
+- **Segmented control:** a pill track in `surface` with a `line` border; the selected segment is the `button` gradient with `on-brand` text.
+- **Switch:** 52 × 32 with a 26px white knob (46 × 28 for the compact Plays switch). The track is the brand gradient when on and `switch-off` when off.
+- **Run card (Home):** 24 radius, `surface`, a 4px `brand` bar on the left edge (muted once RSVPs close), day kicker in `brand-text`, a large date, a Details pill, info rows with icons, stacked avatars with a "+n" circle, and the "I'm in" pill (gradient when on, `brand-line` outline when off).
+- **Team card (Teams):** 24 radius, `surface`, a 4px left bar in the team colour with a soft team-colour glow fading right, a faint soccer-ball watermark on the right (`watermark` token), a team dot with a soft ring, and a "{n} players" chip in the team's soft colour.
+- **Pitch:** the `pitch-grass` gradient with stripes and `pitch-lines`, rounded 14–16. Player dots are team-coloured circles with a white border and a 3px team-colour glow.
 - **Password field:** a 56-tall input with a 44 × 44 show/hide eye button inside it on the right.
-- **Avatar:** a circle with initials in `surface-2`.
+- **Avatar:** a circle with initials in `surface-2` (Home uses `brand-text` initials).
 
 ## Screens
 
@@ -133,6 +139,8 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Contents:** New password (show/hide, "At least 8 characters" hint), Confirm password, and a "Save password" button. Reached from the reset link, and from Settings › Change password.
 
 ### 02 Home (`02-home.dc.html`)
+- **V2 header:** the app icon (44px) on the left; on the right the pass chip and a 44px bell button with a green unread dot. The greeting has a 40 × 3 `brand` underline beneath it, then the banner (green-tinted with a `brand-line` border), then an "Upcoming runs" heading with a "View all" link.
+- **Auto team creation card:** after the run cards, a hero-gradient card with a players icon, "Auto team creation" and "Teams are made automatically when RSVPs close, 1 hour before kickoff.", with a faint goal drawing on the right.
 - **Top:** a season pass chip ("Indoor pass: Paid" or "Indoor pass: Not paid") and the user's avatar. Greeting "Morning, {first name}" with the subtitle "Indoor 2026–27 · …".
 - **Banner:** "Add FirstTouch to your Home Screen for notifications", dismissible with an X button.
 - **Run cards:** one per upcoming run. Each card shows the day, the date (with the holiday name if any), "6:30 AM start", the address, a lock-icon line "RSVPs close 5:30 AM", stacked avatars, "{n} going" and the large "I'm in" toggle.
@@ -142,6 +150,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Non-playing admin (`plays = off`, shown as Coach):** the cards keep the date, time, address, "{n} going" and the "Details" link, but the "I'm in" toggle is replaced by a muted line, "You're managing this run". The top chip reads "Admin · manages runs" instead of the pass chip. A closed card's panel reads "Teams are up" with "View teams" (no team of their own). The bottom nav includes the Admin tab.
 
 ### 03 Run detail (`03-run-detail.dc.html`)
+- **V2 header:** a floating hero-gradient card (inset 12px, 28 radius) with a faint ball watermark; the stat tiles are translucent white glass.
 - **Header:** pitch-green with rounded bottom corners, a back button, the date, start time and address, and three stat tiles (going, attackers, defenders).
 - **Your RSVP:** the viewer's own status, "You're in" (with a "Change" button) or "You're not going" (with an "I'm in" button), plus "RSVPs close 5:30 AM". After the lock (`locked`), it reads "RSVPs closed 5:30 AM" and the button is disabled with a lock icon and the label "Locked".
 - **Admin example:** the admin view is drawn as John looking at a run he isn't going to ("You're not going", locked). Sim appears in the list like any other player.
@@ -149,6 +158,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Who's coming, admin view:** each row also shows stars and the Unpaid badge, and the bottom nav includes the Admin tab.
 
 ### 04 Teams (`04-teams.dc.html`)
+- **V2 look:** see Team card and Pitch under Shared components. The Table / Field control is a pill with the selected side in the button gradient.
 - **Top:** the run summary, a Table / Field segmented control, and a small "Published 5:30 AM" label under it (6:00 AM for a 7:00 AM outdoor run).
 - **Table view, player:** one card per team. The header strip is filled in the team colour. Rows show avatar, name, the "Morning of" badge and the position tag. The footer shows **player count and ATT:DEF ratio** only.
 - **Table view, admin:** rows also show stars and the Unpaid badge, and the footer adds **total stars**.
@@ -157,6 +167,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Field flags:** players see only amber Morning-of dots, and the legend lists Morning of only. Admins also see red Unpaid dots and a matching legend entry.
 
 ### 05 Settings (`05-settings.dc.html`)
+- **Appearance (new in V2):** a three-option control, **Light / Dark / System**, between Notifications and Privacy. Light is selected by default. Choosing Dark switches the app to dark mode; System follows the phone and shows "Follows your phone's light or dark setting." Store the choice per user (and on the device for a fast first paint).
 - **Profile card:** avatar, name, a Paid chip, email, and a pencil button to edit the display name.
 - **Notifications:** three switches, in this order: "Night-before reminder", "Teams published", "Changes and cancellations".
 - **Privacy:** a privacy policy link.

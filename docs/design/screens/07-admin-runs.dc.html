@@ -2,86 +2,86 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FirstTouch · Admin runs</title>
+<title>FirstTouch V2 · Admin runs</title>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 body{margin:0}
-a{color:#0E4D32}a:hover{color:#0A3A26}
+a{color:inherit}
 </style>
 </helmet>
-<div style="position: relative; width: 390px; height: {{rootH}}; box-sizing: border-box; background: #F4F3EE; color: #121A15; font-family: 'Archivo', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<div style="position: relative; width: 390px; height: {{rootH}}; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
   <div style="flex-grow: 1; min-height: 0; padding: 16px 16px 16px; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
     <div style="display: flex; align-items: center; justify-content: space-between">
       <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Admin</h1>
-      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: #0E4D32; color: #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; letter-spacing: 0.04em">ADMIN</span>
+      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{t.hero}}; color: #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; letter-spacing: 0.04em">ADMIN</span>
     </div>
     <nav aria-label="Admin sections" style="display: flex; gap: 6px">
-      <a href="AdminPlayers.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E2E1D9; box-sizing: border-box; color: #121A15; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Players</a>
-      <a href="RunManager.dc.html" aria-current="page" style="height: 44px; padding: 0 14px; border-radius: 999px; background: #121A15; color: #FFFFFF; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Runs</a>
-      <a href="TeamBuilder.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E2E1D9; box-sizing: border-box; color: #121A15; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Team builder</a>
-      <a href="SeasonPasses.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: #FFFFFF; border: 1px solid #E2E1D9; box-sizing: border-box; color: #121A15; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Passes</a>
+      <a href="V2AdminPlayers.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Players</a>
+      <a href="V2RunManager.dc.html" aria-current="page" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.ink}}; color: {{t.onBrand}}; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Runs</a>
+      <a href="V2TeamBuilder.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Team builder</a>
+      <a href="V2SeasonPasses.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Passes</a>
     </nav>
 
-    <h2 style="margin: 6px 4px 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #56625B">Next run</h2>
-    <article style="border-radius: 22px; background: #FFFFFF; border: 1px solid #E2E1D9; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+    <h2 style="margin: 6px 4px 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.muted}}">Next run</h2>
+    <article style="border-radius: 22px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 16px; display: flex; flex-direction: column; gap: 12px">
       <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
         <div>
           <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.01em">Sun, Feb 14</div>
-          <div style="font-size: 14px; color: #56625B; margin-top: 2px">6:30 AM · 7855 Finch Ave W, Brampton</div>
+          <div style="font-size: 14px; color: {{t.muted}}; margin-top: 2px">6:30 AM · 7855 Finch Ave W, Brampton</div>
         </div>
         <span style="height: 28px; flex-shrink: 0; padding: 0 10px; border-radius: 999px; background: {{chip.bg}}; color: {{chip.fg}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px; white-space: nowrap">
           <span style="width: 8px; height: 8px; border-radius: 50%; background: {{chip.fg}}"></span>{{chip.label}}
         </span>
       </div>
       <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-        <div style="border-radius: 14px; background: #F4F3EE; padding: 8px 10px"><div style="font-size: 20px; font-weight: 800">{{stats.going}}</div><div style="font-size: 12px; color: #56625B; font-weight: 600">going</div></div>
-        <div style="border-radius: 14px; background: #F4F3EE; padding: 8px 10px"><div style="font-size: 20px; font-weight: 800">{{stats.ratio}}</div><div style="font-size: 12px; color: #56625B; font-weight: 600">ATT : DEF</div></div>
-        <div style="border-radius: 14px; background: #F4F3EE; padding: 8px 10px"><div style="font-size: 20px; font-weight: 800">{{stats.flagged}}</div><div style="font-size: 12px; color: #56625B; font-weight: 600">flagged</div></div>
+        <div style="border-radius: 14px; background: {{t.bg}}; padding: 8px 10px"><div style="font-size: 20px; font-weight: 800">{{stats.going}}</div><div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">going</div></div>
+        <div style="border-radius: 14px; background: {{t.bg}}; padding: 8px 10px"><div style="font-size: 20px; font-weight: 800">{{stats.ratio}}</div><div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">ATT : DEF</div></div>
+        <div style="border-radius: 14px; background: {{t.bg}}; padding: 8px 10px"><div style="font-size: 20px; font-weight: 800">{{stats.flagged}}</div><div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">flagged</div></div>
       </div>
-      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #56625B">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: {{t.muted}}">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>{{line}}
       </div>
       <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
-        <div style="border-radius: 14px; background: #FEF3C7; color: #92400E; padding: 12px 14px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 10px">
+        <div style="border-radius: 14px; background: {{t.amberBg}}; color: {{t.amberFg}}; padding: 12px 14px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 10px">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>
           Not enough players — no teams made
         </div>
       </sc-if>
       <sc-if value="{{ isPublished }}" hint-placeholder-val="{{ false }}">
-        <a href="TeamBuilder.dc.html" style="height: 52px; border-radius: 16px; background: #0E4D32; color: #FFFFFF; font-size: 17px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center">View teams</a>
+        <a href="V2TeamBuilder.dc.html" style="height: 52px; border-radius: 16px; background: {{t.btn}}; color: {{t.onBrand}}; font-size: 17px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center">View teams</a>
       </sc-if>
     </article>
 
     <div style="display: flex; align-items: baseline; justify-content: space-between; margin: 6px 4px 0">
-      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #56625B">Flagged · Sun, Feb 14</h2>
-      <span style="font-size: 12px; color: #56625B; font-weight: 600">Still playing</span>
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.muted}}">Flagged · Sun, Feb 14</h2>
+      <span style="font-size: 12px; color: {{t.muted}}; font-weight: 600">Still playing</span>
     </div>
-    <ul style="list-style: none; margin: 0; padding: 0 14px; border-radius: 20px; background: #FFFFFF; border: 1px solid #E2E1D9">
+    <ul style="list-style: none; margin: 0; padding: 0 14px; border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}">
       <sc-for list="{{ flagged }}" as="p" hint-placeholder-count="5">
         <li style="height: 50px; display: flex; align-items: center; gap: 10px; border-top: {{p.divider}}">
-          <span style="width: 32px; height: 32px; border-radius: 50%; background: #ECEBE4; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{p.ini}}</span>
+          <span style="width: 32px; height: 32px; border-radius: 50%; background: {{t.surface2}}; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{p.ini}}</span>
           <span style="flex-grow: 1; font-size: 15px; font-weight: 700">{{p.name}}</span>
-          <span style="font-size: 12px; color: #56625B; font-weight: 600">{{p.note}}</span>
+          <span style="font-size: 12px; color: {{t.muted}}; font-weight: 600">{{p.note}}</span>
           <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{p.bg}}; color: {{p.fg}}; font-size: 11px; font-weight: 800; display: flex; align-items: center">{{p.label}}</span>
         </li>
       </sc-for>
     </ul>
 
     <div style="display: flex; align-items: center; justify-content: space-between; margin: 10px 4px 0">
-      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #56625B">Season</h2>
-      <a href="Holidays.dc.html" style="min-height: 44px; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 4px">Holidays
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.muted}}">Season</h2>
+      <a href="V2Holidays.dc.html" style="color: {{t.brandText}}; min-height: 44px; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 4px">Holidays
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
       </a>
     </div>
-    <section aria-label="Season" style="border-radius: 22px; background: #FFFFFF; border: 1px solid #E2E1D9; padding: 14px; display: flex; flex-direction: column; gap: 12px">
+    <section aria-label="Season" style="border-radius: 22px; background: {{t.surface}}; border: 1px solid {{t.line}}; padding: 14px; display: flex; flex-direction: column; gap: 12px">
       <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px">
         <div style="font-size: 20px; font-weight: 800">{{seasonTitle}}</div>
-        <div role="group" aria-label="Season type" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; padding: 3px; border-radius: 12px; background: #ECEBE4">
+        <div role="group" aria-label="Season type" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; padding: 3px; border-radius: 12px; background: {{t.surface2}}">
           <sc-for list="{{ seasons }}" as="s" hint-placeholder-count="2">
             <button type="button" aria-pressed="{{s.pressed}}" onClick="{{ s.pick }}" style="height: 38px; padding: 0 12px; border: none; border-radius: 9px; background: {{s.bg}}; color: {{s.fg}}; font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{s.label}}</button>
           </sc-for>
@@ -90,55 +90,55 @@ a{color:#0E4D32}a:hover{color:#0A3A26}
       <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
         <div style="display: flex; flex-direction: column; gap: 6px">
           <label for="season-start" style="font-size: 13px; font-weight: 700">Start date</label>
-          <input id="season-start" type="text" value="{{startDate}}" style="height: 48px; border-radius: 14px; border: 1.5px solid #D6D5CC; background: #FFFFFF; padding: 0 12px; font-family: inherit; font-size: 15px; color: #121A15; box-sizing: border-box; width: 100%">
+          <input id="season-start" type="text" value="{{startDate}}" style="height: 48px; border-radius: 14px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 12px; font-family: inherit; font-size: 15px; color: {{t.ink}}; box-sizing: border-box; width: 100%">
         </div>
         <div style="display: flex; flex-direction: column; gap: 6px">
           <label for="season-end" style="font-size: 13px; font-weight: 700">End date</label>
-          <input id="season-end" type="text" value="{{endDate}}" style="height: 48px; border-radius: 14px; border: 1.5px solid #D6D5CC; background: #FFFFFF; padding: 0 12px; font-family: inherit; font-size: 15px; color: #121A15; box-sizing: border-box; width: 100%">
+          <input id="season-end" type="text" value="{{endDate}}" style="height: 48px; border-radius: 14px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 12px; font-family: inherit; font-size: 15px; color: {{t.ink}}; box-sizing: border-box; width: 100%">
         </div>
       </div>
-      <button type="button" style="height: 48px; border: none; border-radius: 14px; background: #0E4D32; color: #FFFFFF; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Create runs</button>
-      <div style="font-size: 13px; color: #56625B; line-height: 1.4">{{seasonNote}}</div>
+      <button type="button" style="height: 48px; border: none; border-radius: 14px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Create runs</button>
+      <div style="font-size: 13px; color: {{t.muted}}; line-height: 1.4">{{seasonNote}}</div>
     </section>
 
     <div style="display: flex; align-items: baseline; justify-content: space-between; margin: 6px 4px 0">
-      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #56625B">All runs this season</h2>
-      <span style="font-size: 12px; color: #56625B; font-weight: 600">Tap a run to edit</span>
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: {{t.muted}}">All runs this season</h2>
+      <span style="font-size: 12px; color: {{t.muted}}; font-weight: 600">Tap a run to edit</span>
     </div>
-    <ul style="list-style: none; margin: 0; padding: 0; border-radius: 20px; background: #FFFFFF; border: 1px solid #E2E1D9; overflow: hidden">
+    <ul style="list-style: none; margin: 0; padding: 0; border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}; overflow: hidden">
       <sc-for list="{{ runs }}" as="r" hint-placeholder-count="9">
         <li style="border-top: {{r.divider}}">
-          <button type="button" onClick="{{ r.open }}" style="width: 100%; min-height: 68px; border: none; background: {{r.bg}}; padding: 10px 12px; font-family: inherit; color: #121A15; text-align: left; display: flex; align-items: center; gap: 12px; cursor: pointer">
+          <button type="button" onClick="{{ r.open }}" style="width: 100%; min-height: 68px; border: none; background: {{r.bg}}; padding: 10px 12px; font-family: inherit; color: {{t.ink}}; text-align: left; display: flex; align-items: center; gap: 12px; cursor: pointer">
             <span style="width: 44px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; line-height: 1.05">
-              <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #56625B">{{r.dow}}</span>
+              <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: {{t.muted}}">{{r.dow}}</span>
               <span style="font-size: 20px; font-weight: 800">{{r.day}}</span>
-              <span style="font-size: 11px; font-weight: 700; color: #56625B">{{r.mon}}</span>
+              <span style="font-size: 11px; font-weight: 700; color: {{t.muted}}">{{r.mon}}</span>
             </span>
             <span style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
               <sc-if value="{{ r.hasHoliday }}" hint-placeholder-val="{{ false }}">
-                <span style="font-size: 13px; font-weight: 800; color: #0E4D32">{{r.holiday}}</span>
+                <span style="font-size: 13px; font-weight: 800; color: {{t.brandText}}">{{r.holiday}}</span>
               </sc-if>
               <span style="font-size: 14px; font-weight: 700">{{r.time}} · 7855 Finch Ave W</span>
-              <span style="font-size: 13px; color: #56625B">{{r.going}}</span>
+              <span style="font-size: 13px; color: {{t.muted}}">{{r.going}}</span>
             </span>
             <span style="height: 24px; flex-shrink: 0; padding: 0 8px; border-radius: 999px; background: {{r.chipBg}}; color: {{r.chipFg}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; white-space: nowrap">{{r.status}}</span>
           </button>
         </li>
       </sc-for>
     </ul>
-    <a href="#" style="align-self: center; min-height: 44px; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Show all 52 runs</a>
+    <a href="#" style="color: {{t.brandText}}; align-self: center; min-height: 44px; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Show all 52 runs</a>
   </div>
-  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 8px 20px; background: #FFFFFF; border-top: 1px solid #E2E1D9; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
-    <a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #56625B; font-size: 12px; font-weight: 600">
+  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 8px 20px; background: {{t.surface}}; border-top: 1px solid {{t.line}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="V2Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
     </a>
-    <a href="Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #56625B; font-size: 12px; font-weight: 600">
+    <a href="V2Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 3 6l2 5 3-1v11h8V10l3 1 2-5-5-3c-.5 1.5-2 2.5-4 2.5S8.5 4.5 8 3z"></path></svg>Teams
     </a>
-    <a href="AdminPlayers.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #0E4D32; font-size: 12px; font-weight: 800">
+    <a href="V2AdminPlayers.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 800">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Admin
     </a>
-    <a href="Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: #56625B; font-size: 12px; font-weight: 600">
+    <a href="V2Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"></path><circle cx="15" cy="6" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Settings
     </a>
   </nav>
@@ -147,56 +147,57 @@ a{color:#0E4D32}a:hover{color:#0A3A26}
     <div style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: rgba(18,26,21,0.5)"></div>
   </sc-if>
   <sc-if value="{{ isSheet }}" hint-placeholder-val="{{ false }}">
-    <section role="dialog" aria-label="Edit run" style="position: absolute; left: 0; right: 0; bottom: 0; border-radius: 28px 28px 0 0; background: #FFFFFF; padding: 10px 20px 28px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 -8px 24px rgba(18,26,21,0.18)">
-      <span style="align-self: center; width: 40px; height: 5px; border-radius: 999px; background: #D6D5CC"></span>
+    <section role="dialog" aria-label="Edit run" style="position: absolute; left: 0; right: 0; bottom: 0; border-radius: 28px 28px 0 0; background: {{t.surface}}; padding: 10px 20px 28px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 -8px 24px rgba(18,26,21,0.18)">
+      <span style="align-self: center; width: 40px; height: 5px; border-radius: 999px; background: {{t.inputBorder}}"></span>
       <div style="display: flex; align-items: flex-start; justify-content: space-between">
         <div>
           <h2 style="margin: 0; font-size: 22px; font-weight: 800">{{sel.title}}</h2>
-          <div style="font-size: 14px; color: #56625B; margin-top: 2px">{{sel.sub}}</div>
+          <div style="font-size: 14px; color: {{t.muted}}; margin-top: 2px">{{sel.sub}}</div>
         </div>
-        <button type="button" aria-label="Close" onClick="{{ closeAll }}" style="width: 44px; height: 44px; border: none; border-radius: 12px; background: #ECEBE4; color: #121A15; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <button type="button" aria-label="Close" onClick="{{ closeAll }}" style="width: 44px; height: 44px; border: none; border-radius: 12px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
         </button>
       </div>
       <div style="display: flex; flex-direction: column; gap: 6px">
         <label for="run-time" style="font-size: 14px; font-weight: 700">Start time</label>
-        <input id="run-time" type="text" value="6:30 AM" aria-describedby="run-time-hint" style="height: 52px; border-radius: 14px; border: 1.5px solid #D6D5CC; background: #FFFFFF; padding: 0 14px; font-family: inherit; font-size: 16px; color: #121A15; box-sizing: border-box">
-        <span id="run-time-hint" style="font-size: 13px; color: #56625B">RSVPs close and teams publish 1 hour before</span>
+        <input id="run-time" type="text" value="6:30 AM" aria-describedby="run-time-hint" style="height: 52px; border-radius: 14px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 14px; font-family: inherit; font-size: 16px; color: {{t.ink}}; box-sizing: border-box">
+        <span id="run-time-hint" style="font-size: 13px; color: {{t.muted}}">RSVPs close and teams publish 1 hour before</span>
       </div>
       <div style="display: flex; flex-direction: column; gap: 6px">
         <label for="run-address" style="font-size: 14px; font-weight: 700">Address</label>
-        <input id="run-address" type="text" value="7855 Finch Ave W, Brampton" style="height: 52px; border-radius: 14px; border: 1.5px solid #D6D5CC; background: #FFFFFF; padding: 0 14px; font-family: inherit; font-size: 16px; color: #121A15; box-sizing: border-box">
+        <input id="run-address" type="text" value="7855 Finch Ave W, Brampton" style="height: 52px; border-radius: 14px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 14px; font-family: inherit; font-size: 16px; color: {{t.ink}}; box-sizing: border-box">
       </div>
-      <button type="button" onClick="{{ closeAll }}" style="height: 52px; border: none; border-radius: 16px; background: #0E4D32; color: #FFFFFF; font-family: inherit; font-size: 17px; font-weight: 800; cursor: pointer">Save changes</button>
-      <button type="button" onClick="{{ askDelete }}" style="height: 48px; border: none; background: transparent; color: #B91C1C; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Delete run</button>
+      <button type="button" onClick="{{ closeAll }}" style="height: 52px; border: none; border-radius: 16px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 17px; font-weight: 800; cursor: pointer">Save changes</button>
+      <button type="button" onClick="{{ askDelete }}" style="height: 48px; border: none; background: transparent; color: {{t.redFg}}; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Delete run</button>
     </section>
   </sc-if>
   <sc-if value="{{ isConfirm }}" hint-placeholder-val="{{ false }}">
-    <section role="alertdialog" aria-label="Delete run" style="position: absolute; left: 24px; right: 24px; top: 280px; border-radius: 24px; background: #FFFFFF; padding: 22px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 16px 40px rgba(18,26,21,0.25)">
+    <section role="alertdialog" aria-label="Delete run" style="position: absolute; left: 24px; right: 24px; top: 280px; border-radius: 24px; background: {{t.surface}}; padding: 22px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 16px 40px rgba(18,26,21,0.25)">
       <h2 style="margin: 0; font-size: 21px; font-weight: 800">Delete {{sel.title}}?</h2>
-      <p style="margin: 0; font-size: 16px; line-height: 1.45; color: #3B4640">{{sel.count}} players said yes. They'll be told this run is cancelled.</p>
+      <p style="margin: 0; font-size: 16px; line-height: 1.45; color: {{t.ink2}}">{{sel.count}} players said yes. They'll be told this run is cancelled.</p>
       <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 8px">
-        <button type="button" onClick="{{ backToSheet }}" style="height: 50px; border: 1.5px solid #D6D5CC; border-radius: 14px; background: #FFFFFF; color: #121A15; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Cancel</button>
+        <button type="button" onClick="{{ backToSheet }}" style="height: 50px; border: 1.5px solid {{t.inputBorder}}; border-radius: 14px; background: {{t.surface}}; color: {{t.ink}}; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Cancel</button>
         <button type="button" onClick="{{ closeAll }}" style="height: 50px; border: none; border-radius: 14px; background: #B91C1C; color: #FFFFFF; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Delete</button>
       </div>
     </section>
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"status":{"editor":"enum","options":["open","locked","published","cancelled","empty"],"default":"open"},"overlay":{"editor":"enum","options":["none","sheet","confirm"],"default":"none"},"compact":{"editor":"boolean","default":false},"$preview":{"width":390,"height":1880}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"status":{"editor":"enum","options":["open","locked","published","cancelled","empty"],"default":"open"},"overlay":{"editor":"enum","options":["none","sheet","confirm"],"default":"none"},"compact":{"editor":"boolean","default":false},"$preview":{"width":390,"height":1880}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.state = { overlay: null, sel: 6, season: 'indoor' };
   }
-  renderVals() {
+  renderVals0() {
+    const T = this.tok();
     const status = this.props.status ?? 'open';
     const overlay = this.state.overlay ?? this.props.overlay ?? 'none';
     const CH = {
-      open: { label: 'Open', bg: '#DCFCE7', fg: '#166534' },
-      locked: { label: 'Locked', bg: '#E7E5E1', fg: '#3D3A35' },
-      published: { label: 'Teams published', bg: '#0E4D32', fg: '#FFFFFF' },
-      cancelled: { label: 'Cancelled', bg: '#FEE2E2', fg: '#B91C1C' }
+      open: { label: 'Open', bg: T.okBg, fg: T.okFg },
+      locked: { label: 'Locked', bg: T.lockedBg, fg: T.lockedFg },
+      published: { label: 'Teams published', bg: T.brand, fg: T.onBrand },
+      cancelled: { label: 'Cancelled', bg: T.redBg, fg: T.redFg }
     };
     const LINES = {
       open: 'RSVPs close 5:30 AM · teams publish automatically',
@@ -214,8 +215,8 @@ class Component extends DCLogic {
       name, note,
       ini: name.split(' ').map((w) => w[0]).join(''),
       label: f === 'M' ? 'Morning of' : 'Unpaid',
-      bg: f === 'M' ? '#FEF3C7' : '#FEE2E2',
-      fg: f === 'M' ? '#92400E' : '#B91C1C',
+      bg: f === 'M' ? T.amberBg : T.redBg,
+      fg: f === 'M' ? T.amberFg : T.redFg,
       divider: i === 0 ? 'none' : '1px solid #ECEBE4'
     }));
     const runsRaw = [
@@ -237,7 +238,7 @@ class Component extends DCLogic {
       going: note || (n + ' going'),
       status: CH[st].label, chipBg: CH[st].bg, chipFg: CH[st].fg,
       divider: i === 0 ? 'none' : '1px solid #ECEBE4',
-      bg: i === this.state.sel && overlay !== 'none' ? '#F4F3EE' : '#FFFFFF',
+      bg: i === this.state.sel && overlay !== 'none' ? T.bg : T.surface,
       open: () => this.setState({ overlay: 'sheet', sel: i })
     }));
     const s = runsRaw[this.state.sel];
@@ -249,7 +250,7 @@ class Component extends DCLogic {
     const indoor = this.state.season === 'indoor';
     const seasons = [['indoor', 'Indoor'], ['outdoor', 'Outdoor']].map(([id, label]) => {
       const on = id === this.state.season;
-      return { label, pressed: on ? 'true' : 'false', bg: on ? '#121A15' : 'transparent', fg: on ? '#FFFFFF' : '#56625B', pick: () => this.setState({ season: id }) };
+      return { label, pressed: on ? 'true' : 'false', bg: on ? T.ink : 'transparent', fg: on ? T.onBrand : T.muted, pick: () => this.setState({ season: id }) };
     });
     const compact = !!this.props.compact || overlay !== 'none';
     return {
@@ -270,6 +271,41 @@ class Component extends DCLogic {
       askDelete: () => this.setState({ overlay: 'confirm' }),
       backToSheet: () => this.setState({ overlay: 'sheet' })
     };
+  }
+  tok() {
+    const light = this.props.theme !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
+      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
+      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const v = this.renderVals0();
+    v.t = this.tok();
+    return v;
   }
 }
 </script>
