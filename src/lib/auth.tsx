@@ -25,13 +25,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // 2. Listen for changes: sign in, sign out, token refresh.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
+      // Whenever the user is signed out (button, expired session, or another tab), throw away
+      // every cached query so the next account on this browser never sees this one's data.
+      if (event === 'SIGNED_OUT') queryClient.clear();
     });
 
     // 3. Stop listening if this component is ever removed.
     return () => subscription.unsubscribe();
-  }, []);
+  }, [queryClient]);
 
   async function signInWithGoogle() {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -44,7 +47,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function signOut() {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
-    queryClient.clear();
   }
 
   return (
