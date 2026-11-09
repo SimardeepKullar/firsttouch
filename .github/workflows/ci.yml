@@ -34,6 +34,11 @@ jobs:
       - name: Lint the database functions
         run: npx supabase db lint --fail-on error
 
+      # pgTAP tests in supabase/tests/database: RLS policies, grants and the
+      # guard/security-definer functions do what docs/spec.md says.
+      - name: Run the database tests
+        run: npx supabase test db
+
       - name: Check database.types.ts matches the migrations
         run: |
           npx supabase gen types typescript > "$RUNNER_TEMP/database.types.ts"

@@ -51,6 +51,7 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "verify": "npm run typecheck && npm run lint && npm test",
+    "test:db": "supabase test db",
     "db:types": "supabase gen types typescript > src/lib/database.types.ts",
     "db:push:dev": "supabase db push --remote=mzzzauexjousasuwvyax",
     "prepare": "git config core.hooksPath .githooks || exit 0"

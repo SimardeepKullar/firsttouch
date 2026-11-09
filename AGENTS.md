@@ -56,7 +56,7 @@ git checkout main && git pull
 ```
 
 - **Never commit or push straight to `main`.** The `.githooks/pre-push` hook (installed by `npm install`) blocks it and runs `npm run verify` before every push.
-- **Merge only when CI is green.** CI (`.github/workflows/ci.yml`) runs `npm run verify`, starts a throwaway local Supabase (which runs every migration and `seed.sql`), lints the database, and checks `src/lib/database.types.ts` is up to date.
+- **Merge only when CI is green.** CI (`.github/workflows/ci.yml`) runs `npm run verify`, starts a throwaway local Supabase (which runs every migration and `seed.sql`), lints the database, runs the database tests, and checks `src/lib/database.types.ts` is up to date.
 - Commits on a branch: `feat(T-NN): ...`, `fix(T-NN): ...`, `test(T-NN): ...`, `chore(T-NN): ...`.
 - Finish (merge) one ticket before starting the next.
 
@@ -73,5 +73,12 @@ Rules that keep prod safe:
 - Never run `supabase db push`, `db reset` or SQL against prod from a terminal. Prod changes only through migrations merged to `main`.
 - Database changes are migration files, never dashboard edits. Until the first prod deploy, migrations may be edited in place (`npx supabase db reset` locally). From the first prod deploy on they are append-only: every change is a new migration file.
 - After changing a migration, run `npm run db:types` and commit the result (CI fails otherwise).
+
+## Database tests
+
+pgTAP tests in `supabase/tests/database/*.test.sql` check the RLS policies, grants and guard functions against the local database. Run them with `npm run test:db` (needs `npx supabase start`); CI runs them on every PR.
+
+- **Every new policy or security-definer function gets a test**, covering both what it allows and what it blocks.
+- Each file runs in a transaction and rolls back, and creates its own users with `tests.create_user(...)` (never relies on `seed.sql`). Act as a user with `tests.act_as(<uuid>)` or `tests.act_as_anon()`, and `reset role;` before switching. The helpers are in `00_helpers.test.sql`.
 
 Setup steps for the prod project, GitHub and Cloudflare are in `docs/environments.md`.
