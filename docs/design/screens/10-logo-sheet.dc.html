@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch · Logo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1440px; height: 700px; box-sizing: border-box; background: #ECEBE4; color: #121A15; font-family: 'Archivo', system-ui, sans-serif; padding: 40px; display: flex; flex-direction: column; gap: 24px">
+  <div style="display: flex; align-items: baseline; gap: 16px">
+    <h1 style="margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -0.02em">First<span style="color: #0E4D32">Touch</span></h1>
+    <span style="font-size: 18px; font-weight: 600; color: #56625B">App logo · icon, sizes, lockups and colours</span>
+  </div>
+  <div style="display: grid; grid-template-columns: 560px minmax(0, 1fr); gap: 24px; flex-grow: 1">
+
+    <section aria-label="App icon" style="border-radius: 24px; background: #FFFFFF; padding: 32px; display: flex; flex-direction: column; justify-content: space-between">
+      <div style="font-size: 14px; font-weight: 800; letter-spacing: 0.1em; color: #56625B">APP ICON</div>
+      <div style="display: flex; justify-content: center">
+        <img src="/_blob/3dfcf1bac4cf45bac56a39dd2306c225" alt="FirstTouch app icon" width="232" height="232" style="width: 232px; height: 232px; display: block; filter: drop-shadow(0 14px 28px rgba(4,21,15,0.28))">
+      </div>
+      <div>
+        <div style="font-size: 14px; font-weight: 800; letter-spacing: 0.1em; color: #56625B; margin-bottom: 12px">SIZES</div>
+        <div style="display: flex; align-items: flex-end; gap: 20px">
+          <sc-for list="{{ sizes }}" as="s" hint-placeholder-count="6">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+              <img src="/_blob/3dfcf1bac4cf45bac56a39dd2306c225" alt="" width="{{s.n}}" height="{{s.n}}" style="width: {{s.px}}; height: {{s.px}}; display: block">
+              <span style="font-size: 12px; font-weight: 700; color: #56625B">{{s.n}}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <div style="display: flex; flex-direction: column; gap: 16px">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+        <sc-for list="{{ lockups }}" as="l" hint-placeholder-count="3">
+          <div style="border-radius: 20px; background: {{l.bg}}; box-shadow: {{l.ring}}; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+            <span style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: {{l.label}}">{{l.name}}</span>
+            <div style="display: flex; align-items: center; gap: 12px; height: 56px">
+              <img src="/_blob/3dfcf1bac4cf45bac56a39dd2306c225" alt="" width="52" height="52" style="width: 52px; height: 52px; display: block">
+              <span style="font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: {{l.ink}}">First<span style="color: {{l.accent}}">Touch</span></span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <section aria-label="Logo colours" style="flex-grow: 1; border-radius: 24px; background: #FFFFFF; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px">
+        <div style="font-size: 14px; font-weight: 800; letter-spacing: 0.1em; color: #56625B">LOGO COLOURS</div>
+        <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px">
+          <sc-for list="{{ swatches }}" as="c" hint-placeholder-count="6">
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <div style="height: 96px; border-radius: 14px; background: {{c.hex}}; box-shadow: inset 0 0 0 1px rgba(18,26,21,0.12)"></div>
+              <div style="font-size: 14px; font-weight: 800">{{c.name}}</div>
+              <div style="font-size: 13px; font-weight: 600; color: #56625B; font-family: ui-monospace, monospace">{{c.hex}}</div>
+              <div style="font-size: 12px; color: #56625B; line-height: 1.35">{{c.use}}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top: auto; border-radius: 12px; background: #F4F3EE; padding: 12px 16px; font-size: 13px; line-height: 1.5; color: #3B4640">
+          Icon background is a diagonal fade from Pine (top left) to Deep pitch (bottom right). On light backgrounds, set “Touch” in Pitch green, because Touch green is too pale to read there.
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      sizes: [120, 80, 60, 40, 29, 20].map((n) => ({ n, px: n + 'px' })),
+      lockups: [
+        { name: 'ON LIGHT', bg: '#F4F3EE', ring: 'inset 0 0 0 1px #E2E1D9', label: '#56625B', ink: '#121A15', accent: '#0E4D32' },
+        { name: 'ON GRAPHITE', bg: '#151514', ring: 'none', label: '#A8A69E', ink: '#FFFFFF', accent: '#62CC7E' },
+        { name: 'ON PITCH GREEN', bg: '#0E4D32', ring: 'none', label: '#B9DCC8', ink: '#FFFFFF', accent: '#62CC7E' }
+      ],
+      swatches: [
+        { name: 'Touch green', hex: '#62CC7E', use: 'Lower stroke of the F; “Touch” on dark' },
+        { name: 'White', hex: '#FFFFFF', use: 'Upper stroke of the F; “First” on dark' },
+        { name: 'Pine', hex: '#34614E', use: 'Top-left of the icon fade and edge highlight' },
+        { name: 'Forest', hex: '#1D472B', use: 'Middle of the icon fade' },
+        { name: 'Deep pitch', hex: '#04150F', use: 'Bottom-right of the icon fade' },
+        { name: 'Pitch green', hex: '#0E4D32', use: '“Touch” on light; app primary' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

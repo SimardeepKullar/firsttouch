@@ -39,3 +39,39 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+
+## Workflow: one ticket, one branch, one PR
+
+Every feature, bug fix or task is a **ticket**: a GitHub issue titled `T-NN · <title>`, made from the *Ticket* issue template. One ticket = one branch = one squashed commit on `main`, so every commit on `main` is a state CI has checked.
+
+```bash
+git checkout main && git pull
+git checkout -b ticket/T-NN-short-slug   # next free T-number
+# ...work, committing small steps on the branch...
+npm run verify                           # typecheck + lint + tests
+git push -u origin ticket/T-NN-short-slug
+# open a PR (template asks for "Closes #<issue>"), wait for CI to go green,
+# then "Squash and merge" titled "T-NN · <title>", and delete the branch
+git checkout main && git pull
+```
+
+- **Never commit or push straight to `main`.** The `.githooks/pre-push` hook (installed by `npm install`) blocks it and runs `npm run verify` before every push.
+- **Merge only when CI is green.** CI (`.github/workflows/ci.yml`) runs `npm run verify`, starts a throwaway local Supabase (which runs every migration and `seed.sql`), lints the database, and checks `src/lib/database.types.ts` is up to date.
+- Commits on a branch: `feat(T-NN): ...`, `fix(T-NN): ...`, `test(T-NN): ...`, `chore(T-NN): ...`.
+- Finish (merge) one ticket before starting the next.
+
+## Environments: dev and prod
+
+| | Database | Web app | Keys live in | Changed by |
+| --- | --- | --- | --- | --- |
+| **local** | `npx supabase start` (Docker) | — | built in | anything: reset freely |
+| **dev** | Supabase `firsttouch-dev` (`mzzzauexjousasuwvyax`) | `npx expo start`; Cloudflare preview per branch | `.env.development` (gitignored); Cloudflare *Preview* vars | `npm run db:push:dev` |
+| **prod** | Supabase `firsttouch-prod` | `firsttouch.pages.dev` from `main` | GitHub secrets + Cloudflare *Production* vars only | **only** CI's `deploy-prod` job, after a merge to `main` |
+
+Rules that keep prod safe:
+- Never create `.env.production` or put a prod key, ref or password in any file. With none on disk, nothing run locally can reach prod.
+- Never run `supabase db push`, `db reset` or SQL against prod from a terminal. Prod changes only through migrations merged to `main`.
+- Database changes are migration files, never dashboard edits. Until the first prod deploy, migrations may be edited in place (`npx supabase db reset` locally). From the first prod deploy on they are append-only: every change is a new migration file.
+- After changing a migration, run `npm run db:types` and commit the result (CI fails otherwise).
+
+Setup steps for the prod project, GitHub and Cloudflare are in `docs/environments.md`.

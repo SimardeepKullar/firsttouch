@@ -1,0 +1,15 @@
+#!/bin/sh
+# Runs automatically before every `git push`.
+set -e
+
+# 1. Refuse to push straight to main. Changes reach main only through a PR.
+#    (Git passes one line per branch being pushed: local ref, sha, remote ref, sha.)
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  if [ "$remote_ref" = "refs/heads/main" ]; then
+    echo "Blocked: never push to main. Push your ticket branch and open a PR." >&2
+    exit 1
+  fi
+done
+
+# 2. The same checks CI runs first, so problems show up before GitHub sees them.
+npm run verify
