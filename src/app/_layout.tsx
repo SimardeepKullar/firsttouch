@@ -7,7 +7,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/inter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
+import { DefaultTheme, Stack, ThemeProvider, type Theme } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
@@ -19,6 +19,13 @@ import { initTheme } from '../lib/theme';
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
+
+// The navigator paints its own background behind every screen (a flat grey by default).
+// Make it transparent so the `page` background on the wrapper below shows through.
+const navigationTheme: Theme = {
+  ...DefaultTheme,
+  colors: { ...DefaultTheme.colors, background: 'transparent' },
+};
 
 function RootNavigator() {
   const { session, loading } = useAuth();
@@ -34,16 +41,16 @@ function RootNavigator() {
   const signedIn = session !== null;
 
   return (
-    // Screens are transparent so the `page` background (set on the wrapper) shows through.
+    // Every screen sits on the `page` background: the soft green glow top-right over `bg`.
     <View className="flex-1 bg-bg bg-page">
-    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}>
-      <Stack.Protected guard={signedIn}>
-        <Stack.Screen name="(app)" />
-      </Stack.Protected>
-      <Stack.Protected guard={!signedIn}>
-        <Stack.Screen name="sign-in" />
-      </Stack.Protected>
-    </Stack>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Protected guard={signedIn}>
+          <Stack.Screen name="(app)" />
+        </Stack.Protected>
+        <Stack.Protected guard={!signedIn}>
+          <Stack.Screen name="sign-in" />
+        </Stack.Protected>
+      </Stack>
     </View>
   );
 }
@@ -70,9 +77,11 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RootNavigator />
-      </AuthProvider>
+      <ThemeProvider value={navigationTheme}>
+        <AuthProvider>
+          <RootNavigator />
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
