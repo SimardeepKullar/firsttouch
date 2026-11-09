@@ -8,7 +8,7 @@ export default function Home() {
 
   if (me.isLoading) {
     return (
-      <View className="flex-1 items-center justify-center bg-white">
+      <View className="flex-1 items-center justify-center">
         <ActivityIndicator />
       </View>
     );
@@ -16,7 +16,7 @@ export default function Home() {
 
   if (me.error || !me.data) {
     return (
-      <View className="flex-1 items-center justify-center bg-white px-6">
+      <View className="flex-1 items-center justify-center px-6">
         <Text className="text-center text-red-600">
           {`Couldn't load your profile: ${me.error?.message ?? 'no profile found'}`}
         </Text>
@@ -28,7 +28,7 @@ export default function Home() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-white px-6">
+    <View className="flex-1 items-center justify-center px-6">
       <Text className="text-2xl font-bold text-green-900">Hi, {me.data.name}</Text>
 
       {me.data.isAdmin && (

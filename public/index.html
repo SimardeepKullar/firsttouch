@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="%LANG_ISO_CODE%">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>%WEB_TITLE%</title>
+    <!--
+      Theme before first paint (T-05). This runs before the app's JavaScript loads, so the page
+      never shows the wrong theme. It reads the saved choice from localStorage and puts the
+      class on <html> that global.css expects: "dark", "system", or none for light (the default).
+      Keep the key and the values in sync with src/lib/themeMode.ts.
+    -->
+    <script>
+      (function () {
+        var cls = document.documentElement.classList;
+        try {
+          var mode = localStorage.getItem('firsttouch.theme');
+          if (mode === 'dark') cls.add('dark');
+          else if (mode === 'system') cls.add('system');
+        } catch (e) {}
+      })();
+    </script>
+    <!-- Paint the page colour (the `bg` token) straight away, before global.css has loaded. -->
+    <style id="theme-bg">
+      html { background: #F2F6F3; }
+      html.dark { background: #08130E; }
+      @media (prefers-color-scheme: dark) { html.system { background: #08130E; } }
+    </style>
+    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
+    <style id="expo-reset">
+      /* These styles make the body full-height */
+      html,
+      body {
+        height: 100%;
+      }
+      /* These styles disable body scrolling if you are using <ScrollView> */
+      body {
+        overflow: hidden;
+      }
+      /* These styles make the root element full-height */
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <!-- The root element for your Expo app. -->
+    <div id="root"></div>
+  </body>
+</html>
