@@ -6,6 +6,10 @@
 begin;
 select plan(10);
 
+-- run_date is unique, and seed.sql fills the calendar with runs: clear them
+-- (rolled back with the transaction) so the test dates below are free.
+delete from runs;
+
 select tests.create_user('00000000-0000-0000-0000-0000000000b1', 'lock@test.local', '{"full_name":"Lock Player"}');
 
 insert into seasons (id, name, type, default_location, default_start_time)
