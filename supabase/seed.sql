@@ -1,12 +1,20 @@
 -- Local development seed data (runs on `supabase db reset`). Never applied to remote.
 
--- Seasons. The dates are SAMPLE dates, not the real season dates.
+-- "Today" in Toronto. Everything below is placed relative to this, so the sample
+-- data always has a recent published run and upcoming open ones.
+create temporary table seed_ctx on commit drop as
+  select (now() at time zone 'America/Toronto')::date as today;
+
+-- Seasons. Dates are relative to today (not the real season dates): the indoor
+-- season started 8 weeks ago and ends in 20 weeks; outdoor follows it.
 insert into seasons (name, type, starts_on, ends_on, default_location, default_start_time, is_current)
-values
-  ('Indoor 2026-27', 'indoor',  '2026-11-07', '2027-04-25',
+select v.name, v.type::season_type, v.starts_on, v.ends_on, v.loc, v.t::time, v.cur
+from seed_ctx c, lateral (values
+  ('Indoor 2026-27', 'indoor',  c.today - 56,  c.today + 140,
    '7855 Finch Ave W, Brampton, ON L6T 0B2', '06:30', true),
-  ('Outdoor 2027',   'outdoor', '2027-05-01', '2027-10-31',
-   '32 Kennedy Rd N, Brampton, ON L6V 1X4',  '07:00', false);
+  ('Outdoor 2027',   'outdoor', c.today + 147, c.today + 330,
+   '32 Kennedy Rd N, Brampton, ON L6V 1X4',  '07:00', false)
+) v(name, type, starts_on, ends_on, loc, t, cur);
 
 -- Holiday Mondays
 select fill_holidays(y) from generate_series(2026, 2028) y;
@@ -81,3 +89,96 @@ update profiles p
        position = s.position
   from seed_users s
  where p.email = s.email;
+
+-- =============================================================================
+-- Runs, RSVPs, passes and teams
+-- =============================================================================
+
+-- generate_season_runs() is admin-only, so pretend John (an admin) is signed in
+-- for the call, then sign him out again.
+select set_config('request.jwt.claims',
+  '{"sub":"00000000-0000-4000-8000-000000000001","role":"authenticated"}', false);
+select generate_season_runs(id) from seasons where type = 'indoor';
+select set_config('request.jwt.claims', '', false);
+
+-- Pick the runs the screens need. Past runs are before today; upcoming are today or later.
+create temporary table seed_runs on commit drop as
+select 'published'::text as kind, id, run_date from (
+  select id, run_date from runs
+   where run_date < (select today from seed_ctx)
+   order by run_date desc limit 1) q
+union all
+select case rn when 1 then 'busy' when 2 then 'quiet' else 'split' end, id, run_date from (
+  select id, run_date, row_number() over (order by run_date) rn from runs
+   where run_date >= (select today from seed_ctx)
+   order by run_date limit 3) q;
+
+-- RSVPs. Coach (n = 3) never gets one. Times are Toronto local.
+-- Published run: 18 yes (two arrive on run day = morning-of), 2 no.
+insert into rsvps (run_id, player_id, going, responded_at)
+select r.id, p.id, u.n <= 19,
+       case when u.n in (17, 18)
+            then (r.run_date + time '00:30') at time zone 'America/Toronto'
+            else (r.run_date - 3 + time '20:00') at time zone 'America/Toronto' end
+  from seed_runs r
+  join seed_users u on u.n in (1, 2) or u.n between 4 and 21
+  join profiles p on p.email = u.email
+ where r.kind = 'published';
+
+-- Busy run: 20 yes (John and Sim included), 2 no.
+insert into rsvps (run_id, player_id, going)
+select r.id, p.id, u.n <= 21
+  from seed_runs r
+  join seed_users u on u.n in (1, 2) or u.n between 4 and 23
+  join profiles p on p.email = u.email
+ where r.kind = 'busy';
+
+-- Quiet run: only 3 yes.
+insert into rsvps (run_id, player_id, going)
+select r.id, p.id, true
+  from seed_runs r
+  join seed_users u on u.n between 4 and 6
+  join profiles p on p.email = u.email
+ where r.kind = 'quiet';
+
+-- Split run: John is going, Sim says no, plus a few others.
+insert into rsvps (run_id, player_id, going)
+select r.id, p.id, u.n <> 2
+  from seed_runs r
+  join seed_users u on u.n in (1, 2, 7, 8, 9)
+  join profiles p on p.email = u.email
+ where r.kind = 'split';
+
+-- Season passes for the indoor season (players only; Coach does not play).
+-- n 1-21 paid, n 22-24 have an unpaid pass, n 25-28 have no pass at all:
+-- 7 of 27 players (about a quarter) lack a paid pass, 3 of them unpaid.
+insert into season_passes (season_id, player_id, paid, amount_cents, method, marked_by, marked_at)
+select s.id, p.id, u.n <= 21,
+       case when u.n <= 21 then s.pass_price_cents end,
+       case when u.n <= 21 then (array['e-transfer', 'cash'])[1 + u.n % 2] end,
+       case when u.n <= 21 then (select id from profiles where email = 'john@example.com') end,
+       case when u.n <= 21 then now() end
+  from seasons s
+  join seed_users u on u.n <> 3 and u.n <= 24
+  join profiles p on p.email = u.email
+ where s.type = 'indoor';
+
+-- Publish the published run: 3 teams, snake draft by stars (yes + plays only).
+update runs r
+   set status = 'published',
+       published_at = ((r.run_date + r.start_time) at time zone 'America/Toronto') - interval '30 minutes'
+  from seed_runs sr
+ where r.id = sr.id and sr.kind = 'published';
+
+insert into team_assignments (run_id, player_id, team, slot)
+select run_id, player_id,
+       (array['blue', 'yellow', 'red'])[1 + case when (rn / 3) % 2 = 0 then rn % 3 else 2 - rn % 3 end]::team_color,
+       (rn / 3 + 1)::smallint
+  from (
+    select sr.id as run_id, p.id as player_id,
+           (row_number() over (order by p.stars desc, p.full_name) - 1)::int as rn
+      from seed_runs sr
+      join rsvps v on v.run_id = sr.id and v.going
+      join profiles p on p.id = v.player_id and p.plays
+     where sr.kind = 'published'
+  ) ranked;

@@ -6,6 +6,10 @@
 begin;
 select plan(9);
 
+-- run_date is unique, and seed.sql fills the calendar with runs: clear them
+-- (rolled back with the transaction) so the test dates below are free.
+delete from runs;
+
 select tests.create_user('00000000-0000-0000-0000-0000000000c1', 'm1@test.local', '{"full_name":"M One"}');
 select tests.create_user('00000000-0000-0000-0000-0000000000c2', 'm2@test.local', '{"full_name":"M Two"}');
 select tests.create_user('00000000-0000-0000-0000-0000000000c3', 'm3@test.local', '{"full_name":"M Three"}');
