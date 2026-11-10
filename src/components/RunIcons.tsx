@@ -68,10 +68,10 @@ export const ArrowRightIcon = (p: Props) => (
   </Icon>
 );
 
-/** The two-people icon on the "Auto team creation" card. Drawn in a fixed light green on the dark hero. */
+/** The two-people icon on the "Auto team creation" card. Drawn in `logo-touch`, a green that is the same in both themes, because the hero is dark in both. */
 export function PlayersIcon() {
   return (
-    <ThemedSvg width={30} height={30} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-brand-text" aria-hidden>
+    <ThemedSvg width={30} height={30} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-logo-touch" aria-hidden>
       <Circle cx={9} cy={8} r={3} />
       <Path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
       <Circle cx={17} cy={9} r={2.5} />
