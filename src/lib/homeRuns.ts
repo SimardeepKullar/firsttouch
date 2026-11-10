@@ -1,4 +1,5 @@
 // What the Home run list shows, as plain functions (no React, no network) so they can be tested.
+import { MAX_STACK_AVATARS } from './display';
 import { addDays } from './torontoTime';
 
 /** One run as a Home card needs it. */
@@ -48,4 +49,42 @@ export function rosterByRun(rows: RosterRow[]): Map<string, RosterRow[]> {
     else byRun.set(row.run_id, [row]);
   }
   return byRun;
+}
+
+/** Who is saying yes or no: the signed-in player. */
+export type RsvpPerson = { id: string; name: string };
+
+/** The Home run list as the cache holds it. */
+type RunsData = { runs: HomeRun[] };
+
+/** Returns a copy of the Home data with my RSVP for one run applied, as if the save had worked.
+ *  Used for the instant (optimistic) update, so it must match what the database would give back:
+ *  - the count goes up or down by one;
+ *  - the roster is oldest-first, so a new yes goes last, and only fits in the avatar stack when
+ *    every going player is already in it (otherwise the "+n" circle just grows);
+ *  - saying the same thing twice changes nothing.
+ *  The data is never changed in place: React Query needs a new object to notice the change. */
+export function applyRsvp<T extends RunsData>(data: T, runId: string, going: boolean, me: RsvpPerson): T {
+  return {
+    ...data,
+    runs: data.runs.map((run) => {
+      if (run.id !== runId || run.iAmGoing === going) return run;
+      if (going) {
+        const fits = run.goingNames.length === run.goingCount && run.goingNames.length < MAX_STACK_AVATARS;
+        return {
+          ...run,
+          iAmGoing: true,
+          goingCount: run.goingCount + 1,
+          goingNames: fits ? [...run.goingNames, me.name] : run.goingNames,
+        };
+      }
+      const at = run.goingNames.indexOf(me.name);
+      return {
+        ...run,
+        iAmGoing: false,
+        goingCount: Math.max(0, run.goingCount - 1),
+        goingNames: at === -1 ? run.goingNames : run.goingNames.filter((_, i) => i !== at),
+      };
+    }),
+  };
 }

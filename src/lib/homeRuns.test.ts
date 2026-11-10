@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { holidayNamesByDate, rosterByRun, visibleRuns, type HomeRun } from './homeRuns';
+import { applyRsvp, holidayNamesByDate, rosterByRun, visibleRuns, type HomeRun } from './homeRuns';
 
 const run = (runDate: string): HomeRun => ({
   id: runDate, runDate, startTime: '06:30:00', location: 'x', lockAt: '2027-01-01T00:00:00Z',
@@ -41,5 +41,43 @@ describe('rosterByRun', () => {
     ]);
     expect(m.get('a')?.map((r) => r.full_name)).toEqual(['A', 'C']);
     expect(m.get('b')).toHaveLength(1);
+  });
+});
+
+describe('applyRsvp', () => {
+  const me = { id: 'me', name: 'Me Player' };
+  const base = (over: Partial<HomeRun>): { runs: HomeRun[] } => ({
+    runs: [{ ...run('2026-11-14'), id: 'r1', ...over }, { ...run('2026-11-21'), id: 'r2' }],
+  });
+
+  it('yes: count +1, flag on, my name joins the stack when everyone fits', () => {
+    const out = applyRsvp(base({ goingNames: ['A', 'B'], goingCount: 2 }), 'r1', true, me);
+    expect(out.runs[0]).toMatchObject({ iAmGoing: true, goingCount: 3, goingNames: ['A', 'B', 'Me Player'] });
+  });
+  it('yes on a full stack: only the count grows', () => {
+    const out = applyRsvp(base({ goingNames: ['A', 'B', 'C'], goingCount: 20 }), 'r1', true, me);
+    expect(out.runs[0]).toMatchObject({ goingCount: 21, goingNames: ['A', 'B', 'C'] });
+  });
+  it('yes when some going players are hidden: name is not added out of order', () => {
+    const out = applyRsvp(base({ goingNames: ['A'], goingCount: 5 }), 'r1', true, me);
+    expect(out.runs[0].goingNames).toEqual(['A']);
+  });
+  it('no: count -1, flag off, my name leaves the stack', () => {
+    const out = applyRsvp(base({ iAmGoing: true, goingNames: ['A', 'Me Player', 'C'], goingCount: 20 }), 'r1', false, me);
+    expect(out.runs[0]).toMatchObject({ iAmGoing: false, goingCount: 19, goingNames: ['A', 'C'] });
+  });
+  it('no when I am not in the first names: names stay, count drops', () => {
+    const out = applyRsvp(base({ iAmGoing: true, goingNames: ['A', 'B', 'C'], goingCount: 20 }), 'r1', false, me);
+    expect(out.runs[0]).toMatchObject({ goingCount: 19, goingNames: ['A', 'B', 'C'] });
+  });
+  it('same answer twice changes nothing', () => {
+    const data = base({ iAmGoing: true, goingCount: 4 });
+    expect(applyRsvp(data, 'r1', true, me).runs[0]).toBe(data.runs[0]);
+  });
+  it('touches only the named run and never changes the input', () => {
+    const data = base({ goingCount: 3 });
+    const out = applyRsvp(data, 'r1', true, me);
+    expect(out.runs[1]).toBe(data.runs[1]);
+    expect(data.runs[0].goingCount).toBe(3);
   });
 });
