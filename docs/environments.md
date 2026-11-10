@@ -72,3 +72,77 @@ git push -u origin ticket/T-NN-short-slug   # hook runs npm run verify first
 Open the PR, wait for green, squash and merge. CI then applies any new migrations to prod.
 
 **Once prod has run its first deploy, never edit an existing migration.** Prod has already run it and won't run it again. Every change is a new migration file (`npx supabase migration new <name>`).
+
+## Testing against local Supabase
+
+Run the web app against the throwaway database on your Mac, with the seeded test users. **Nothing here touches dev or prod.** Everything uses `127.0.0.1` (your own computer), the local demo key, and a throwaway database. No prod key, ref or password is involved, and no file the script writes ever holds anything but local values.
+
+### 1. Start (and reset) local Supabase
+
+Docker must be running.
+
+```bash
+npx supabase start       # first run downloads images; later runs are quick
+npx supabase status      # prints the API URL (http://127.0.0.1:54321) and the publishable key
+npx supabase db reset    # rebuild the database from the migrations and supabase/seed.sql
+```
+
+The seed gives you 28 users, all `@example.com`, all with password `password123`:
+
+- **Admins:** `john@` (John), `sim@` (Sim) and `coach@` (Coach, who doesn't play).
+- **Players:** `player01@` to `player25@` (Aiden Brooks, Ben Carter, ...).
+
+### 2. Run the app against it
+
+```bash
+npm run web:local
+```
+
+- It checks local Supabase is running (and tells you to run `npx supabase start` if not).
+- It writes `.env.development.local` for this run only. Expo loads that file ahead of `.env.development`, so the app uses local. The file is deleted when the script stops, including on Ctrl+C. `.env.development` is never touched, and the file is gitignored.
+- The app is at **http://localhost:8082**. `npm run web` uses 8081. Browsers keep a separate saved sign-in per address, so a local session and a dev session never overwrite each other.
+- If `.env.development.local` already exists and the script didn't make it, the script stops and leaves it alone. Delete or rename it, then run again.
+
+### 3. Sign in as a seed user
+
+Sign-in in the app is Google only, which doesn't work against local. Instead, open http://localhost:8082, open the browser console (Chrome: **Cmd+Option+J**), paste this and press Enter. Replace the placeholder with the `PUBLISHABLE_KEY` from `npx supabase status` (it's the public local demo key, not a secret):
+
+```js
+(async () => {
+  const email = 'coach@example.com'; // change this to switch user
+  const res = await fetch('http://127.0.0.1:54321/auth/v1/token?grant_type=password', {
+    method: 'POST',
+    headers: { apikey: '<publishable key from npx supabase status>', 'content-type': 'application/json' },
+    body: JSON.stringify({ email, password: 'password123' }),
+  });
+  const session = await res.json();
+  if (!session.access_token) return console.error('Sign-in failed:', session);
+  localStorage.setItem('sb-127-auth-token', JSON.stringify(session));
+  location.reload();
+})();
+```
+
+The page reloads signed in. (If Chrome blocks pasting, type `allow pasting` in the console first.)
+
+**Switch user:** paste the snippet again with a different `email` (for example `player01@example.com`). It replaces the saved session.
+
+**Sign out:** run `localStorage.removeItem('sb-127-auth-token'); location.reload()`.
+
+### 4. Switch theme
+
+The theme is saved in the browser. In the console on the same address:
+
+```js
+localStorage.setItem('firsttouch.theme', 'dark'); location.reload();   // or 'light' or 'system'
+```
+
+### 5. Which database am I on?
+
+- **Script:** `npm run web:local` prints a banner saying `LOCAL Supabase`. `npm run web` doesn't.
+- **Port:** 8082 is local, 8081 is dev.
+- **Names:** local greets seed names (`Hi, Coach`, `Hi, John`, `Hi, Aiden Brooks`). Dev shows your real Google account name.
+- **Console:** `Object.keys(localStorage)` shows `sb-127-auth-token` for local, and `sb-<project-ref>-auth-token` for a hosted project.
+
+### 6. Go back to dev
+
+Press **Ctrl+C** in the `web:local` terminal. Check that `.env.development.local` is gone (`ls .env.development.local` should say no such file), then run `npm run web` (or `npx expo start --web`) as usual. It reads `.env.development`, and the app is at http://localhost:8081.
