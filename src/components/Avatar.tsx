@@ -44,19 +44,21 @@ type StackProps = {
   names: string[];
   /** Everyone going. Defaults to names.length. The "+n" is total minus the avatars shown. */
   total?: number;
+  /** 32 (default) or 36, the size on the Home run card (V3). */
+  size?: 32 | 36;
 };
 
-/** Overlapping 32px avatars with a "+n" circle, as on the 02 Home run card. */
-export function AvatarStack({ names, total = names.length }: StackProps) {
+/** Overlapping avatars (32px, or 36px on the V3 Home card) with a "+n" circle, as on the 02 Home run card. */
+export function AvatarStack({ names, total = names.length, size = 32 }: StackProps) {
   const shown = names.slice(0, MAX_STACK_AVATARS);
   const extra = overflowCount(total, shown.length);
   return (
     <View className="flex-row">
       {shown.map((name, i) => (
-        <AvatarCircle key={`${name}-${i}`} text={initialsFromName(name)} label={name} size={32} tone="brand" ring overlap={i > 0} />
+        <AvatarCircle key={`${name}-${i}`} text={initialsFromName(name)} label={name} size={size} tone="brand" ring overlap={i > 0} />
       ))}
       {extra > 0 ? (
-        <AvatarCircle text={`+${extra}`} label={`${extra} more`} size={32} tone="muted" ring overlap={shown.length > 0} />
+        <AvatarCircle text={`+${extra}`} label={`${extra} more`} size={size} tone="muted" ring overlap={shown.length > 0} />
       ) : null}
     </View>
   );
