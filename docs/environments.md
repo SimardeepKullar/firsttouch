@@ -105,7 +105,7 @@ npm run web:local
 
 ### 3. Sign in as a seed user
 
-Sign-in in the app is Google only, which doesn't work against local. Instead, open http://localhost:8082, open the browser console (Chrome: **Cmd+Option+J**), paste this and press Enter. Replace the placeholder with the `PUBLISHABLE_KEY` from `npx supabase status` (it's the public local demo key, not a secret):
+Sign-in in the app is Google only, which doesn't work against local. Instead, open http://localhost:8082, open the browser console (Chrome: **Cmd+Option+J**), paste this and press Enter. The `apikey` line can stay as it is: the local sign-in server doesn't check it, so the placeholder works. (If you'd rather match what the app sends, paste the `PUBLISHABLE_KEY` from `npx supabase status` instead. It's the public local demo key, not a secret.)
 
 ```js
 (async () => {
