@@ -41,6 +41,13 @@ const STATUS = [
 ];
 const TEAMS = ['blue', 'yellow', 'red'] as const;
 const LOGO = ['bg-logo-touch', 'bg-logo-pine', 'bg-logo-forest', 'bg-logo-deep'];
+const BALL = ['bg-ball-fill', 'bg-ball-patch', 'bg-ball-line'];
+// Version 3 team tokens. Whole class names again, so Tailwind sees them.
+const TEAM_V3 = {
+  blue: { wash: 'bg-team-blue-wash', bar: 'bg-team-blue-bar', border: 'border-team-blue-border', chip: 'bg-team-blue-chip', chipFg: 'text-team-blue-chip-fg' },
+  yellow: { wash: 'bg-team-yellow-wash', bar: 'bg-team-yellow-bar', border: 'border-team-yellow-border', chip: 'bg-team-yellow-chip', chipFg: 'text-team-yellow-chip-fg' },
+  red: { wash: 'bg-team-red-wash', bar: 'bg-team-red-bar', border: 'border-team-red-border', chip: 'bg-team-red-chip', chipFg: 'text-team-red-chip-fg' },
+};
 
 export default function Swatches() {
   const { mode, scheme, setMode } = useTheme();
@@ -111,6 +118,27 @@ export default function Swatches() {
             </View>
             <View className={{ blue: 'bg-team-blue-soft', yellow: 'bg-team-yellow-soft', red: 'bg-team-red-soft' }[t] + ' h-14 flex-1 items-center justify-center rounded-input'}>
               <Text className={{ blue: 'text-team-blue-text', yellow: 'text-team-yellow-text', red: 'text-team-red-text' }[t] + ' font-inter-bold'}>{t} text/soft</Text>
+            </View>
+          </View>
+        ))}
+      </Section>
+
+      <Section title="Version 3">
+        <Swatch name="bg-card-bar" className="bg-card-bar" />
+        <Swatch name="bg-card-bar-closed" className="bg-card-bar-closed" />
+        <View className="mb-3 h-[50px] w-full items-center justify-center rounded-input bg-button-in shadow-button-in">
+          <Text className="font-inter-bold text-body-lg text-brand-on">button-in · shadow-button-in</Text>
+        </View>
+        {BALL.map((c) => <Swatch key={c} name={c} className={c} />)}
+        {TEAMS.map((t) => (
+          <View key={t} className="mb-3 w-full flex-row gap-3">
+            <View className={`h-14 w-[6px] rounded-full ${TEAM_V3[t].bar}`} />
+            <View className={`h-14 flex-1 justify-center rounded-input border bg-surface px-3 ${TEAM_V3[t].border}`}>
+              <View className={`absolute inset-0 rounded-input ${TEAM_V3[t].wash}`} />
+              <Text className="font-inter-semibold text-ink">{t} wash · border</Text>
+            </View>
+            <View className={`h-[34px] items-center justify-center self-center rounded-full px-3 ${TEAM_V3[t].chip}`}>
+              <Text className={`font-inter-bold ${TEAM_V3[t].chipFg}`}>8 players</Text>
             </View>
           </View>
         ))}

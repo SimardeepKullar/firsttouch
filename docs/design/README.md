@@ -1,8 +1,36 @@
-# FirstTouch — design handoff (Version 2)
+# FirstTouch — design handoff (Version 3)
 
 Mobile-first web app for a recreational soccer group that plays pickup runs on Saturday and Sunday mornings, plus holiday Mondays. Players RSVP. RSVPs lock automatically 1 hour before the start, and teams are generated and published at that moment. Admins rate players, manage the season's runs and track season passes. This folder is the design reference for building it.
 
-**Version 2** is the current design: a cleaner, sporty look built on the Inter typeface, with **light mode as the default** and an **optional dark mode** that players choose in Settings › Appearance. The product rules are the same as Version 1.
+**Version 3** is the current design. It keeps everything from Version 2 (Inter, green gradients, the floating bottom nav, **light mode as the default** and an **optional dark mode** chosen in Settings › Appearance) and changes three things: the Home run cards, the Teams cards, and the dark-mode background. The product rules are the same as Versions 1 and 2.
+
+## What changed in Version 3
+
+Only **02 Home** and **04 Teams** have new mockups. Every other screen keeps its Version 2 mockup, but takes the new dark colours from the tokens.
+
+1. **Dark mode is grey-black, not green-black.** `bg` `#0D1110`, `surface` `#171B1B`, `surface-2` `#202525`, `line` `#2A3030`, plus new `input-border`, `ink`, `ink-2`, `muted`, `muted-2`, `nav`, `switch-off`, `star-on`, `star-off`, `locked-bg` and a fainter green glow in `page`. Light mode is unchanged. This applies to **every** screen, because it's just token values.
+2. **Curved left bars.** Run cards and team cards no longer have a straight 4px bar. Each card has a 6px left edge that follows the card's rounded corners (a crescent), filled with a top-to-bottom gradient that fades in the bottom 40%. See "Curved left bar" below for the CSS.
+3. **Run cards (Home)** are rebuilt; see Shared components › Run card and 02 Home.
+4. **Team cards (Teams)** get a colour wash across the card, a crescent bar, a "Your team" card at the top for players, and the "{n} players" chip in the team colour; see Shared components › Team card and 04 Teams.
+5. **New tokens:** `card-bar`, `card-bar-closed`, `button-in` (+ `button-in-shadow`), `ball-fill` / `ball-patch` / `ball-line`, `team-{blue|yellow|red}-wash`, `-bar`, `-border`, `-chip-bg`, `-chip-fg`. All are in `tokens/`.
+
+### Curved left bar
+
+Draw it with a transparent left border and layered backgrounds, so the bar takes the card's corner radius:
+
+```css
+.card {
+  border: 0;
+  border-left: 6px solid transparent;
+  border-radius: 24px;            /* 26 for team cards */
+  background:
+    var(--team-blue-wash) padding-box,                     /* optional tint (team cards only) */
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--team-blue-bar) border-box;                       /* or var(--card-bar) on Home */
+}
+```
+
+Team washes are the same in both themes: Blue 26%, Yellow 20%, Red 20% at the top-left corner, fading to a fifth of that 70% of the way across (160°). Blue is slightly stronger on purpose, so the three read evenly.
 
 ## What's in this folder
 
@@ -25,7 +53,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Template syntax:** `{{name}}` is a value from `renderVals()`, `<sc-for>` is a loop and `<sc-if>` is a conditional.
 - **Props:** a screen's props are listed in `data-props` at the top of its script block (see "Screen props" below). They switch between variants and states.
 - **Images:** `/_blob/3dfcf1bac4cf45bac56a39dd2306c225` is the logo; use `assets/firsttouch-icon.png` instead.
-- **Links:** `href="X.dc.html"` links point to the canvas names. The mapping is: `V2Main` = 01-sign-in, `V2CreateAccount` = 01b, `V2ForgotPassword` = 01c, `V2NewPassword` = 01d, `V2Home` = 02, `V2RunDetail` = 03, `V2Teams` = 04, `V2Settings` = 05, `V2AdminPlayers` = 06, `V2RunManager` = 07-admin-runs, `V2TeamBuilder` = 08, `V2TeamBuilderDesktop` = 08b, `V2SeasonPasses` = 09, `V2Holidays` = 11.
+- **Links:** `href="X.dc.html"` links point to the canvas names. In `02-home` and `04-teams` the links already use the file names. In the other files the mapping is: `V2Main` = 01-sign-in, `V2CreateAccount` = 01b, `V2ForgotPassword` = 01c, `V2NewPassword` = 01d, `V2Home` = 02, `V2RunDetail` = 03, `V2Teams` = 04, `V2Settings` = 05, `V2AdminPlayers` = 06, `V2RunManager` = 07-admin-runs, `V2TeamBuilder` = 08, `V2TeamBuilderDesktop` = 08b, `V2SeasonPasses` = 09, `V2Holidays` = 11.
 - **Colours in the files:** values appear as `{{t.name}}`; `name` is a key of the active theme in `tokens/tokens.json` (`theme.light` or `theme.dark`), and each file's `tok()` method lists them too.
 
 ### Screen props
@@ -114,8 +142,9 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Star rating (admin only):** five 12–13px stars in `star-on` / `star-off`. The editable version has tappable 40 × 44 buttons with 26px stars.
 - **Segmented control:** a pill track in `surface` with a `line` border; the selected segment is the `button` gradient with `on-brand` text.
 - **Switch:** 52 × 32 with a 26px white knob (46 × 28 for the compact Plays switch). The track is the brand gradient when on and `switch-off` when off.
-- **Run card (Home):** 24 radius, `surface`, a 4px `brand` bar on the left edge (muted once RSVPs close), day kicker in `brand-text`, a large date, a Details pill, info rows with icons, stacked avatars with a "+n" circle, and the "I'm in" pill (gradient when on, `brand-line` outline when off).
-- **Team card (Teams):** 24 radius, `surface`, a 4px left bar in the team colour with a soft team-colour glow fading right, a faint soccer-ball watermark on the right (`watermark` token), a team dot with a soft ring, and a "{n} players" chip in the team's soft colour.
+- **Run card (Home, V3):** 24 radius, `surface`, `shadow`, and a curved 6px left bar in `card-bar` (`card-bar-closed` once RSVPs close). Top row: day kicker in `brand-text` (plus the holiday chip), a 30px date, and a Details pill. Then two columns: on the left the start time (clock icon), the address on two lines (pin icon) and the lock-icon "RSVPs close 5:30 AM" line in `muted`; on the right three stacked 36px avatars plus a "+n" circle, and under them a 40-tall "{n} going" pill (check icon in `brand-soft` / `brand-line` when you're going, clock icon and `line` border when not). Then a full-width 50-tall button, radius 16: **"I'm in"** (plus icon, `brand-line` outline, `brand-text`) or **"You're in"** (check icon, `button-in` fill with `on-brand` text; in dark it also has the `button-in-shadow` glow).
+- **Team card (Teams, V3):** 26 radius, the team's `wash` over `surface`, a curved 6px left bar in the team's `bar` gradient, `shadow`. A 200px soccer ball peeks in from the right edge (`ball-fill`, `ball-patch`, `ball-line`). Header: an 18px team dot with a soft glow, the team name at 22px/800, and a 34-tall "{n} players" chip (`team-*-chip-bg` / `-fg`: the solid team colour in light, a 40% team tint with white text in dark). Rows and footer are as before.
+- **Your team card (Teams, players only, V3):** at the top of Teams, above the team cards. 24 radius, the team's `wash`, a curved team `bar`. It shows "YOUR TEAM" (12px, 800, 0.1em tracking, `muted`), a 22px team dot with a 5px soft ring, the team name at 30px/800, and "{n} players · ATT/DEF {a}:{d}" in `muted`. No avatars. Admins don't see it.
 - **Pitch:** the `pitch-grass` gradient with stripes and `pitch-lines`, rounded 14–16. Player dots are team-coloured circles with a white border and a 3px team-colour glow.
 - **Password field:** a 56-tall input with a 44 × 44 show/hide eye button inside it on the right.
 - **Avatar:** a circle with initials in `surface-2` (Home uses `brand-text` initials).
@@ -139,12 +168,13 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Contents:** New password (show/hide, "At least 8 characters" hint), Confirm password, and a "Save password" button. Reached from the reset link, and from Settings › Change password.
 
 ### 02 Home (`02-home.dc.html`)
+- **V3:** the run cards follow Shared components › Run card (V3). The header, greeting, banner and Auto team creation card are unchanged from V2.
 - **V2 header:** the app icon (44px) on the left; on the right the pass chip and a 44px bell button with a green unread dot. The greeting has a 40 × 3 `brand` underline beneath it, then the banner (green-tinted with a `brand-line` border), then an "Upcoming runs" heading with a "View all" link.
 - **Auto team creation card:** after the run cards, a hero-gradient card with a players icon, "Auto team creation" and "Teams are made automatically when RSVPs close, 1 hour before kickoff.", with a faint goal drawing on the right.
 - **Top:** a season pass chip ("Indoor pass: Paid" or "Indoor pass: Not paid") and the user's avatar. Greeting "Morning, {first name}" with the subtitle "Indoor 2026–27 · …".
 - **Banner:** "Add FirstTouch to your Home Screen for notifications", dismissible with an X button.
 - **Run cards:** one per upcoming run. Each card shows the day, the date (with the holiday name if any), "6:30 AM start", the address, a lock-icon line "RSVPs close 5:30 AM", stacked avatars, "{n} going" and the large "I'm in" toggle.
-- **Closed card:** once RSVPs close, the line reads "RSVPs closed 5:30 AM" and the "I'm in" toggle is disabled (dimmed). A panel below shows a team-colour dot, "Teams are up — you're on {team}" and a "View teams" button.
+- **Closed card (V3):** once RSVPs close, the line reads "RSVPs closed 5:30 AM", the bar turns grey (`card-bar-closed`) and the "I'm in" button is replaced by a team panel: radius 18, the team's `wash` over `surface-2`, a 16px team dot with a soft ring, "You're on {team}" (16px/800) over "{n} players · ATT/DEF {a}:{d}" (13px, `muted`), and a "View teams" button on the right. Coach's panel reads "Teams are up" over "3 teams · published 5:30 AM" with a `brand` dot.
 - **Holiday card:** a holiday Monday shows the kicker "Holiday Monday" and the title "Mon Feb 15 · Family Day".
 - **Mockup examples:** Sat Feb 13 (closed, on Blue), Sun Feb 14 (open, you're in), and Mon Feb 15 · Family Day (open, not replied).
 - **Non-playing admin (`plays = off`, shown as Coach):** the cards keep the date, time, address, "{n} going" and the "Details" link, but the "I'm in" toggle is replaced by a muted line, "You're managing this run". The top chip reads "Admin · manages runs" instead of the pass chip. A closed card's panel reads "Teams are up" with "View teams" (no team of their own). The bottom nav includes the Admin tab.
@@ -158,6 +188,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Who's coming, admin view:** each row also shows stars and the Unpaid badge, and the bottom nav includes the Admin tab.
 
 ### 04 Teams (`04-teams.dc.html`)
+- **V3:** players see the Your team card under the "Published" line, in both Table and Field views. Team cards follow Shared components › Team card (V3).
 - **V2 look:** see Team card and Pitch under Shared components. The Table / Field control is a pill with the selected side in the button gradient.
 - **Top:** the run summary, a Table / Field segmented control, and a small "Published 5:30 AM" label under it (6:00 AM for a 7:00 AM outdoor run).
 - **Table view, player:** one card per team. The header strip is filled in the team colour. Rows show avatar, name, the "Morning of" badge and the position tag. The footer shows **player count and ATT:DEF ratio** only.

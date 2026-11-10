@@ -8,7 +8,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 - **Sources:** `docs/spec.md` (behaviour, data, rules, permissions), `docs/design/` (look and layout), `docs/privacy.md`. Where they disagree, the spec wins on behaviour and permissions and the design wins on visuals. See [Spec and design disagreements](#spec-and-design-disagreements) at the end.
 - **Sizes:** S = one sitting. M = one or two sittings. L = two full sittings (used rarely).
 - **Labels:** `database`, `functions`, `player UI`, `admin UI`, `infra`, `tests`, `design`, `later`. `design` marks a ticket that also fills a gap with no mockup (it reuses existing patterns, and the gap is spelled out in the ticket).
-- **Designs:** this plan follows **Version 2** of the designs (`docs/design/README.md`, pushed Nov 9, 2026): Inter, green gradients, a floating bottom nav, and an Appearance setting.
+- **Designs:** this plan follows **Version 3** of the designs (`docs/design/README.md`, switched in T-78 on Nov 10, 2026): Version 2's Inter, green gradients, floating bottom nav and Appearance setting, plus grey-black dark mode, the new Home run cards (curved `card-bar`, "{n} going" pill, full-width "I'm in" / "You're in" button) and the new Teams cards (team wash, curved team bar, team-colour chips, and a "Your team" card for players). Only `02-home` and `04-teams` have new mockups; every other screen keeps its Version 2 mockup with the new dark colours.
 - **Expo docs:** the app is on Expo SDK 58, so "Expo docs" in the learning notes means `https://docs.expo.dev/versions/v58.0.0/`, not memory or older tutorials.
 
 **Already done (no tickets):** Expo app with NativeWind and Expo Router in `src/app`; Vitest; the `balance.ts` placeholder and test; the first migration (tables, RLS, views, holiday functions, `generate_season_runs`, `set_holiday_active`, triggers, `update_my_name`, `delete_my_account`, grants, Realtime on `rsvps`) and `seed.sql`, pushed to dev.
@@ -361,45 +361,49 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-14 · Build the Home screen run cards (#14)
 **Milestone:** RSVP loop · **Labels:** player UI · **Size:** M
 
-**Summary:** Build Home for a playing member: the V2 header (app icon and pass chip), the greeting with its underline, the season subtitle, an "Upcoming runs" list with one card per run (date, time, address, the "RSVPs close" line, stacked avatars, going count), and the "Auto team creation" card. The "I'm in" button is drawn here but wired up in T-15.
+**Summary:** Build Home for a playing member: the V2 header (app icon and pass chip), the greeting with its underline, the season subtitle, an "Upcoming runs" list with one Version 3 run card per run (curved `card-bar` left edge, date, time, address, the "RSVPs close" line, stacked avatars, the "{n} going" pill), and the "Auto team creation" card. The full-width "I'm in" button is drawn here but wired up in T-15.
 
 **Spec:** Key flows (lifecycle; RSVP until 1 hour before); Lock time and player-facing views (`run_lock_at`); Long-weekend Mondays
-**Design:** `02-home` with `plays = on`, `pass = paid | unpaid`, `theme = light | dark`. README › Shared components › Run card. Cards: open, closed (left bar muted, button dimmed), holiday (day kicker plus the holiday name)
+**Design:** `02-home` with `plays = on`, `pass = paid | unpaid`, `theme = light | dark`. README › What changed in Version 3 (Curved left bar) and Shared components › Run card (Home, V3). Cards: open, closed (grey bar, no button), holiday (day kicker plus the holiday chip)
 **Depends on:** T-09, T-13
 
 **Acceptance criteria**
 - [ ] Header: the 44 px app icon on the left and the pass chip on the right. No bell: the mockup's notification bell is left out (decision D4).
 - [ ] "Morning, {first name}" with the 40 × 3 `brand` underline and the season subtitle.
 - [ ] "Upcoming runs" shows runs from today through the next 7 days, in date order. *Design gap:* "View all" expands the list to every upcoming run in the season (the mockup links it to Run detail as a placeholder).
-- [ ] Each card shows the run's own time and address (not hard-coded), and "RSVPs close h:mm AM", which is start time minus 1 hour in Toronto time. Once that time passes, it reads "RSVPs closed h:mm AM" and the toggle is dimmed and disabled.
-- [ ] Each card has the 4 px `brand` bar on its left edge (muted once RSVPs close), the day kicker (SAT, SUN, MON), the large date and a Details pill. A holiday Monday adds the holiday name from the `holidays` table next to the kicker.
-- [ ] Stacked avatars show the first three people going plus a "+n" circle.
-- [ ] "{n} going" counts yes RSVPs from players with Plays on. The note reads "Including you" or "You haven't replied".
+- [ ] Each card (radius 24, `surface`, `shadow-card`) has a curved 6 px left bar that follows the card's rounded corners, filled with `card-bar` (README › Curved left bar). Once RSVPs close the bar is `card-bar-closed`. No straight 4 px bar.
+- [ ] Top row: the day kicker (SAT, SUN, MON) in `brand-text`, the 30 px date, and a 38-tall Details pill (`surface-2`, `line` border). A holiday Monday adds the holiday name from the `holidays` table as a 22-tall `brand-soft` chip next to the kicker.
+- [ ] Left column: the run's own start time (clock icon) and address on two lines (pin icon), not hard-coded, then the lock-icon line "RSVPs close h:mm AM" in `muted`, which is start time minus 1 hour in Toronto time. Once that time passes it reads "RSVPs closed h:mm AM".
+- [ ] Right column: three stacked 36 px avatars of the first three people going plus a "+n" circle, and under them a 40-tall "{n} going" pill. When you're going the pill has a check icon, `brand-soft` fill and a `brand-line` border; when you're not it has a clock icon and a `line` border.
+- [ ] "{n} going" counts yes RSVPs from players with Plays on.
+- [ ] Under the columns, a full-width 50-tall button (radius 16): "I'm in" (plus icon, `brand-line` outline, `brand-text`) or "You're in" (check icon, `button-in` fill, `on-brand` text, and `shadow-button-in` in dark). Its behaviour is T-15.
+- [ ] Once RSVPs close the button is not shown. (The team panel that takes its place is T-41.)
 - [ ] The pass chip reads "Indoor pass: Paid" or "Indoor pass: Not paid" for the current season (no `season_passes` row means Not paid). The greeting uses your first name.
 - [ ] "Details" opens Run detail (a placeholder until T-18).
 - [ ] After the run cards, the hero-gradient "Auto team creation" card reads "Teams are made automatically when RSVPs close, 1 hour before kickoff."
-- [ ] Matches the mockup in light and dark.
+- [ ] Matches the V3 mockup in light and dark.
 
 **Learning notes**
 - TanStack Query `useQuery`; selecting related rows with supabase-js (`runs` plus `holidays`)
 - PostgREST computed fields: selecting `run_lock_at` as if it were a column
 - Formatting dates and times in `America/Toronto` (`Intl.DateTimeFormat` with `timeZone`)
-
+- The curved bar: on web, a transparent 6 px left border plus layered `padding-box` / `border-box` backgrounds (README › Curved left bar). Build it once as a shared card frame, because T-38–T-41 reuse it with the team bars.
 ---
 
 ### T-15 · Add the "I'm in" RSVP toggle with instant feedback (#15)
 **Milestone:** RSVP loop · **Labels:** player UI · **Size:** S
 
-**Summary:** Make the toggle work. Tapping it updates the card at once, saves your `rsvps` row, and rolls back with a message if the database refuses (for example because RSVPs just closed).
+**Summary:** Make the full-width "I'm in" / "You're in" button work. Tapping it updates the card at once, saves your `rsvps` row, and rolls back with a message if the database refuses (for example because RSVPs just closed).
 
 **Spec:** Key flows › RSVP request, step by step; Access control (rsvps row); Non-functional requirements › Performance (optimistic UI)
-**Design:** `02-home` (the button's states: off is a `brand-line` outline with a plus icon and "I'm in?"; on is the gradient with a check and "I'm in"; closed is dimmed)
+**Design:** `02-home` (V3 button states: off is "I'm in" with a plus icon, a `brand-line` outline and `brand-text`; on is "You're in" with a check icon, the `button-in` fill, `on-brand` text, and the `button-in-shadow` glow in dark only; after the lock the button is gone)
 **Depends on:** T-14
 
 **Acceptance criteria**
-- [ ] Tapping toggles at once (optimistic) between "I'm in?" and "I'm in", then upserts `{ run_id, player_id, going }`. The button reports its state with `aria-pressed`.
-- [ ] If the save fails (after lock, or a network error), the toggle flips back and a short message explains why.
-- [ ] The count and "Including you" update with the toggle.
+- [ ] Tapping toggles at once (optimistic) between "I'm in" and "You're in", then upserts `{ run_id, player_id, going }`. The button reports its state with `aria-pressed`.
+- [ ] The "on" state uses `bg-button-in` and, in dark, `shadow-button-in` (the tokens from T-78), not the plain `button` gradient.
+- [ ] If the save fails (after lock, or a network error), the button flips back and a short message explains why.
+- [ ] The "{n} going" pill updates with the button: the count, and its going / not-going look (check icon and `brand-soft` vs clock icon and `line` border).
 - [ ] Saying yes on the run's own date shows you with the Morning of badge in Run detail (the trigger does this; check it).
 - [ ] A double tap never leaves the screen out of step with the database.
 
@@ -407,7 +411,6 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 - TanStack Query `useMutation` with `onMutate`, `onError` rollback and `onSettled` invalidate ("optimistic updates" guide)
 - supabase-js `upsert` and `onConflict`
 - Reading Postgres RLS errors (code `42501`) on the client
-
 ---
 
 ### T-16 · Update going counts live with Supabase Realtime (#16)
@@ -922,37 +925,44 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-38 · Build the Teams screen table view (#38)
 **Milestone:** Teams · **Labels:** player UI, admin UI, design · **Size:** M
 
-**Summary:** The Teams tab shows the next run's published teams: run summary, the Table / Field switch, "Published h:mm AM", and one card per team with rows and a footer. Admins also see stars, star totals and Unpaid badges.
+**Summary:** The Teams tab shows the next run's published teams: run summary, the Table / Field switch, "Published h:mm AM", the "Your team" card for players, and one Version 3 card per team (team-colour wash, curved team bar, ball, team-colour chip) with rows and a footer. Admins also see stars, star totals and Unpaid badges.
 
 **Spec:** Access control (team_assignments readable once published; stars and Unpaid admin-only)
-**Design:** `04-teams` with `view = table`, `role = player | admin`, `teams = 3 | 2`, `theme = light | dark`; README › Shared components › Team card
+**Design:** `04-teams` with `view = table`, `role = player | admin`, `teams = 3 | 2`, `theme = light | dark`; README › What changed in Version 3 (Curved left bar), Shared components › Team card (Teams, V3) and Your team card (Teams, players only, V3)
 **Depends on:** T-07, T-08, T-37
 
 **Acceptance criteria**
 - [ ] Shows the soonest run (today or later) with published teams, or the most recent published run if none are upcoming.
-- [ ] Each team card (radius 24, `surface`) has a 4 px left bar in the team colour with a soft glow fading right, a faint ball watermark, a team dot with a soft ring, the team name always written out, and a "{n} players" chip in the team's soft colour. Rows show avatar, name (plus " · You" for yourself), Morning of badge and position tag. The footer shows Players and ATT / DEF.
+- [ ] The top shows the run summary, the Table / Field pill control, and the "Published h:mm AM" line.
+- [ ] Players see a "Your team" card under the "Published" line, above the team cards: radius 24, their team's `team-*-wash` over `surface`, a curved 6 px left bar in `team-*-bar`, `shadow-card`. It shows "YOUR TEAM" (12 px, 800, 0.1em tracking, `muted`), a 22 px team dot with a 5 px soft ring, the team name at 30 px / 800, and "{n} players · ATT/DEF {a}:{d}" in `muted`. No avatars.
+- [ ] Admins never see the "Your team" card. *Design gap:* a player who isn't on a team in this run (not going) doesn't see it either.
+- [ ] Each team card: radius 26, the team's `team-*-wash` over `surface`, a curved 6 px left bar in `team-*-bar` (no straight 4 px bar), `shadow-card`, and a 200 px soccer ball peeking in from the right edge drawn with `ball-fill`, `ball-patch` and `ball-line`.
+- [ ] Team card header: an 18 px team dot with a soft glow, the team name (always written out) at 22 px / 800, and a 34-tall "{n} players" chip in `team-*-chip` / `team-*-chip-fg` (solid team colour in light; a 40% team tint with white text in dark).
+- [ ] Rows show avatar, name (plus " · You" for yourself), Morning of badge and position tag. The footer shows Players and ATT / DEF.
 - [ ] Admin: rows add stars and Unpaid, and the footer adds Total stars. The Admin tab shows in the nav.
-- [ ] The top shows the run summary, the Table / Field pill control, and the "Published h:mm AM" pill.
 - [ ] *Design gap:* with nothing published yet, show "Teams publish automatically at {lock time}" for the next run. If it's locked with fewer than 4 players, show "Not enough players — no teams made".
-- [ ] The Table/Field control switches views (Field is T-39 and T-40).
+- [ ] The Table/Field control switches views (Field is T-39 and T-40). The "Your team" card stays in both views.
+- [ ] Matches the V3 mockup in light and dark.
 
 **Learning notes**
 - Grouping rows by team in the client (`reduce`)
 - Joining `team_assignments` to `run_roster` / `player_directory` for names and flags
-- Choosing text colour on a team fill (Yellow uses dark text)
-
+- Mapping a team name to its whole class names (`bg-team-blue-wash`, `bg-team-blue-bar`, `bg-team-blue-chip`, …) in one lookup object, so Tailwind can see them
+- Reusing the curved card frame from T-14 with a team bar and wash
 ---
 
 ### T-39 · Draw the indoor Field view (three half-pitches) (#39)
 **Milestone:** Teams · **Labels:** player UI, admin UI · **Size:** M
 
-**Summary:** The Field view for a run with three teams: one half-pitch card per team with defenders on a back line near the goal and attackers on a front line, as 32 px circles with initials in the team colour. Flag dots and a legend show only what the viewer may see.
+**Summary:** The Field view for a run with three teams: the "Your team" card for players (from T-38), then one half-pitch card per team with defenders on a back line near the goal and attackers on a front line, as 32 px circles with initials in the team colour. Flag dots and a legend show only what the viewer may see.
 
 **Spec:** Data model ("Field positions are not stored: the client draws them from team, position and slot")
-**Design:** `04-teams` with `view = field`, `teams = 3`, `role = player | admin`, `theme`; README › Shared components › Pitch
+**Design:** `04-teams` with `view = field`, `teams = 3`, `role = player | admin`, `theme`; README › Shared components › Pitch and Your team card (V3)
 **Depends on:** T-38
 
 **Acceptance criteria**
+- [ ] Players see the same "Your team" card as in the Table view, above the pitches. Admins don't.
+- [ ] Each half-pitch card (radius 22) uses the V3 team frame: the team's `team-*-wash` over `surface` and a curved 6 px left bar in `team-*-bar`. Its header has a 12 px team dot with a soft ring, the team name and the team's meta line.
 - [ ] The pitch is drawn with react-native-svg (the `grass` gradient, stripes, `pitch-lines`, goal box), radius 14–16, in the light or dark values.
 - [ ] Player dots are 32 px team-coloured circles with initials, a white border and a 3 px team-colour glow.
 - [ ] Defenders sit at 22% across and attackers at 66%, spread evenly down the line by slot, and zig-zagged when a line has 4 or more.
@@ -964,46 +974,48 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 - react-native-svg (`Svg`, `Rect`, `Circle`, `G`) on web
 - Absolute positioning with percentages over an SVG
 - Writing the layout maths as a pure function you can unit test
-
 ---
 
 ### T-40 · Draw the outdoor Field view (full pitch) (#40)
 **Milestone:** Teams · **Labels:** player UI, admin UI · **Size:** S
 
-**Summary:** For two-team runs (outdoor, or an indoor run with 18 or fewer), draw one full pitch with Blue on the left and Yellow on the right, plus a summary card per team.
+**Summary:** For two-team runs (outdoor, or an indoor run with 18 or fewer), show the "Your team" card for players, then draw one full pitch with Blue on the left and Yellow on the right, plus a summary card per team.
 
 **Spec:** Team balancing spec › Rules (outdoor always 2)
-**Design:** `04-teams` with `view = field`, `teams = 2`
+**Design:** `04-teams` with `view = field`, `teams = 2`; README › Your team card (V3)
 **Depends on:** T-39
 
 **Acceptance criteria**
+- [ ] Players see the same "Your team" card as in the Table view, above the pitch. Admins don't.
 - [ ] Full pitch with a halfway line, centre circle and both boxes. Blue defenders at 11% and attackers at 35%. Yellow mirrored at 89% and 65%.
-- [ ] Summary cards: "{n} players" plus "ATT:DEF a:d" (players), or "★ total · a:d" (admins).
+- [ ] Summary cards (radius 20) use the V3 team frame: `team-*-wash` over `surface` and a curved 6 px `team-*-bar`. They read "{n} players" plus "ATT/DEF a:d" (players), or "★ total · a:d" (admins).
 - [ ] Reuses the layout function, flag dots and legend from T-39.
 
 **Learning notes**
 - Mirroring coordinates; reusing a pure layout function with options
-
 ---
 
 ### T-41 · Show "Teams are up" on Home and Run detail (#41)
 **Milestone:** Teams · **Labels:** player UI, design · **Size:** S
 
-**Summary:** Once teams are published, a closed run card on Home shows a team-colour dot, "Teams are up — you're on {team}" and a "View teams" button. Coach, and players who aren't going, see "Teams are up" with no team.
+**Summary:** Once teams are published, a closed run card on Home shows the Version 3 team panel in place of the "I'm in" button: your team's wash, a team dot, "You're on {team}" over "{n} players · ATT/DEF {a}:{d}", and a "View teams" button. Coach, and players who aren't going, see "Teams are up" with no team of their own.
 
 **Spec:** Key flows (players see teams the moment RSVPs close)
-**Design:** `02-home` (closed card panel; `plays = off` variant)
+**Design:** `02-home` (closed card panel; `plays = off` variant); README › 02 Home › Closed card (V3)
 **Depends on:** T-17, T-38
 
 **Acceptance criteria**
-- [ ] Published and you're on a team: dot in the team colour, "Teams are up — you're on {team}", and "View teams" opens Teams for that run.
-- [ ] Published and you're not going, or you don't play: "Teams are up" plus "View teams" (no dot).
+- [ ] The panel replaces the "I'm in" button on a closed card (the card's bar is already `card-bar-closed` from T-14). It is radius 18 with a `line` border, a 16 px dot with a 4 px soft ring, a title (16 px / 800) over a subtitle (13 px, `muted`), and a "View teams" button (`button` gradient, `on-brand`) on the right.
+- [ ] Published and you're on a team: the panel is your team's `team-*-wash` over `surface-2`, the dot is your team colour, and it reads "You're on {team}" over "{n} players · ATT/DEF {a}:{d}". "View teams" opens Teams for that run.
+- [ ] Published and you don't play (Coach): the panel is `surface-2` with a `brand` dot, and reads "Teams are up" over "{n} teams · published h:mm AM", plus "View teams".
+- [ ] *Design gap:* published and you're a player who isn't going: the same "Teams are up" panel as Coach.
 - [ ] *Design gap:* locked with fewer than 4 players: a muted "Not enough players — no teams this time" and no button.
 - [ ] Run detail shows the same panel under the RSVP section.
+- [ ] Matches the V3 mockup in light and dark.
 
 **Learning notes**
 - Passing a run id to the Teams tab (route params or a search param)
-
+- Reusing the team lookup object from T-38 for the wash and dot colour
 ---
 
 ### T-42 · Push team and run changes live with Realtime (#42)

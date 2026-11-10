@@ -41,17 +41,27 @@ module.exports = {
         team: {
           blue: '#2563EB', 'blue-on': '#FFFFFF', 'blue-text': 'var(--team-blue-text)', 'blue-soft': 'var(--team-blue-soft)',
           yellow: '#F5C518', 'yellow-on': '#1F1A05', 'yellow-text': 'var(--team-yellow-text)', 'yellow-soft': 'var(--team-yellow-soft)',
-          red: '#DC2626', 'red-on': '#FFFFFF', 'red-text': 'var(--team-red-text)', 'red-soft': 'var(--team-red-soft)'
+          red: '#DC2626', 'red-on': '#FFFFFF', 'red-text': 'var(--team-red-text)', 'red-soft': 'var(--team-red-soft)',
+          'blue-chip': 'var(--team-blue-chip-bg)', 'blue-chip-fg': 'var(--team-blue-chip-fg)',
+          'yellow-chip': 'var(--team-yellow-chip-bg)', 'yellow-chip-fg': 'var(--team-yellow-chip-fg)',
+          'red-chip': 'var(--team-red-chip-bg)', 'red-chip-fg': 'var(--team-red-chip-fg)',
+          'blue-border': 'var(--team-blue-border)', 'yellow-border': 'var(--team-yellow-border)', 'red-border': 'var(--team-red-border)'
         },
+        ball: { fill: 'var(--ball-fill)', patch: 'var(--ball-patch)', line: 'var(--ball-line)' },
         logo: { touch: '#62CC7E', pine: '#34614E', forest: '#1D472B', deep: '#04150F' }
       },
       backgroundImage: {
         page: 'var(--page)',
         button: 'var(--button)',
         hero: 'var(--hero)',
-        grass: 'var(--pitch-grass)'
+        grass: 'var(--pitch-grass)',
+        'card-bar': 'var(--card-bar)',
+        'card-bar-closed': 'var(--card-bar-closed)',
+        'button-in': 'var(--button-in)',
+        'team-blue-wash': 'var(--team-blue-wash)', 'team-yellow-wash': 'var(--team-yellow-wash)', 'team-red-wash': 'var(--team-red-wash)',
+        'team-blue-bar': 'var(--team-blue-bar)', 'team-yellow-bar': 'var(--team-yellow-bar)', 'team-red-bar': 'var(--team-red-bar)'
       },
-      boxShadow: { card: 'var(--shadow)' },
+      boxShadow: { card: 'var(--shadow)', 'button-in': 'var(--button-in-shadow)' },
       borderRadius: { badge: '8px', input: '16px', card: '24px', hero: '28px', nav: '26px' },
       minHeight: { tap: '44px' },
       minWidth: { tap: '44px' }
