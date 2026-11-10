@@ -56,6 +56,8 @@ export default function AppLayout() {
           <Tabs.Screen name="admin" />
         </Tabs.Protected>
         <Tabs.Screen name="settings" />
+        {/* Run detail is reached from a run card, not from the bar. */}
+        <Tabs.Screen name="runs/[id]" options={{ href: null }} />
       </Tabs>
     </View>
   );
