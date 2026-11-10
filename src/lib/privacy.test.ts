@@ -15,8 +15,8 @@ describe('privacy policy content', () => {
     }
   });
 
-  it('keeps the effective date placeholder until T-66 fills it in', () => {
-    expect(spanText(paragraphs[0]!.spans)).toBe('Effective date: [date]');
+  it('shows the effective date', () => {
+    expect(spanText(paragraphs[0]!.spans)).toBe('Effective date: November 9, 2026');
   });
 
   it('leaves the byline out', () => {

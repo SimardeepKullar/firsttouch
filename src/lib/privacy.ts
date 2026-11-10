@@ -15,8 +15,8 @@ export const PRIVACY_TITLE = 'FirstTouch — Privacy Policy';
 export const CONTACT_EMAIL = 'simardeepk7@gmail.com';
 
 export const PRIVACY_BLOCKS: Block[] = [
-  // T-66 fills in the date. Until then the placeholder stays visible.
-  { type: 'p', spans: [{ b: 'Effective date:' }, ' [date]'] },
+  // Effective date. (T-66 may revisit this when the policy is finalised.)
+  { type: 'p', spans: [{ b: 'Effective date:' }, ' November 9, 2026'] },
   {
     type: 'p',
     spans: [
