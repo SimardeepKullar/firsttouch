@@ -20,7 +20,7 @@ export const PRIVACY_BLOCKS: Block[] = [
   {
     type: 'p',
     spans: [
-      'FirstTouch is a small app run by Simar Kullar for a recreational soccer group in Brampton, Ontario. It lets members sign in, say whether they are coming to weekend and holiday morning runs, and see the teams for each run. This policy explains what information the app keeps, who can see it, and how to have it deleted.',
+      'FirstTouch is a small app run by Simardeep Kullar for a recreational soccer group in Brampton, Ontario. It lets members sign in, say whether they are coming to weekend and holiday morning runs, and see the teams for each run. This policy explains what information the app keeps, who can see it, and how to have it deleted.',
     ],
   },
   { type: 'p', spans: [{ b: 'In short:' }] },
@@ -96,7 +96,7 @@ export const PRIVACY_BLOCKS: Block[] = [
   {
     type: 'p',
     spans: [
-      'Admins are a small number of group members chosen to run the group. Simar Kullar, who runs the app, can also access the database to maintain it. We do not share your information with anyone outside the group except the service providers listed below, or if the law requires it.',
+      'Admins are a small number of group members chosen to run the group. Simardeep Kullar, who runs the app, can also access the database to maintain it. We do not share your information with anyone outside the group except the service providers listed below, or if the law requires it.',
     ],
   },
 
@@ -158,7 +158,7 @@ export const PRIVACY_BLOCKS: Block[] = [
   },
 
   { type: 'h2', text: 'Contact' },
-  { type: 'p', spans: ['Questions or requests: Simar Kullar, ', { mailto: CONTACT_EMAIL }, '.'] },
+  { type: 'p', spans: ['Questions or requests: Simardeep Kullar, ', { mailto: CONTACT_EMAIL }, '.'] },
 ];
 
 /** The link a `{ mailto }` span opens. */
