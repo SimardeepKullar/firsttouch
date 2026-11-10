@@ -8,7 +8,7 @@
 -- Runs use 2030 dates (still open) and a 2020 date (already locked), so they
 -- never clash with seed.sql's runs.
 begin;
-select plan(40);
+select plan(45);
 
 -- ---------------------------------------------------------------------------
 -- Set-up, as the database owner (RLS doesn't apply to the owner)
@@ -133,6 +133,38 @@ select tests.act_as('00000000-0000-0000-0000-0000000000b3');
 select throws_ok(
   $$insert into rsvps (run_id, player_id, going) values ('00000000-0000-0000-0000-0000000000d1', '00000000-0000-0000-0000-0000000000b3', true)$$,
   '42501', null, 'a profile with plays = false cannot RSVP'
+);
+
+-- Changing an answer that already exists. The app saves with an upsert, so the update branch
+-- (ON CONFLICT DO UPDATE) is checked against rsvps_update_own, which raises 42501 like an insert.
+reset role;
+insert into rsvps (run_id, player_id, going) values
+  ('00000000-0000-0000-0000-0000000000d2', '00000000-0000-0000-0000-0000000000b1', false),  -- after lock
+  ('00000000-0000-0000-0000-0000000000d3', '00000000-0000-0000-0000-0000000000b1', false);  -- not open
+select tests.act_as('00000000-0000-0000-0000-0000000000b1');
+
+select lives_ok(
+  $$insert into rsvps (run_id, player_id, going) values ('00000000-0000-0000-0000-0000000000d1', '00000000-0000-0000-0000-0000000000b1', false)
+    on conflict (run_id, player_id) do update set going = excluded.going$$,
+  'player can change their own RSVP (upsert) on an open run before lock'
+);
+select is(
+  (select going from rsvps where run_id = '00000000-0000-0000-0000-0000000000d1' and player_id = '00000000-0000-0000-0000-0000000000b1'),
+  false, 'the change was saved'
+);
+select throws_ok(
+  $$insert into rsvps (run_id, player_id, going) values ('00000000-0000-0000-0000-0000000000d2', '00000000-0000-0000-0000-0000000000b1', true)
+    on conflict (run_id, player_id) do update set going = excluded.going$$,
+  '42501', null, 'player cannot change an existing RSVP (upsert) after the lock time'
+);
+select throws_ok(
+  $$insert into rsvps (run_id, player_id, going) values ('00000000-0000-0000-0000-0000000000d3', '00000000-0000-0000-0000-0000000000b1', true)
+    on conflict (run_id, player_id) do update set going = excluded.going$$,
+  '42501', null, 'player cannot change an existing RSVP (upsert) on a run that is not open'
+);
+select is(
+  (select going from rsvps where run_id = '00000000-0000-0000-0000-0000000000d2' and player_id = '00000000-0000-0000-0000-0000000000b1'),
+  false, 'the refused change left the old answer in place'
 );
 
 -- ---------------------------------------------------------------------------
