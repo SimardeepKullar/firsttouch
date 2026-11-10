@@ -445,7 +445,6 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 **Acceptance criteria**
 - [ ] With Plays off: no toggle, "You're managing this run" instead, and the chip reads "Admin" (the V2 mockup; the README still says "Admin · manages runs", see disagreements).
-- [ ] The note under the count reads "RSVPs open", or "RSVPs are closed" after the lock.
 - [ ] A playing admin (John, Sim) sees the normal player Home with a pass chip, plus the Admin tab.
 - [ ] Turning Plays on or off for an admin (T-22) switches their Home on the next load.
 
