@@ -5,6 +5,7 @@ import { CardFrame } from './CardFrame';
 import { CheckIcon, ChevronRightIcon, ClockIcon, LockIcon, PinIcon, PlusIcon } from './RunIcons';
 import { FOCUS_RING } from './pressable';
 import type { HomeRun } from '../lib/homeRuns';
+import { useRsvp } from '../lib/useRsvp';
 import { addressLines, closeLine, dayKicker, formatStartTime, rsvpsClosed, shortDate } from '../lib/torontoTime';
 
 /** One upcoming run on Home (02-home, V3). `now` is passed in so the open/closed state is a pure
@@ -13,6 +14,7 @@ export function RunCard({ run, now }: { run: HomeRun; now: Date }) {
   const closed = rsvpsClosed(run.lockAt, now);
   const [line1, line2] = addressLines(run.location);
   const going = run.iAmGoing;
+  const rsvp = useRsvp(run.id);
 
   return (
     <CardFrame bar={closed ? 'closed' : 'open'}>
@@ -75,12 +77,13 @@ export function RunCard({ run, now }: { run: HomeRun; now: Date }) {
         </View>
       </View>
 
-      {/* "I'm in" is drawn here; T-15 makes it work. Gone once RSVPs close. */}
+      {/* The toggle. Gone once RSVPs close. Tapping flips the card at once (see useRsvp). */}
       {closed ? null : (
         <Pressable
           role="button"
           aria-pressed={going}
           aria-label={going ? "You're in" : "I'm in"}
+          onPress={() => rsvp.setGoing(!going)}
           className={`h-[50px] flex-row items-center justify-center gap-[10px] rounded-input border-[1.5px] ${FOCUS_RING} ${
             going ? 'border-transparent bg-button-in shadow-button-in' : 'border-brand-line'
           }`}
@@ -91,6 +94,13 @@ export function RunCard({ run, now }: { run: HomeRun; now: Date }) {
           </Text>
         </Pressable>
       )}
+      {/* Why the last tap was undone. Outside the open/closed check: after a refused save the card
+          may close at the same moment, and the message should still be readable. */}
+      {rsvp.errorMessage ? (
+        <Text role="alert" className="text-center text-[14px] font-inter-semibold text-danger">
+          {rsvp.errorMessage}
+        </Text>
+      ) : null}
     </CardFrame>
   );
 }

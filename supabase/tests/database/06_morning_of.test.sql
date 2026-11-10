@@ -4,7 +4,7 @@
 --
 -- Run day is Sat 2027-07-10 (EDT, UTC-4), so Toronto 05:00 is 09:00 UTC.
 begin;
-select plan(9);
+select plan(12);
 
 -- run_date is unique, and seed.sql fills the calendar with runs: clear them
 -- (rolled back with the transaction) so the test dates below are free.
@@ -58,6 +58,21 @@ values ('00000000-0000-0000-0000-0000000003a2', '00000000-0000-0000-0000-0000000
 insert into rsvps (run_id, player_id, going) values ('00000000-0000-0000-0000-0000000003a2', '00000000-0000-0000-0000-0000000000c2', true);
 select is((select morning_of from rsvps where run_id = '00000000-0000-0000-0000-0000000003a2'), true,
   'a yes made now for a run dated today (Toronto) is morning_of');
+
+-- The app saves with an upsert (insert ... on conflict do update), which is what T-15 sends. Both
+-- triggers must still do their job on that path. c3 answers "no" first, then "yes" through the
+-- conflict branch, on the run dated today.
+insert into rsvps (run_id, player_id, going) values ('00000000-0000-0000-0000-0000000003a2', '00000000-0000-0000-0000-0000000000c3', false);
+insert into rsvps (run_id, player_id, going) values ('00000000-0000-0000-0000-0000000003a2', '00000000-0000-0000-0000-0000000000c3', true)
+  on conflict (run_id, player_id) do update set going = excluded.going;
+select is((select morning_of from rsvps where run_id = '00000000-0000-0000-0000-0000000003a2' and player_id = '00000000-0000-0000-0000-0000000000c3'), true,
+  'an upsert that flips no -> yes on run day sets morning_of');
+insert into rsvps (run_id, player_id, going) values ('00000000-0000-0000-0000-0000000003a2', '00000000-0000-0000-0000-0000000000c3', false)
+  on conflict (run_id, player_id) do update set going = excluded.going;
+select is((select morning_of from rsvps where run_id = '00000000-0000-0000-0000-0000000003a2' and player_id = '00000000-0000-0000-0000-0000000000c3'), false,
+  'an upsert that flips yes -> no clears morning_of');
+select is((select count(*)::int from rsvps where run_id = '00000000-0000-0000-0000-0000000003a2' and player_id = '00000000-0000-0000-0000-0000000000c3'), 1,
+  'upserting twice leaves one row, not two');
 
 select * from finish();
 rollback;
