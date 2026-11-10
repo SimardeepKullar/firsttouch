@@ -49,6 +49,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "web:local": "node scripts/web-local.mjs",
     "lint": "expo lint",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
