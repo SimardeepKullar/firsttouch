@@ -30,6 +30,8 @@ module.exports = {
         ink: { DEFAULT: 'var(--ink)', 2: 'var(--ink-2)' },
         muted: { DEFAULT: 'var(--muted)', 2: 'var(--muted-2)' },
         brand: { DEFAULT: 'var(--brand)', text: 'var(--brand-text)', on: 'var(--on-brand)', soft: 'var(--brand-soft)', line: 'var(--brand-line)' },
+        'switch-off': 'var(--switch-off)',
+        danger: { DEFAULT: '#B91C1C', on: '#FFFFFF' },
         star: { on: 'var(--star-on)', off: 'var(--star-off)' },
         ok: { bg: 'var(--ok-bg)', fg: 'var(--ok-fg)' },
         morning: { bg: 'var(--amber-bg)', fg: 'var(--amber-fg)', dot: '#F59E0B' },
