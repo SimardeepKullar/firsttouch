@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { RunCard } from '../../components/RunCard';
 import { ArrowRightIcon, PlayersIcon } from '../../components/RunIcons';
@@ -8,7 +8,9 @@ import { StatusChip } from '../../components/StatusChip';
 import { FOCUS_RING } from '../../components/pressable';
 import { visibleRuns } from '../../lib/homeRuns';
 import { runsThisWeek, seasonLabel, torontoDate } from '../../lib/torontoTime';
+import { useAuth } from '../../lib/auth';
 import { useHome } from '../../lib/useHome';
+import { useLiveRsvps } from '../../lib/useLiveRsvps';
 import { useMe } from '../../lib/useMe';
 
 /** The current time, refreshed every 30 seconds so a card flips to "RSVPs closed" on its own. */
@@ -28,6 +30,11 @@ export default function Home() {
   const today = torontoDate(now);
   const home = useHome(today);
   const [showAll, setShowAll] = useState(false);
+
+  // One Realtime channel for the whole screen: when anyone RSVPs to a run listed here, refetch Home.
+  const { session } = useAuth();
+  const runIds = useMemo(() => home.data?.runs.map((r) => r.id) ?? [], [home.data]);
+  useLiveRsvps(['home', session?.user.id], runIds);
 
   const firstName = me.data?.name.trim().split(/\s+/)[0] ?? '';
   const week = home.data ? visibleRuns(home.data.runs, today, false) : [];
