@@ -121,6 +121,10 @@ Sign-in in the app is Google only, which doesn't work against local. Instead, op
   location.reload();
 })();
 ```
+This is dark mode.
+```js
+localStorage.setItem('firsttouch.theme', 'dark');
+```
 
 The page reloads signed in. (If Chrome blocks pasting, type `allow pasting` in the console first.)
 
