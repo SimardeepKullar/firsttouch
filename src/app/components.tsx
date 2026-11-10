@@ -165,6 +165,8 @@ export default function Components() {
         {MODES.map((m) => (
           <Pressable
             key={m}
+            role="button"
+            aria-pressed={mode === m}
             onPress={() => setMode(m)}
             className={`min-h-tap min-w-tap items-center justify-center rounded-full border px-4 ${
               mode === m ? 'border-brand bg-brand-soft' : 'border-line bg-surface'
