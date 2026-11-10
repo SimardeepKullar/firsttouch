@@ -40,7 +40,8 @@ export default function SignIn() {
           source={require('../../assets/images/icon.png')}
           alt="FirstTouch logo"
           contentFit="contain"
-          style={{ width: 112, height: 112, boxShadow: '0 6px 14px rgba(4, 21, 15, 0.25)' }}
+          // App Store icon shape: corner radius is 22.37% of the size (112 × 0.2237 ≈ 25).
+          style={{ width: 112, height: 112, borderRadius: 25, borderCurve: 'continuous', boxShadow: '0 6px 14px rgba(4, 21, 15, 0.25)' }}
         />
         <Text
           role="heading"
