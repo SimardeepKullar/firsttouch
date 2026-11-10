@@ -56,8 +56,9 @@ export default function AppLayout() {
           <Tabs.Screen name="admin" />
         </Tabs.Protected>
         <Tabs.Screen name="settings" />
-        {/* Run detail is reached from a run card, not from the bar. */}
-        <Tabs.Screen name="runs/[id]" options={{ href: null }} />
+        {/* Run detail, reached from a run card. Our own tab bar only lists the four tabs, so this adds no
+            button. (Don't use `options={{ href: null }}` here: in this SDK it stops /runs/<id> resolving.) */}
+        <Tabs.Screen name="runs" />
       </Tabs>
     </View>
   );
