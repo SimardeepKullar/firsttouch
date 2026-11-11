@@ -6,9 +6,10 @@ import { ArrowRightIcon, PlayersIcon } from '../../components/RunIcons';
 import { Screen } from '../../components/Screen';
 import { StatusChip } from '../../components/StatusChip';
 import { FOCUS_RING } from '../../components/pressable';
-import { visibleRuns } from '../../lib/homeRuns';
-import { runsThisWeek, seasonLabel, torontoDate } from '../../lib/torontoTime';
 import { useAuth } from '../../lib/auth';
+import { visibleRuns } from '../../lib/homeRuns';
+import { homeVariant, topChip } from '../../lib/homeVariant';
+import { runsThisWeek, seasonLabel, torontoDate } from '../../lib/torontoTime';
 import { useHome } from '../../lib/useHome';
 import { useLiveRsvps } from '../../lib/useLiveRsvps';
 import { useMe } from '../../lib/useMe';
@@ -23,7 +24,8 @@ function useNow() {
   return now;
 }
 
-// Home for a playing member. (Coach's Home, plays = off, is T-17.)
+// Home. A playing member (or playing admin) gets the toggle and a pass chip; an admin who doesn't play
+// (Coach) gets "You're managing this run" and an Admin chip (see homeVariant).
 export default function Home() {
   const me = useMe();
   const now = useNow();
@@ -37,6 +39,7 @@ export default function Home() {
   useLiveRsvps(['home', session?.user.id], runIds);
 
   const firstName = me.data?.name.trim().split(/\s+/)[0] ?? '';
+  const variant = me.data ? homeVariant(me.data.isAdmin, me.data.plays) : 'player';
   const week = home.data ? visibleRuns(home.data.runs, today, false) : [];
   const shown = home.data ? visibleRuns(home.data.runs, today, showAll) : [];
 
@@ -48,7 +51,11 @@ export default function Home() {
           alt="FirstTouch"
           style={{ width: 44, height: 44, borderRadius: 10, borderCurve: 'continuous' }}
         />
-        {home.data ? <StatusChip kind={home.data.paid ? 'paid' : 'unpaid'} label={`Indoor pass: ${home.data.paid ? 'Paid' : 'Not paid'}`} /> : null}
+        {topChip(variant) === 'admin' ? (
+          <StatusChip kind="admin" />
+        ) : home.data ? (
+          <StatusChip kind={home.data.paid ? 'paid' : 'unpaid'} label={`Indoor pass: ${home.data.paid ? 'Paid' : 'Not paid'}`} />
+        ) : null}
       </View>
 
       <View className="mb-[6px]">
@@ -83,7 +90,7 @@ export default function Home() {
       {home.data && shown.length === 0 ? <Text className="text-body text-muted">No upcoming runs.</Text> : null}
       <View className="gap-4">
         {shown.map((run) => (
-          <RunCard key={run.id} run={run} now={now} />
+          <RunCard key={run.id} run={run} now={now} variant={variant} />
         ))}
       </View>
 
