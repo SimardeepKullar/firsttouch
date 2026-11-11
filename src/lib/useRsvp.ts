@@ -2,11 +2,11 @@ import { useMutation, useQueryClient, type QueryKey } from '@tanstack/react-quer
 import { useAuth } from './auth';
 import { applyRsvp, type RsvpPerson } from './homeRuns';
 import { rsvpErrorMessage } from './rsvpError';
-import { applyRsvpToDetail } from './runDetail'; // <- new
+import { applyRsvpToDetail } from './runDetail';
 import { supabase } from './supabase';
 import type { HomeData } from './useHome';
 import { useMe } from './useMe';
-import type { RunDetailData } from './useRunDetail'; // <- new
+import type { RunDetailData } from './useRunDetail';
 
 // Each entry is one cache box before the tap: its key and what was in it (Home's box or Run detail's).
 type Snapshot = [QueryKey, unknown][];
@@ -40,7 +40,7 @@ export function useRsvp(runId: string) {
       if (error) throw error;
     },
 
-        // Runs the moment you tap, before the network. Whatever it returns is handed to onError.
+    // Runs the moment you tap, before the network. Whatever it returns is handed to onError.
     onMutate: async (going) => {
       const who: RsvpPerson = { id: userId ?? '', name: me.data?.name ?? 'You' };
       // Stop any refetch already under way, on both screens: it would land later and overwrite the instant change.
@@ -63,7 +63,6 @@ export function useRsvp(runId: string) {
       return { previous };
     },
 
-
     // The save failed: put the cache back as it was before this tap.
     onError: (_error, _going, context) => {
       for (const [key, data] of context?.previous ?? []) queryClient.setQueryData(key, data);
@@ -71,7 +70,7 @@ export function useRsvp(runId: string) {
 
     // Success or failure, make the cache match the database. Only the last queued save does it:
     // refetching while a later save is still waiting would flash the older answer back.
-        onSettled: () => {
+    onSettled: () => {
       if (queryClient.isMutating({ mutationKey }) === 1) {
         return Promise.all([
           queryClient.invalidateQueries({ queryKey: homeKey }),
