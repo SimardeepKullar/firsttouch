@@ -3,7 +3,7 @@ import { Path } from 'react-native-svg';
 import { ThemedSvg } from './svg';
 
 /** Season-pass state (02 Home, 05 Settings, 09 Passes) or run state (07 Admin runs). */
-export type StatusChipKind = 'paid' | 'unpaid' | 'open' | 'locked' | 'published' | 'cancelled';
+export type StatusChipKind = 'paid' | 'unpaid' | 'open' | 'locked' | 'published' | 'cancelled' | 'admin';
 /** Sizes taken from the mockups: 'run' 28 tall (07 next-run card), 'pass' 30 tall (02 Home),
  *  'row' 24 tall with no dot (07 "All runs" rows). */
 export type StatusChipSize = 'run' | 'pass' | 'row';
@@ -16,6 +16,7 @@ const KINDS: Record<StatusChipKind, { label: string; box: string; text: string; 
   locked: { label: 'Locked', box: 'bg-locked-bg', text: 'text-locked-fg', dot: 'bg-locked-fg' },
   published: { label: 'Teams published', box: 'bg-brand', text: 'text-brand-on', dot: 'bg-brand-on' },
   cancelled: { label: 'Cancelled', box: 'bg-unpaid-bg', text: 'text-unpaid-fg', dot: 'bg-unpaid-fg' },
+  admin: { label: 'Admin', box: 'bg-brand-soft', text: 'text-brand-text', dot: 'bg-brand-text' },
 };
 
 const SIZES: Record<StatusChipSize, { box: string; text: string; dot: string | null }> = {
@@ -28,13 +29,13 @@ type Props = {
   kind: StatusChipKind;
   /** Replaces the default label, e.g. "Indoor pass: Paid" on Home. */
   label?: string;
-  /** Defaults to 'pass' for paid/unpaid and 'run' for the run states. */
+  /** Defaults to 'pass' for paid/unpaid/admin and 'run' for the run states. */
   size?: StatusChipSize;
 };
 
 export function StatusChip({ kind, label, size }: Props) {
   const k = KINDS[kind];
-  const s = SIZES[size ?? (kind === 'paid' || kind === 'unpaid' ? 'pass' : 'run')];
+  const s = SIZES[size ?? (kind === 'paid' || kind === 'unpaid' || kind === 'admin' ? 'pass' : 'run')];
   return (
     <View className={`flex-row items-center self-start rounded-full ${k.box} ${s.box}`}>
       {s.dot ? <View className={`rounded-full ${k.dot} ${s.dot}`} /> : null}
