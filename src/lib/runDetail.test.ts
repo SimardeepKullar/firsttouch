@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { longDate, positionCounts, positionTag, rsvpPanelKind, rsvpPanelText, runKicker } from './runDetail';
+import { applyRsvpToDetail, longDate, positionCounts, positionTag, rsvpPanelKind, rsvpPanelText, runKicker } from './runDetail';
+import type { RunDetailData } from './useRunDetail';
 
 describe('positionCounts', () => {
   it('counts attackers and defenders', () => {
@@ -47,5 +48,40 @@ describe('runKicker and longDate', () => {
   });
   it('writes the long date', () => {
     expect(longDate('2027-02-14')).toBe('Sunday, Feb 14');
+  });
+});
+
+describe('applyRsvpToDetail', () => {
+  const me = { id: 'me', name: 'Me', position: 'defend' as const };
+  const ann = { playerId: 'a', name: 'Ann', position: 'attack' as const, morningOf: false };
+  const base: RunDetailData = {
+    id: 'r1',
+    runDate: '2027-02-14',
+    startTime: '06:30:00',
+    location: '7855 Finch Ave W, Brampton, ON',
+    lockAt: '2027-02-14T10:30:00Z',
+    seasonType: 'indoor',
+    roster: [ann],
+  };
+
+  it('adds me at the end when I say yes', () => {
+    const next = applyRsvpToDetail(base, true, me);
+    expect(next.roster.map((p) => p.name)).toEqual(['Ann', 'Me']);
+    expect(next.roster[1]).toEqual({ playerId: 'me', name: 'Me', position: 'defend', morningOf: false });
+  });
+  it('does not add me twice', () => {
+    const once = applyRsvpToDetail(base, true, me);
+    expect(applyRsvpToDetail(once, true, me).roster).toHaveLength(2);
+  });
+  it('takes me off the list when I say no', () => {
+    const once = applyRsvpToDetail(base, true, me);
+    expect(applyRsvpToDetail(once, false, me).roster).toEqual([ann]);
+  });
+  it('changes nothing when I was not on the list and say no', () => {
+    expect(applyRsvpToDetail(base, false, me).roster).toEqual([ann]);
+  });
+  it('never changes the data it was given', () => {
+    applyRsvpToDetail(base, true, me);
+    expect(base.roster).toEqual([ann]);
   });
 });

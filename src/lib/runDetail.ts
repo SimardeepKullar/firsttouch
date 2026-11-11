@@ -1,5 +1,6 @@
 // What the Run detail screen decides, as plain functions (no React, no network) so they can be tested.
 import type { HomeVariant } from './homeVariant';
+import type { RosterPlayer } from './useRunDetail';
 
 type Position = 'attack' | 'defend';
 export type SeasonType = 'indoor' | 'outdoor';
@@ -45,4 +46,22 @@ export function runKicker(runDate: string, seasonType: SeasonType): string {
 /** "Sunday, Feb 14" */
 export function longDate(runDate: string): string {
   return longDateFmt.format(noonOf(runDate));
+}
+
+/** Who is saying yes or no, as the roster needs to know them. */
+export type RsvpMe = { id: string; name: string; position: Position };
+
+/** A copy of the Run detail data with my RSVP applied, as if the save had worked (the instant update).
+ *  - yes: I go at the end of the list (oldest yes first), unless I'm already on it;
+ *  - no: I come off the list;
+ *  - saying what's already true changes nothing.
+ *  Never edits `data` itself: React Query needs a new object to notice a change. The "Morning of" badge
+ *  is not guessed here (false); the refetch after the save brings the real value. */
+export function applyRsvpToDetail<T extends { roster: RosterPlayer[] }>(data: T, going: boolean, me: RsvpMe): T {
+  const onList = data.roster.some((p) => p.playerId === me.id);
+  if (going === onList) return data;
+  if (going) {
+    return { ...data, roster: [...data.roster, { playerId: me.id, name: me.name, position: me.position, morningOf: false }] };
+  }
+  return { ...data, roster: data.roster.filter((p) => p.playerId !== me.id) };
 }
