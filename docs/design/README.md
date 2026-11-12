@@ -180,12 +180,21 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Non-playing admin (`plays = off`, shown as Coach):** the cards keep the date, time, address, "{n} going" and the "Details" link, but the "I'm in" toggle is replaced by a muted line, "You're managing this run". The top chip reads "Admin · manages runs" instead of the pass chip. A closed card's panel reads "Teams are up" with "View teams" (no team of their own). The bottom nav includes the Admin tab.
 
 ### 03 Run detail (`03-run-detail.dc.html`)
-- **V2 header:** a floating hero-gradient card (inset 12px, 28 radius) with a faint ball watermark; the stat tiles are translucent white glass.
-- **Header:** pitch-green with rounded bottom corners, a back button, the date, start time and address, and three stat tiles (going, attackers, defenders).
-- **Your RSVP:** the viewer's own status, "You're in" (with a "Change" button) or "You're not going" (with an "I'm in" button), plus "RSVPs close 5:30 AM". After the lock (`locked`), it reads "RSVPs closed 5:30 AM" and the button is disabled with a lock icon and the label "Locked".
-- **Admin example:** the admin view is drawn as John looking at a run he isn't going to ("You're not going", locked). Sim appears in the list like any other player.
-- **Who's coming, player view:** each row has an avatar, name, position tag and only the "Morning of" badge. No stars, no Unpaid badge.
-- **Who's coming, admin view:** each row also shows stars and the Unpaid badge, and the bottom nav includes the Admin tab.
+- **V3:** no hero header and no page title. The top row has a 44 × 44 back button on the left (`surface`, `line` border, 14 radius, `ink` chevron) and a status chip on the right: "Open" (`ok-bg` / `ok-fg`) or, once locked, "Teams published" (`brand-soft` / `brand-text`). The chip is 30 tall with a 7px dot.
+- **Run card:** the Home run card's look at 26 radius: a `brand` wash over `surface` (12% in light and 14% in dark at the top-left corner, fading to a fifth of that 70% of the way across, 160°), a curved 6px left bar in `card-bar` (a grey `muted-2` bar once locked), and a 190px soccer ball peeking in from the right (`ball-fill`, `ball-patch`, `ball-line`). Inside:
+  - the kicker "INDOOR 2027" (14px, 800, 0.06em tracking, `brand-text`; "OUTDOOR 2027" for an outdoor season), taken from the run's season;
+  - the date, 30px / 800 (for example "Sunday, Feb 14");
+  - the clock line "6:30 AM start" and the pin line with the address on two lines;
+  - three stat tiles (going, attackers, defenders): 16 radius, `line` border, 70% white in light and 4% white in dark, with a 24px / 800 number over a 12px / 600 `muted` label.
+  - There is no "RSVPs close" line in this card.
+- **Your RSVP:** a 24-radius `surface` card with a `line` border, `shadow` and 16 padding. One row: on the left "YOUR RSVP" (12px, 800, 0.1em tracking, `muted`), the status at 20px / 800 ("You're in" or "You're not going"), and while RSVPs are open the lock-icon line "RSVPs close 5:30 AM" (13px, `muted`). On the right a 46-tall pill button that toggles your RSVP in place:
+  - going: "You're in" with a check icon, filled with `button` in light and `button-in` (with `button-in-shadow`) in dark, `on-brand` text;
+  - not going: "I'm in" with a plus icon, a 1.5px `brand-line` outline, `brand-text`.
+- **After the lock, going:** the pill and the close line disappear. Below the row sits a team panel: 18 radius, your team's `wash` over `surface-2`, a `line` border, a 16px team dot with a 4px soft ring, "You're on Blue" (16px / 800) over "7 players · ATT/DEF 3:4" (13px, `muted`), and a 40-tall "View teams" button (`button` gradient, 12 radius) on the right. (Admins see "Teams are up" with a `brand` dot instead; that is the admin view, T-19.)
+- **After the lock, not going:** a disabled "Locked" pill (lock icon, `surface-2`, `line` border, `muted` text) takes the pill's place on the same line. There is no close line.
+- **Admins with Plays off (Coach), not drawn in the mockup:** the whole RSVP row is replaced by the line "You're managing this run", as on Home.
+- **Who's coming, player view:** a heading with the note "In order of RSVP" (13px / 600, `muted`) on the right, then a 24-radius card with 4px vertical padding. Rows are at least 48 tall with 8px / 16px padding: a 38px avatar (`surface-2`, `line` border, `ink-2` initials at 12px / 700), the name (15px / 600) with " · You" in `brand-text` on your own row, the "Morning of" badge (22 tall, amber) and the position tag. A player who isn't going isn't in the list. No stars, no Unpaid badge.
+- **Who's coming, admin view:** the note reads "In order of RSVP · admin view", each row shows a 12px star row under the name and the Unpaid badge, no " · You" suffix, and the bottom nav includes the Admin tab. Drawn as John, not going; Sim is listed like any player.
 
 ### 04 Teams (`04-teams.dc.html`)
 - **V3:** players see the Your team card under the "Published" line, in both Table and Field views. Team cards follow Shared components › Team card (V3).
