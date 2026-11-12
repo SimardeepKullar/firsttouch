@@ -457,24 +457,27 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-18 · Build the Run detail screen (player view) (#18)
 **Milestone:** RSVP loop · **Labels:** player UI, design · **Size:** M
 
-**Summary:** Build Run detail: the floating hero-gradient header card with date, time, address and three glass stat tiles, your own RSVP panel, and "Who's coming" in RSVP order with position tags and Morning of badges. Players never see stars or Unpaid here.
+**Summary:** Build Run detail (Version 3): a "← Home" link and a status chip on top; a run card with the curved card bar, the green wash and a soccer ball, showing the kicker, date, start time, two-line address and three stat tiles (going, attackers, defenders); one "Your RSVP" row with a compact pill that toggles in place; after the lock, your team panel or a disabled "Locked" pill; and "Who's coming" in RSVP order with position tags and Morning of badges. Players never see stars or Unpaid here.
 
 **Spec:** Lock time and player-facing views (`run_roster`); Access control (stars and Unpaid admin-only); Key flows › Admins and RSVPs
-**Design:** `03-run-detail` with `role = player`, `locked = false | true`, `going = true | false`
+**Design:** `03-run-detail` (V3) with `role = player`, `locked = false | true`, `going = true | false`
 **Depends on:** T-15
 
 **Acceptance criteria**
-- [ ] The header is a floating card (inset 12 px, radius 28) on the `hero` gradient with a faint ball watermark. It shows "SUNDAY RUN · INDOOR" (day and season type), the date, start time, address, and translucent tiles for going, attackers and defenders.
-- [ ] Your RSVP: "You're in" with a "Change" button, or "You're not going" with an "I'm in" button. Both toggle your RSVP in place (the mockup's "Change" link to Home is a placeholder).
-- [ ] After the lock: "RSVPs closed h:mm AM" and a disabled "Locked" button with a lock icon.
-- [ ] *Design gap:* for an admin with Plays off, the RSVP panel is replaced by the line "You're managing this run" (as on Home).
-- [ ] "Who's coming" lists `run_roster` in `responded_at` order, with avatar, name, position tag and only the Morning of badge.
-- [ ] The list updates live (reuse the T-16 subscription).
+- [ ] No hero header and no page title. The top row is a "← Home" text link (`brand-text`, 14 px / 700, 16 px arrow, tap area at least 44 px tall, no box) and a status chip: "Open" while open, "Locked" once the lock time has passed or the run is locked, "Teams published" (soft green) once published.
+- [ ] The run card has the curved 6 px card bar (grey once closed), the green wash and a faint soccer ball. It shows the kicker "INDOOR <year>" ("OUTDOOR <year>" for an outdoor season; the year of the run), the date, "6:30 AM start", a two-line address, and the going, attackers and defenders tiles inside the card. There is no "RSVPs close" line in this card.
+- [ ] Your RSVP is one row: "YOUR RSVP", your status ("You're in" / "You're not going") and "RSVPs close h:mm AM" on the left; a compact pill on the right, "You're in" (filled, `button-in`) or "I'm in" (outline). Tapping it toggles your RSVP in place, and Home's card agrees (one shared mutation, a refused save rolls both back and shows the error line).
+- [ ] After the lock, going, teams published: the "You're on {team}" panel (team wash, dot, "{n} players · ATT/DEF {a}:{d}", "View teams"). After the lock otherwise (not going, or no teams yet): a disabled "Locked" pill with a lock icon on the same line, and no close line.
+- [ ] *Design gap:* for an admin with Plays off, the RSVP card is replaced by the line "You're managing this run" (as on Home).
+- [ ] "Who's coming" lists `run_roster` in `responded_at` order: 38 px avatar, name (" · You" on your own row), only the Morning of badge, and the position tag. No stars, no Unpaid.
+- [ ] The list and the counts update live (reuse the T-16 subscription with this screen's own query key).
+- [ ] A wrong or unknown run id shows "Run not found" with a way back to Home.
 
 **Learning notes**
-- Expo Router dynamic routes (`run/[id].tsx`) and `useLocalSearchParams`
+- Expo Router dynamic routes (`runs/[id].tsx`) and `useLocalSearchParams`
 - Selecting from a view (`run_roster`) with supabase-js
-- Sharing one mutation hook between Home and Run detail
+- Sharing one mutation hook between Home and Run detail (two query keys, one rollback snapshot)
+- Theme tokens for colours that change per theme (the wash, the stat tile)
 
 ---
 
@@ -1009,7 +1012,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 - [ ] Published and you don't play (Coach): the panel is `surface-2` with a `brand` dot, and reads "Teams are up" over "{n} teams · published h:mm AM", plus "View teams".
 - [ ] *Design gap:* published and you're a player who isn't going: the same "Teams are up" panel as Coach.
 - [ ] *Design gap:* locked with fewer than 4 players: a muted "Not enough players — no teams this time" and no button.
-- [ ] Run detail shows the same panel under the RSVP section.
+- [ ] Run detail shows the same panel under the RSVP section. (T-18 already builds the player's "You're on {team}" case as the `TeamPanel` component. Here, add the "Teams are up" variants for Coach and a player who isn't going, and reuse `TeamPanel` on Home.)
 - [ ] Matches the V3 mockup in light and dark.
 
 **Learning notes**
@@ -1638,7 +1641,7 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 6 | `06-admin-players` | The spec says admins promote others from the Players screen. The design has no control for it. | Add a player sheet with an Admin switch. You can't remove your own admin role. (T-23) |
 | 7 | spec Monitoring | `job_errors` is "shown on the admin screen". There's no design. | Amber "problems this week" card on Admin · Runs, reusing existing styles. (T-58) |
 | 8 | `03-run-detail` | No variant for an admin with Plays off. The spec says they can't RSVP. | Replace the RSVP panel with "You're managing this run", as on Home. (T-18) |
-| 9 | `03-run-detail` | "Change" is a link back to Home. | The spec's RSVP is a toggle: "Change" / "I'm in" toggles in place. (T-18) |
+| 9 | `03-run-detail` | V2 drew "Change" as a link back to Home. | The spec's RSVP is a toggle. V3 replaces "Change" with a pill ("You're in" / "I'm in") that toggles in place. (T-18) |
 | 10 | `04-teams` | *(Fixed in V2.)* The V1 mockup drew the 3-tab player nav for admins. V2 shows the Admin tab. | Nothing to resolve. One shared tab bar shows Admin for admins everywhere. (T-09, T-38) |
 | 11 | `04-teams`, `08-admin-team-builder` | No state for "teams not published yet" or "fewer than 4 players". | New empty states: "Teams publish automatically at {time}" and "Not enough players — no teams made" (wording from `07`). (T-38, T-44) |
 | 12 | `02-home` | The closed card is only drawn for a player on a team, and for Coach. Not for a player who said no, or a run locked with under 4. | Not going: Coach's "Teams are up" panel. Under 4: muted "Not enough players — no teams this time". (T-41) |

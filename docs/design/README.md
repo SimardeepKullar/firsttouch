@@ -67,8 +67,8 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 | 02 Home | `plays` | `on` (default), `off` | `off` = non-playing admin (Coach): no "I'm in" toggle, Admin tab shown |
 | 02 Home | `pass` | `paid`, `unpaid` | Season pass chip |
 | 03 Run detail | `role` | `player` (default), `admin` | Admin adds stars and the Unpaid badge |
-| 03 Run detail | `locked` | boolean | The RSVP row shows "RSVPs closed" and a disabled "Locked" button |
-| 03 Run detail | `going` | `true` (default), `false` | The viewer's own RSVP: "You're in" or "You're not going" |
+| 03 Run detail | `locked` | boolean | The chip reads "Teams published", the bar turns grey, and the RSVP row shows the team panel (going) or a disabled "Locked" pill (not going) |
+| 03 Run detail | `going` | `true` (default), `false` | The viewer's own RSVP: a filled "You're in" pill or an outlined "I'm in" pill. When not going, you're missing from the list |
 | 04 Teams | `role` | `player` (default), `admin` | Admin adds stars, star totals and Unpaid flags |
 | 04 Teams | `view` | `table`, `field` | Table or Field view |
 | 04 Teams | `teams` | `3`, `2` | 3 = indoor run; 2 = outdoor run |
