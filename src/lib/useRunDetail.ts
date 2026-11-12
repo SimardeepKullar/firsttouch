@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from './auth';
-import type { SeasonType } from './runDetail';
+import { findMyTeam, type RunStatus, type SeasonType, type TeamColor } from './runDetail';
 import { supabase } from './supabase';
 
 export type RosterPlayer = {
@@ -18,6 +18,9 @@ export type RunDetailData = {
   /** When RSVPs close (an ISO timestamp), from the run_lock_at computed field. */
   lockAt: string;
   seasonType: SeasonType;
+  status: RunStatus;
+  /** Your team once the run is published (colour + everyone's position on it), else null. */
+  myTeam: { team: TeamColor; positions: ('attack' | 'defend')[] } | null;
   /** Everyone going (Plays on), oldest yes first. */
   roster: RosterPlayer[];
 };
@@ -31,10 +34,10 @@ export function useRunDetail(runId: string) {
     queryKey: ['run', userId, runId],
     enabled: !!userId && !!runId,
     queryFn: async (): Promise<RunDetailData | null> => {
-      const [runRes, rosterRes] = await Promise.all([
+      const [runRes, rosterRes, teamRes] = await Promise.all([
         supabase
           .from('runs')
-          .select('id, run_date, start_time, location, run_lock_at, seasons(type)')
+          .select('id, run_date, start_time, location, run_lock_at, status, seasons(type)')
           .eq('id', runId)
           .maybeSingle(),
         supabase
@@ -43,6 +46,8 @@ export function useRunDetail(runId: string) {
           .eq('run_id', runId)
           .order('responded_at')
           .order('player_id'),
+        // Players can read these rows only for published runs (RLS), so before that this is just empty.
+        supabase.from('team_assignments').select('player_id, team').eq('run_id', runId),
       ]);
 
       // 22P02 = "that isn't a valid UUID" (a made-up id in the URL). Same answer as "no such run".
@@ -51,10 +56,18 @@ export function useRunDetail(runId: string) {
         throw runRes.error;
       }
       if (rosterRes.error) throw rosterRes.error;
+      if (teamRes.error) throw teamRes.error;
 
       const run = runRes.data;
       if (!run) return null;
       if (!run.run_lock_at || !run.seasons) throw new Error('Run is missing its lock time or season.');
+
+      // View columns are all "maybe null" in the types, so skip any incomplete row.
+      const roster = rosterRes.data.flatMap((r) =>
+        r.player_id && r.full_name && r.position
+          ? [{ playerId: r.player_id, name: r.full_name, position: r.position, morningOf: r.flag_morning_of === true }]
+          : [],
+      );
 
       return {
         id: run.id,
@@ -63,13 +76,12 @@ export function useRunDetail(runId: string) {
         location: run.location,
         lockAt: run.run_lock_at,
         seasonType: run.seasons.type,
-        // View columns are all "maybe null" in the types, so skip any incomplete row.
-        roster: rosterRes.data.flatMap((r) =>
-          r.player_id && r.full_name && r.position
-            ? [{ playerId: r.player_id, name: r.full_name, position: r.position, morningOf: r.flag_morning_of === true }]
-            : [],
-        ),
+        status: run.status,
+        // Only a published run has teams the player should see (admins can read earlier drafts too).
+        myTeam: run.status === 'published' ? findMyTeam(userId, teamRes.data, roster) : null,
+        roster,
       };
+
     },
   });
 }

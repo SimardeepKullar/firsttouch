@@ -87,3 +87,21 @@ export function teamSummary(team: TeamColor, positions: readonly Position[]) {
     subtitle: `${count} ${count === 1 ? 'player' : 'players'} · ATT/DEF ${attackers}:${defenders}`,
   };
 }
+
+/** My team once teams are published: its colour, and the position of everyone on it (me included).
+ *  `assignments` are the team_assignments rows of the run; `roster` says who plays where. */
+export function findMyTeam(
+  userId: string | undefined,
+  assignments: readonly { player_id: string; team: TeamColor }[],
+  roster: readonly { playerId: string; position: Position }[],
+): { team: TeamColor; positions: Position[] } | null {
+  const mine = assignments.find((a) => a.player_id === userId);
+  if (!mine) return null;
+  const positions = assignments
+    .filter((a) => a.team === mine.team)
+    .flatMap((a) => {
+      const player = roster.find((r) => r.playerId === a.player_id);
+      return player ? [player.position] : [];
+    });
+  return { team: mine.team, positions };
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { applyRsvpToDetail, longDate, positionCounts, positionTag, rsvpPanelKind, rsvpPanelText, runChipKind, runKicker, teamSummary } from './runDetail';
+import { applyRsvpToDetail, findMyTeam, longDate, positionCounts, positionTag, rsvpPanelKind, rsvpPanelText, runChipKind, runKicker, teamSummary } from './runDetail';
 import type { RunDetailData } from './useRunDetail';
 
 describe('positionCounts', () => {
@@ -82,6 +82,29 @@ describe('teamSummary', () => {
   });
 });
 
+describe('findMyTeam', () => {
+  const roster = [
+    { playerId: 'a', position: 'attack' as const },
+    { playerId: 'b', position: 'defend' as const },
+    { playerId: 'c', position: 'defend' as const },
+  ];
+  const assignments = [
+    { player_id: 'a', team: 'blue' as const },
+    { player_id: 'b', team: 'blue' as const },
+    { player_id: 'c', team: 'red' as const },
+  ];
+
+  it('gives my team colour and the positions of everyone on that team', () => {
+    expect(findMyTeam('a', assignments, roster)).toEqual({ team: 'blue', positions: ['attack', 'defend'] });
+  });
+  it('is null when I have no team (not going, or teams not published yet)', () => {
+    expect(findMyTeam('z', assignments, roster)).toBeNull();
+    expect(findMyTeam('a', [], roster)).toBeNull();
+  });
+  it('is null when nobody is signed in', () => {
+    expect(findMyTeam(undefined, assignments, roster)).toBeNull();
+  });
+});
 
 describe('applyRsvpToDetail', () => {
   const me = { id: 'me', name: 'Me', position: 'defend' as const };
@@ -93,6 +116,8 @@ describe('applyRsvpToDetail', () => {
     location: '7855 Finch Ave W, Brampton, ON',
     lockAt: '2027-02-14T10:30:00Z',
     seasonType: 'indoor',
+    status: 'open',
+    myTeam: null,
     roster: [ann],
   };
 
