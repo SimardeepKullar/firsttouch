@@ -18,6 +18,21 @@ export function positionTag(position: Position): 'ATT' | 'DEF' {
 
 export type RsvpPanelKind = 'managing' | 'open' | 'team' | 'locked';
 
+/** The note beside "Who's coming". Admins are told they are looking at the admin view. */
+export function rosterListNote(isAdmin: boolean): string {
+  return isAdmin ? 'In order of RSVP · admin view' : 'In order of RSVP';
+}
+
+/** The admin-only extras for one row. Decided by who is looking, not by what the data happens to contain:
+ *  a player gets nothing, and an admin gets stars only if we have a number and Unpaid only if it is true. */
+export function rosterExtras(
+  isAdmin: boolean,
+  player: { stars: number | null; flagUnpaid: boolean | null },
+): { stars: number | null; unpaid: boolean } {
+  if (!isAdmin) return { stars: null, unpaid: false };
+  return { stars: player.stars, unpaid: player.flagUnpaid === true };
+}
+
 /** Which RSVP panel to draw. A manager (admin who doesn't play) never RSVPs. After the lock a player
  *  with a team (teams are published) sees it; everyone else sees the disabled "Locked" pill. */
 export function rsvpPanelKind(variant: HomeVariant, closed: boolean, hasTeam = false): RsvpPanelKind {
