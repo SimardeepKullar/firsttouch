@@ -16,31 +16,32 @@ export function positionTag(position: Position): 'ATT' | 'DEF' {
   return position === 'attack' ? 'ATT' : 'DEF';
 }
 
-export type RsvpPanelKind = 'managing' | 'open' | 'locked';
+export type RsvpPanelKind = 'managing' | 'open' | 'team' | 'locked';
 
-/** Which RSVP panel to draw. A manager (admin who doesn't play) never RSVPs, open or locked. */
-export function rsvpPanelKind(variant: HomeVariant, closed: boolean): RsvpPanelKind {
+/** Which RSVP panel to draw. A manager (admin who doesn't play) never RSVPs. After the lock a player
+ *  with a team (teams are published) sees it; everyone else sees the disabled "Locked" pill. */
+export function rsvpPanelKind(variant: HomeVariant, closed: boolean, hasTeam = false): RsvpPanelKind {
   if (variant === 'manager') return 'managing';
-  return closed ? 'locked' : 'open';
+  if (!closed) return 'open';
+  return hasTeam ? 'team' : 'locked';
 }
 
-/** The words in the panel: the status line and the button label. */
+/** The words in the panel: the status line, and the pill (which shows your answer; tapping it flips it). */
 export function rsvpPanelText(going: boolean) {
   return going
-    ? { title: 'You’re in', action: 'Change' }
+    ? { title: 'You’re in', action: 'You’re in' }
     : { title: 'You’re not going', action: 'I’m in' };
 }
 
 const TZ = 'America/Toronto';
-const weekdayLong = new Intl.DateTimeFormat('en-US', { timeZone: TZ, weekday: 'long' });
 const longDateFmt = new Intl.DateTimeFormat('en-US', { timeZone: TZ, weekday: 'long', month: 'short', day: 'numeric' });
 
 /** A date-only value at midday UTC, which is the same calendar day in Toronto. */
 const noonOf = (isoDate: string) => new Date(`${isoDate}T12:00:00Z`);
 
-/** "SUNDAY RUN · INDOOR" */
+/** "INDOOR 2027": the season type and the calendar year of the run. */
 export function runKicker(runDate: string, seasonType: SeasonType): string {
-  return `${weekdayLong.format(noonOf(runDate)).toUpperCase()} RUN · ${seasonType.toUpperCase()}`;
+  return `${seasonType.toUpperCase()} ${runDate.slice(0, 4)}`;
 }
 
 /** "Sunday, Feb 14" */
@@ -64,4 +65,25 @@ export function applyRsvpToDetail<T extends { roster: RosterPlayer[] }>(data: T,
     return { ...data, roster: [...data.roster, { playerId: me.id, name: me.name, position: me.position, morningOf: false }] };
   }
   return { ...data, roster: data.roster.filter((p) => p.playerId !== me.id) };
+}
+
+export type RunStatus = 'open' | 'locked' | 'published' | 'cancelled';
+export type TeamColor = 'blue' | 'yellow' | 'red';
+
+/** Which status chip to show at the top. The database status wins for published and cancelled; otherwise
+ *  a run past its lock time counts as locked even if the lock job hasn't updated the row yet. */
+export function runChipKind(status: RunStatus, closed: boolean): RunStatus {
+  if (status === 'published' || status === 'cancelled') return status;
+  return status === 'locked' || closed ? 'locked' : 'open';
+}
+
+/** The team panel's two lines. `positions` is everyone on your team, you included. */
+export function teamSummary(team: TeamColor, positions: readonly Position[]) {
+  const { attackers, defenders } = positionCounts(positions.map((position) => ({ position })));
+  const name = team.charAt(0).toUpperCase() + team.slice(1);
+  const count = positions.length;
+  return {
+    title: `You’re on ${name}`,
+    subtitle: `${count} ${count === 1 ? 'player' : 'players'} · ATT/DEF ${attackers}:${defenders}`,
+  };
 }
