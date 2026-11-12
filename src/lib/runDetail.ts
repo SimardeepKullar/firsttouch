@@ -77,7 +77,8 @@ export function applyRsvpToDetail<T extends { roster: RosterPlayer[] }>(data: T,
   const onList = data.roster.some((p) => p.playerId === me.id);
   if (going === onList) return data;
   if (going) {
-    return { ...data, roster: [...data.roster, { playerId: me.id, name: me.name, position: me.position, morningOf: false }] };
+    const row: RosterPlayer = { playerId: me.id, name: me.name, position: me.position, morningOf: false, stars: null, flagUnpaid: null };
+    return { ...data, roster: [...data.roster, row] };
   }
   return { ...data, roster: data.roster.filter((p) => p.playerId !== me.id) };
 }

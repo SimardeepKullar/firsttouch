@@ -8,6 +8,10 @@ export type RosterPlayer = {
   name: string;
   position: 'attack' | 'defend';
   morningOf: boolean;
+  /** 1–5, filled in only for an admin (null for players, and for a row we just added ourselves). */
+  stars: number | null;
+  /** True when the season pass is unpaid. Admin only: null for players, and unknown until the refetch. */
+  flagUnpaid: boolean | null;
 };
 
 export type RunDetailData = {
@@ -42,7 +46,7 @@ export function useRunDetail(runId: string) {
           .maybeSingle(),
         supabase
           .from('run_roster')
-          .select('player_id, full_name, position, flag_morning_of')
+          .select('player_id, full_name, position, flag_morning_of, stars, flag_unpaid')
           .eq('run_id', runId)
           .order('responded_at')
           .order('player_id'),
@@ -65,7 +69,16 @@ export function useRunDetail(runId: string) {
       // View columns are all "maybe null" in the types, so skip any incomplete row.
       const roster = rosterRes.data.flatMap((r) =>
         r.player_id && r.full_name && r.position
-          ? [{ playerId: r.player_id, name: r.full_name, position: r.position, morningOf: r.flag_morning_of === true }]
+          ? [
+              {
+                playerId: r.player_id,
+                name: r.full_name,
+                position: r.position,
+                morningOf: r.flag_morning_of === true,
+                stars: r.stars,
+                flagUnpaid: r.flag_unpaid,
+              },
+            ]
           : [],
       );
 

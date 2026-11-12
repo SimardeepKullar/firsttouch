@@ -108,7 +108,7 @@ describe('findMyTeam', () => {
 
 describe('applyRsvpToDetail', () => {
   const me = { id: 'me', name: 'Me', position: 'defend' as const };
-  const ann = { playerId: 'a', name: 'Ann', position: 'attack' as const, morningOf: false };
+  const ann = { playerId: 'a', name: 'Ann', position: 'attack' as const, morningOf: false, stars: 4, flagUnpaid: false };
   const base: RunDetailData = {
     id: 'r1',
     runDate: '2027-02-14',
@@ -124,7 +124,7 @@ describe('applyRsvpToDetail', () => {
   it('adds me at the end when I say yes', () => {
     const next = applyRsvpToDetail(base, true, me);
     expect(next.roster.map((p) => p.name)).toEqual(['Ann', 'Me']);
-    expect(next.roster[1]).toEqual({ playerId: 'me', name: 'Me', position: 'defend', morningOf: false });
+    expect(next.roster[1]).toEqual({ playerId: 'me', name: 'Me', position: 'defend', morningOf: false, stars: null, flagUnpaid: null });
   });
   it('does not add me twice', () => {
     const once = applyRsvpToDetail(base, true, me);
