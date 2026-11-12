@@ -91,7 +91,14 @@ export default function RunDetail() {
         attackers={attackers}
         defenders={defenders}
       />
-      <RsvpPanel runId={data.id} going={iAmGoing} lockAt={data.lockAt} now={now} variant={variant} />
+      <RsvpPanel
+        runId={data.id}
+        going={iAmGoing}
+        closed={chip !== 'open'}
+        lockAt={data.lockAt}
+        variant={variant}
+        myTeam={data.myTeam}
+      />
       <WhosComing players={data.roster} />
     </ScrollView>
   );
