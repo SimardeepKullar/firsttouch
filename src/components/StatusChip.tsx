@@ -25,16 +25,21 @@ const SIZES: Record<StatusChipSize, { box: string; text: string; dot: string | n
   row: { box: 'h-6 px-2', text: 'text-[11px] font-inter-extrabold', dot: null },
 };
 
+/** "Teams published" in the soft green, as drawn on 03 Run detail (the solid fill is for 07 Admin runs). */
+const SOFT_PUBLISHED = { label: 'Teams published', box: 'bg-brand-soft', text: 'text-brand-text', dot: 'bg-brand-text' };
+
 type Props = {
   kind: StatusChipKind;
   /** Replaces the default label, e.g. "Indoor pass: Paid" on Home. */
   label?: string;
   /** Defaults to 'pass' for paid/unpaid/admin and 'run' for the run states. */
   size?: StatusChipSize;
+  /** Draws a `published` chip soft instead of solid. Ignored for the other kinds. */
+  soft?: boolean;
 };
 
-export function StatusChip({ kind, label, size }: Props) {
-  const k = KINDS[kind];
+export function StatusChip({ kind, label, size, soft }: Props) {
+  const k = kind === 'published' && soft ? SOFT_PUBLISHED : KINDS[kind];
   const s = SIZES[size ?? (kind === 'paid' || kind === 'unpaid' || kind === 'admin' ? 'pass' : 'run')];
   return (
     <View className={`flex-row items-center self-start rounded-full ${k.box} ${s.box}`}>

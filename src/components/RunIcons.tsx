@@ -68,6 +68,12 @@ export const ArrowRightIcon = (p: Props) => (
   </Icon>
 );
 
+export const ArrowLeftIcon = (p: Props) => (
+  <Icon {...p}>
+    <Path d="M19 12H5M11 6l-6 6 6 6" />
+  </Icon>
+);
+
 /** The two-people icon on the "Auto team creation" card. Drawn in `logo-touch`, a green that is the same in both themes, because the hero is dark in both. */
 export function PlayersIcon() {
   return (
