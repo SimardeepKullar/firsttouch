@@ -99,7 +99,7 @@ export default function RunDetail() {
         variant={variant}
         myTeam={data.myTeam}
       />
-      <WhosComing players={data.roster} />
+      <WhosComing players={data.roster} myId={userId} />
     </ScrollView>
   );
 }
