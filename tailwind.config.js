@@ -38,6 +38,7 @@ module.exports = {
         morning: { bg: 'var(--amber-bg)', fg: 'var(--amber-fg)', dot: '#F59E0B' },
         unpaid: { bg: 'var(--red-bg)', fg: 'var(--red-fg)', dot: '#DC2626', row: 'var(--red-row-bg)', 'row-border': 'var(--red-row-border)' },
         locked: { bg: 'var(--locked-bg)', fg: 'var(--locked-fg)' },
+        'stat-tile': 'var(--stat-tile)',
         team: {
           blue: '#2563EB', 'blue-on': '#FFFFFF', 'blue-text': 'var(--team-blue-text)', 'blue-soft': 'var(--team-blue-soft)',
           yellow: '#F5C518', 'yellow-on': '#1F1A05', 'yellow-text': 'var(--team-yellow-text)', 'yellow-soft': 'var(--team-yellow-soft)',

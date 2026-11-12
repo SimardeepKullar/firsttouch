@@ -6,7 +6,8 @@
    Light is the default. Dark applies with .dark on <html>; Appearance = System puts
    .system on <html> and the phone's setting decides (the prefers-color-scheme block).
    src/lib/theme.ts sets those classes. Differences from theme.css: no Google Fonts @import
-   (Inter loads through expo-font) and --font-sans names the expo-font family. */
+   (Inter loads through expo-font) and --font-sans names the expo-font family. Added here, not in
+   theme.css: --run-wash and --stat-tile (03 Run detail V3; the mockup computes them inline). */
 :root {
   --font-sans: 'Inter_400Regular', system-ui, sans-serif;
 
@@ -64,6 +65,8 @@
   --button-in: linear-gradient(90deg, #13965B 0%, #0B7A45 100%);
   --button-in-shadow: none;
   --ball-fill: rgba(13,26,20,0.025); --ball-patch: rgba(13,26,20,0.06); --ball-line: rgba(13,26,20,0.09);
+  --run-wash: linear-gradient(160deg, rgba(11,122,69,0.12) 0%, rgba(11,122,69,0.024) 70%);
+  --stat-tile: rgba(255,255,255,0.7);
   --team-blue-chip-bg: #2563EB; --team-blue-chip-fg: #FFFFFF;
   --team-yellow-chip-bg: #F5C518; --team-yellow-chip-fg: #1F1A05;
   --team-red-chip-bg: #DC2626; --team-red-chip-fg: #FFFFFF;
@@ -129,6 +132,8 @@
   --button-in: linear-gradient(90deg, #6FF2B0 0%, #2FCB7D 55%, #15975A 100%);
   --button-in-shadow: 0 6px 18px rgba(47,203,125,0.28), inset 0 1px 0 rgba(255,255,255,0.25);
   --ball-fill: rgba(255,255,255,0.035); --ball-patch: rgba(0,0,0,0.35); --ball-line: rgba(255,255,255,0.08);
+  --run-wash: linear-gradient(160deg, rgba(62,224,143,0.14) 0%, rgba(62,224,143,0.028) 70%);
+  --stat-tile: rgba(255,255,255,0.04);
   --team-blue-chip-bg: rgba(37,99,235,0.4); --team-blue-chip-fg: #FFFFFF;
   --team-yellow-chip-bg: rgba(245,197,24,0.4); --team-yellow-chip-fg: #FFFFFF;
   --team-red-chip-bg: rgba(220,38,38,0.4); --team-red-chip-fg: #FFFFFF;
@@ -185,6 +190,8 @@
     --button-in: linear-gradient(90deg, #6FF2B0 0%, #2FCB7D 55%, #15975A 100%);
     --button-in-shadow: 0 6px 18px rgba(47,203,125,0.28), inset 0 1px 0 rgba(255,255,255,0.25);
     --ball-fill: rgba(255,255,255,0.035); --ball-patch: rgba(0,0,0,0.35); --ball-line: rgba(255,255,255,0.08);
+    --run-wash: linear-gradient(160deg, rgba(62,224,143,0.14) 0%, rgba(62,224,143,0.028) 70%);
+    --stat-tile: rgba(255,255,255,0.04);
     --team-blue-chip-bg: rgba(37,99,235,0.4); --team-blue-chip-fg: #FFFFFF;
     --team-yellow-chip-bg: rgba(245,197,24,0.4); --team-yellow-chip-fg: #FFFFFF;
     --team-red-chip-bg: rgba(220,38,38,0.4); --team-red-chip-fg: #FFFFFF;

@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { RunCard } from '../../components/RunCard';
 import { ArrowRightIcon, PlayersIcon } from '../../components/RunIcons';
@@ -13,16 +13,7 @@ import { runsThisWeek, seasonLabel, torontoDate } from '../../lib/torontoTime';
 import { useHome } from '../../lib/useHome';
 import { useLiveRsvps } from '../../lib/useLiveRsvps';
 import { useMe } from '../../lib/useMe';
-
-/** The current time, refreshed every 30 seconds so a card flips to "RSVPs closed" on its own. */
-function useNow() {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 30_000);
-    return () => clearInterval(id);
-  }, []);
-  return now;
-}
+import { useNow } from '../../lib/useNow';
 
 // Home. A playing member (or playing admin) gets the toggle and a pass chip; an admin who doesn't play
 // (Coach) gets "You're managing this run" and an Admin chip (see homeVariant).

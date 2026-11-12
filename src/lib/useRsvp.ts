@@ -2,11 +2,14 @@ import { useMutation, useQueryClient, type QueryKey } from '@tanstack/react-quer
 import { useAuth } from './auth';
 import { applyRsvp, type RsvpPerson } from './homeRuns';
 import { rsvpErrorMessage } from './rsvpError';
+import { applyRsvpToDetail } from './runDetail';
 import { supabase } from './supabase';
 import type { HomeData } from './useHome';
 import { useMe } from './useMe';
+import type { RunDetailData } from './useRunDetail';
 
-type Snapshot = [QueryKey, HomeData | undefined][];
+// Each entry is one cache box before the tap: its key and what was in it (Home's box or Run detail's).
+type Snapshot = [QueryKey, unknown][];
 
 /** Says yes or no to one run: `rsvp.mutate(true)` is "I'm in", `rsvp.mutate(false)` is "I'm out".
  *  The card updates at once; the save happens behind it; if the database refuses, the card goes back
@@ -17,6 +20,8 @@ export function useRsvp(runId: string) {
   const me = useMe();
   const userId = session?.user.id;
   const mutationKey = ['rsvp', runId];
+  const homeKey = ['home', userId];
+  const detailKey = ['run', userId, runId];
 
   const mutation = useMutation({
     mutationKey,
@@ -38,13 +43,22 @@ export function useRsvp(runId: string) {
     // Runs the moment you tap, before the network. Whatever it returns is handed to onError.
     onMutate: async (going) => {
       const who: RsvpPerson = { id: userId ?? '', name: me.data?.name ?? 'You' };
-      // Stop any refetch already under way: it would land later and overwrite the instant change.
-      await queryClient.cancelQueries({ queryKey: ['home', userId] });
-      // Remember how the cache looked so onError can put it back.
-      const previous: Snapshot = queryClient.getQueriesData<HomeData>({ queryKey: ['home', userId] });
-      // The instant update.
-      queryClient.setQueriesData<HomeData>({ queryKey: ['home', userId] }, (data) =>
+      // Stop any refetch already under way, on both screens: it would land later and overwrite the instant change.
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: homeKey }),
+        queryClient.cancelQueries({ queryKey: detailKey }),
+      ]);
+      // Remember how both boxes looked so onError can put them back.
+      const previous: Snapshot = [
+        ...queryClient.getQueriesData({ queryKey: homeKey }),
+        ...queryClient.getQueriesData({ queryKey: detailKey }),
+      ];
+      // The instant updates. A box that was never fetched is `undefined`, so we leave it alone.
+      queryClient.setQueriesData<HomeData>({ queryKey: homeKey }, (data) =>
         data ? applyRsvp(data, runId, going, who) : data,
+      );
+      queryClient.setQueriesData<RunDetailData | null>({ queryKey: detailKey }, (data) =>
+        data ? applyRsvpToDetail(data, going, { ...who, position: me.data?.position ?? 'attack' }) : data,
       );
       return { previous };
     },
@@ -58,7 +72,10 @@ export function useRsvp(runId: string) {
     // refetching while a later save is still waiting would flash the older answer back.
     onSettled: () => {
       if (queryClient.isMutating({ mutationKey }) === 1) {
-        return queryClient.invalidateQueries({ queryKey: ['home', userId] });
+        return Promise.all([
+          queryClient.invalidateQueries({ queryKey: homeKey }),
+          queryClient.invalidateQueries({ queryKey: detailKey }),
+        ]);
       }
     },
   });

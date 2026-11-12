@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FirstTouch V2 · Run detail</title>
+<title>FirstTouch V3 · Run detail</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -15,52 +15,91 @@ a{color:inherit}
 </style>
 </helmet>
 <div style="width: 390px; height: {{rootH}}; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
-  <header style="position: relative; margin: 12px 12px 0; border-radius: 28px; background: {{t.hero}}; color: #FFFFFF; padding: 12px 16px 18px; display: flex; flex-direction: column; gap: 12px; overflow: hidden">
-    <svg width="200" height="200" viewBox="0 0 64 64" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5" style="position: absolute; right: -50px; top: -30px" aria-hidden="true"><circle cx="32" cy="32" r="30"></circle><path d="M32 20l11.4 8.3-4.4 13.4H25l-4.4-13.4z"></path><path d="M32 20V3M43.4 28.3l16-5.2M39 41.7l10 13.8M25 41.7l-10 13.8M20.6 28.3l-16-5.2"></path></svg>
-    <a href="V2Home.dc.html" aria-label="Back to Home" style="position: relative; width: 44px; height: 44px; margin-left: -6px; border-radius: 14px; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
-    </a>
-    <div style="position: relative">
-      <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.1em; color: #4BE59A">SUNDAY RUN · INDOOR</div>
-      <h1 style="margin: 4px 0 0; font-size: 30px; font-weight: 800; letter-spacing: -0.03em">Sunday, Feb 14</h1>
-      <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: rgba(255,255,255,0.82)">
-        <div style="display: flex; align-items: center; gap: 8px">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>6:30 AM start
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>7855 Finch Ave W, Brampton
-        </div>
-      </div>
+  <div style="flex-grow: 1; min-height: 0; padding: 16px 16px 16px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <a href="02-home.dc.html" style="min-height: 44px; padding-right: 8px; color: {{t.brandText}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>Home
+      </a>
+      <span style="height: 30px; padding: 0 12px; border-radius: 999px; background: {{status.bg}}; color: {{status.fg}}; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: {{status.fg}}"></span>{{status.label}}
+      </span>
     </div>
-    <div style="position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-      <div style="border-radius: 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); padding: 10px 12px">
-        <div style="font-size: 24px; font-weight: 800">20</div><div style="font-size: 12px; color: rgba(255,255,255,0.75)">going</div>
-      </div>
-      <div style="border-radius: 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); padding: 10px 12px">
-        <div style="font-size: 24px; font-weight: 800">10</div><div style="font-size: 12px; color: rgba(255,255,255,0.75)">attackers</div>
-      </div>
-      <div style="border-radius: 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); padding: 10px 12px">
-        <div style="font-size: 24px; font-weight: 800">10</div><div style="font-size: 12px; color: rgba(255,255,255,0.75)">defenders</div>
-      </div>
-    </div>
-  </header>
-  <div style="flex-grow: 1; padding: 16px 16px 12px; display: flex; flex-direction: column; gap: 14px; min-height: 0">
-    <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 12px 16px; border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}">
-      <div>
-        <div style="font-size: 16px; font-weight: 800">{{rsvpTitle}}</div>
-        <div style="font-size: 13px; color: {{t.muted}}; display: flex; align-items: center; gap: 6px; margin-top: 3px">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>{{closeLine}}
+
+    <section aria-label="Run summary" style="position: relative; border: 0; border-left: 6px solid transparent; border-radius: 26px; background: {{summaryBg}}; box-shadow: {{t.shadow}}; padding: 18px 16px 18px 18px; overflow: hidden">
+      <svg width="190" height="190" viewBox="0 0 64 64" style="position: absolute; right: -60px; top: -34px" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" fill="{{t.ballFill}}" stroke="{{t.ballLine}}" stroke-width="0.8"></circle>
+        <g fill="{{t.ballPatch}}" stroke="{{t.ballLine}}" stroke-width="0.8" stroke-linejoin="round">
+          <path d="M32 21l10.5 7.6-4 12.4h-13l-4-12.4z"></path>
+          <path d="M32 2.2l6.3 4.4-1.6 6.6h-9.4l-1.6-6.6z"></path>
+          <path d="M60.3 24.6l-1.7 7.6-6.2 2.6-5.2-6.2 3.3-7.7z"></path>
+          <path d="M50.6 55.5l-6.9 3.2-5.1-4.6 2.6-7.4h8.1z"></path>
+          <path d="M13.4 55.5l3.4-8.8h8.1l2.6 7.4-5.1 4.6z"></path>
+          <path d="M3.7 24.6l7.8-3.7 3.3 7.7-5.2 6.2-6.2-2.6z"></path>
+        </g>
+        <g stroke="{{t.ballLine}}" stroke-width="0.8" fill="none">
+          <path d="M32 21v-7.8M42.5 28.6l7.4-2.5M38.5 41l5.6 5.7M25.5 41l-5.6 5.7M21.5 28.6l-7.4-2.5"></path>
+        </g>
+      </svg>
+      <div style="position: relative">
+        <div style="font-size: 14px; font-weight: 800; letter-spacing: 0.06em; color: {{t.brandText}}">INDOOR 2027</div>
+        <h1 style="margin: 2px 0 0; font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1">Sunday, Feb 14</h1>
+        <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 9px; font-size: 15px; color: {{t.ink2}}">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+            6:30 AM start
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 10px; line-height: 1.3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="{{t.muted}}" style="flex-shrink: 0; margin-top: 1px" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"></path></svg>
+            <span>7855 Finch Ave W,<br>Brampton</span>
+          </div>
+        </div>
+        <div style="margin-top: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+            <div style="border-radius: 16px; background: {{tileBg}}; border: 1px solid {{t.line}}; padding: 10px 12px">
+              <div style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em">{{s.n}}</div>
+              <div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">{{s.label}}</div>
+            </div>
+          </sc-for>
         </div>
       </div>
-      <sc-if value="{{ isOpen }}" hint-placeholder-val="{{ true }}">
-        <a href="V2Home.dc.html" style="height: 44px; padding: 0 18px; border-radius: 999px; background: {{t.btn}}; color: {{t.onBrand}}; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center">{{changeLabel}}</a>
+    </section>
+
+
+    <section aria-label="Your RSVP" style="border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+        <div style="min-width: 0">
+          <div style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: {{t.muted}}">YOUR RSVP</div>
+          <div style="font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin-top: 4px">{{rsvpTitle}}</div>
+          <sc-if value="{{ showHint }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size: 13px; color: {{t.muted}}; margin-top: 4px; display: flex; align-items: center; gap: 6px; white-space: nowrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>RSVPs close 5:30 AM
+            </div>
+          </sc-if>
+        </div>
+        <sc-if value="{{ isOpen }}" hint-placeholder-val="{{ true }}">
+          <button type="button" aria-pressed="{{inStr}}" onClick="{{ toggle }}" style="height: 46px; flex-shrink: 0; padding: 0 18px; border-radius: 999px; border: 1.5px solid {{btn.border}}; background: {{btn.bg}}; box-shadow: {{btn.shadow}}; color: {{btn.fg}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; cursor: pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{btn.icon}}"></path></svg>
+            {{btn.label}}
+          </button>
+        </sc-if>
+        <sc-if value="{{ isLocked }}" hint-placeholder-val="{{ false }}">
+          <button type="button" disabled style="height: 46px; flex-shrink: 0; padding: 0 16px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.surface2}}; color: {{t.muted}}; font-family: inherit; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: not-allowed">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Locked
+          </button>
+        </sc-if>
+      </div>
+      <sc-if value="{{ showTeam }}" hint-placeholder-val="{{ false }}">
+        <a href="04-teams.dc.html" style="border-radius: 18px; background: {{team.bg}}; border: 1px solid {{t.line}}; padding: 12px 14px; display: flex; align-items: center; gap: 12px; text-decoration: none; color: {{t.ink}}">
+          <span style="width: 16px; height: 16px; flex-shrink: 0; border-radius: 50%; background: {{team.fill}}; box-shadow: 0 0 0 4px {{team.ring}}"></span>
+          <span style="flex-grow: 1; min-width: 0">
+            <span style="display: block; font-size: 16px; font-weight: 800">{{team.line}}</span>
+            <span style="display: block; font-size: 13px; color: {{t.muted}}; margin-top: 2px">{{team.sub}}</span>
+          </span>
+          <span style="height: 40px; flex-shrink: 0; padding: 0 14px; border-radius: 12px; background: {{t.btn}}; color: {{t.onBrand}}; font-size: 14px; font-weight: 800; display: flex; align-items: center">View teams</span>
+        </a>
       </sc-if>
-      <sc-if value="{{ isLocked }}" hint-placeholder-val="{{ false }}">
-        <button type="button" disabled style="height: 44px; padding: 0 14px; border: 1px solid {{t.line}}; border-radius: 999px; background: {{t.surface2}}; color: {{t.muted}}; font-family: inherit; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: not-allowed">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>Locked
-        </button>
-      </sc-if>
-    </div>
+    </section>
+
     <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 4px">
       <h2 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.01em">Who's coming</h2>
       <span style="font-size: 13px; color: {{t.muted}}; font-weight: 600">{{listNote}}</span>
@@ -68,50 +107,48 @@ a{color:inherit}
     <ul style="list-style: none; margin: 0; padding: 4px 0; border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: flex; flex-direction: column">
       <sc-for list="{{ players }}" as="p" hint-placeholder-count="20">
         <li style="display: flex; align-items: center; gap: 12px; padding: 8px 16px; min-height: 48px; border-top: {{p.divider}}">
-          <span style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; background: {{t.surface2}}; color: {{t.brandText}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{p.ini}}</span>
-          <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
-            <div style="font-size: 15px; font-weight: 600">{{p.name}}</div>
-            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap">
-              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-                <span role="img" aria-label="{{p.starLabel}}" style="display: flex; gap: 1px">
-                  <sc-for list="{{ p.stars }}" as="st" hint-placeholder-count="5">
-                    <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="{{st.c}}"></path></svg>
-                  </sc-for>
-                </span>
-              </sc-if>
-              <sc-for list="{{ p.flags }}" as="f" hint-placeholder-count="0">
-                <span style="height: 20px; padding: 0 8px; border-radius: 999px; background: {{f.bg}}; color: {{f.fg}}; font-size: 11px; font-weight: 700; display: flex; align-items: center">{{f.label}}</span>
-              </sc-for>
-            </div>
+          <span style="width: 38px; height: 38px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; background: {{t.surface2}}; border: 1px solid {{t.line}}; color: {{t.ink2}}; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{p.ini}}</span>
+          <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+            <div style="font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{p.name}}<span style="color: {{t.brandText}}; font-weight: 600">{{p.you}}</span></div>
+            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+              <span role="img" aria-label="{{p.starLabel}}" style="display: flex; gap: 1px">
+                <sc-for list="{{ p.stars }}" as="st" hint-placeholder-count="5">
+                  <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="{{st.c}}"></path></svg>
+                </sc-for>
+              </span>
+            </sc-if>
           </div>
+          <sc-for list="{{ p.flags }}" as="f" hint-placeholder-count="0">
+            <span style="height: 22px; padding: 0 8px; flex-shrink: 0; border-radius: 999px; background: {{f.bg}}; color: {{f.fg}}; font-size: 11px; font-weight: 700; display: flex; align-items: center; white-space: nowrap">{{f.label}}</span>
+          </sc-for>
           <span style="flex-shrink: 0; width: 40px; height: 24px; border-radius: 8px; box-sizing: border-box; background: {{p.posBg}}; color: {{p.posFg}}; border: 1px solid {{p.posBorder}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; letter-spacing: 0.04em">{{p.pos}}</span>
         </li>
       </sc-for>
     </ul>
   </div>
   <nav aria-label="Main" style="flex-shrink: 0; margin: 0 12px 14px; height: 76px; box-sizing: border-box; padding: 6px 8px; border-radius: 26px; background: {{t.nav}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: grid; grid-template-columns: {{navCols}}">
-    <a href="V2Home.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 700">
+    <a href="02-home.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 700">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
       <span style="width: 22px; height: 3px; border-radius: 2px; background: {{t.brand}}"></span>
     </a>
-    <a href="V2Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+    <a href="04-teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"></path><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4v4h-4z"></path></svg>Teams
       <span style="width: 22px; height: 3px"></span>
     </a>
     <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-      <a href="V2AdminPlayers.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <a href="06-admin-players.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Admin
         <span style="width: 22px; height: 3px"></span>
       </a>
     </sc-if>
-    <a href="V2Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+    <a href="05-settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>Settings
       <span style="width: 22px; height: 3px"></span>
     </a>
   </nav>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"role":{"editor":"enum","options":["player","admin"],"default":"player"},"locked":{"editor":"boolean","default":false},"going":{"editor":"boolean","default":true},"$preview":{"width":390,"height":1720}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"role":{"editor":"enum","options":["player","admin"],"default":"player"},"locked":{"editor":"boolean","default":false},"going":{"editor":"boolean","default":true},"$preview":{"width":390,"height":1915}}'>
 class Component extends DCLogic {
   tok() {
     const light = this.props.theme !== 'dark';
@@ -125,29 +162,30 @@ class Component extends DCLogic {
       nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
       okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
       redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
-      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)', barGrad: 'linear-gradient(180deg, #16A866 0%, #0B7A45 55%, rgba(11,122,69,0.5) 100%)', ballFill: 'rgba(13,26,20,0.025)', ballPatch: 'rgba(13,26,20,0.06)', ballLine: 'rgba(13,26,20,0.09)',
       blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
       grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
     } : {
-      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
-      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
-      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      page: 'radial-gradient(120% 45% at 100% 0%, #0F2A1D 0%, #0D1110 55%, #0B0E0D 100%)',
+      bg: '#0D1110', surface: '#171B1B', surface2: '#202525', line: '#2A3030', inputBorder: '#343B3A',
+      ink: '#F2F4F3', ink2: '#CBD1CE', muted: '#9BA39F', muted2: '#737B78',
       brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
       btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
       hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
-      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      nav: 'rgba(20,24,24,0.96)', switchOff: '#3A4140',
       okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
-      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
-      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#262B2B', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F2F4F3', starOff: '#3A4140', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)', barGrad: 'linear-gradient(180deg, #4BE89A 0%, #2FCB7D 55%, rgba(47,203,125,0.5) 100%)', ballFill: 'rgba(255,255,255,0.035)', ballPatch: 'rgba(0,0,0,0.35)', ballLine: 'rgba(255,255,255,0.08)',
       blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
       grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
     };
   }
   renderVals() {
     const t = this.tok();
+    const dark = this.props.theme === 'dark';
     const isAdmin = this.props.role === 'admin';
     const locked = !!this.props.locked;
-    const going = this.props.going !== false;
+    const going = this.state.going ?? (this.props.going !== false);
     const raw = [
       ['Marco Bellini', 5, 'ATT'], ['Tomás Rivera', 5, 'DEF'], ['Priya Nair', 3, 'DEF'], ['Daniel Mensah', 4, 'DEF'],
       ['Aisha Bello', 4, 'ATT'], ['Hassan Karimi', 5, 'ATT'], ['Kofi Asante', 2, 'ATT', 'U'], ['Elena Petrova', 4, 'DEF'],
@@ -155,8 +193,11 @@ class Component extends DCLogic {
       ['Grace Liu', 3, 'DEF', 'U'], ['Chris Novak', 3, 'ATT'], ['Owen Barker', 2, 'DEF'], ['Nadia Haddad', 4, 'ATT'],
       ['Ben Carter', 3, 'ATT'], ['Yusuf Demir', 3, 'DEF'], ['Sam Whitfield', 2, 'DEF', 'M'], ['Diego Ortiz', 4, 'ATT', 'M']
     ];
-    const players = raw.map(([name, s, pos, flag], i) => ({
+    const meName = 'Daniel Mensah';
+    const list = raw.filter((r) => isAdmin || going || r[0] !== meName);
+    const players = list.map(([name, s, pos, flag], i) => ({
       name,
+      you: (!isAdmin && name === meName) ? ' · You' : '',
       ini: name.indexOf(' ') > 0 ? name.split(' ').map((w) => w[0]).join('') : name.slice(0, 2).toUpperCase(),
       starLabel: s + ' of 5 stars',
       stars: [1, 2, 3, 4, 5].map((k) => ({ c: k <= s ? t.starOn : t.starOff })),
@@ -166,15 +207,34 @@ class Component extends DCLogic {
       flags: flag === 'M' ? [{ label: 'Morning of', bg: t.amberBg, fg: t.amberFg }]
         : (flag === 'U' && isAdmin) ? [{ label: 'Unpaid', bg: t.redBg, fg: t.redFg }] : []
     }));
+    const n = players.length;
+    const att = list.filter((r) => r[2] === 'ATT').length;
+    const tint = 'linear-gradient(160deg, rgba(' + (dark ? '62,224,143' : '11,122,69') + ',' + (dark ? 0.14 : 0.12) + ') 0%, rgba(' + (dark ? '62,224,143' : '11,122,69') + ',' + (dark ? 0.028 : 0.024) + ') 70%)';
+    const bar = locked ? 'linear-gradient(180deg, ' + t.muted2 + ' 0%, ' + t.muted2 + ' 60%, rgba(128,140,134,0.4) 100%)' : t.barGrad;
+    const on = going;
+    const showTeam = locked && (going || isAdmin);
     return {
       t, players, isAdmin,
-      isOpen: !locked, isLocked: locked,
-      rsvpTitle: going ? 'You’re in' : 'You’re not going',
-      changeLabel: going ? 'Change' : 'I’m in',
+      status: locked ? { label: 'Teams published', bg: t.brandSoft, fg: t.brandText } : { label: 'Open', bg: t.okBg, fg: t.okFg },
+      summaryBg: tint + ' padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + bar + ' border-box',
       closeLine: locked ? 'RSVPs closed 5:30 AM' : 'RSVPs close 5:30 AM',
+      tileBg: dark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.7)',
+      stats: [{ n: String(n), label: 'going' }, { n: String(att), label: 'attackers' }, { n: String(n - att), label: 'defenders' }],
+      faces: ['MB', 'TR', 'PN'].map((ini, i) => ({ ini, ml: i ? '-8px' : '0', bg: t.surface2, fg: t.ink2, bd: '1px solid ' + t.surface2 })).concat([{ ini: '+' + (n - 3), ml: '-8px', bg: t.surface, fg: t.ink, bd: '1px solid ' + t.line }]),
+      goingLabel: n + ' going',
+      isOpen: !locked, showHint: !locked, isLocked: locked && !showTeam, showTeam,
+      rsvpTitle: going ? 'You’re in' : 'You’re not going',
+      inStr: on ? 'true' : 'false',
+      btn: on
+        ? { label: 'You’re in', icon: 'M5 12.5l4.5 4.5L19 7.5', bg: dark ? 'linear-gradient(90deg, #6FF2B0 0%, #2FCB7D 55%, #15975A 100%)' : t.btn, fg: t.onBrand, border: 'transparent', shadow: dark ? '0 6px 18px rgba(47,203,125,0.28), inset 0 1px 0 rgba(255,255,255,0.25)' : 'none' }
+        : { label: 'I’m in', icon: 'M12 5v14M5 12h14', bg: 'transparent', fg: t.brandText, border: t.brandLine, shadow: 'none' },
+      toggle: () => { if (!locked) this.setState({ going: !going }); },
+      team: isAdmin
+        ? { fill: t.brand, ring: t.brandSoft, bg: t.surface2, line: 'Teams are up', sub: '3 teams · 5:30 AM' }
+        : { fill: '#2563EB', ring: 'rgba(37,99,235,0.25)', bg: 'linear-gradient(160deg, rgba(37,99,235,0.26) 0%, rgba(37,99,235,0.052) 70%), ' + t.surface2, line: 'You’re on Blue', sub: '7 players · ATT/DEF 3:4' },
       listNote: isAdmin ? 'In order of RSVP · admin view' : 'In order of RSVP',
       navCols: isAdmin ? 'repeat(4, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))',
-      rootH: isAdmin ? '1780px' : '1720px'
+      rootH: locked ? '1975px' : (going ? '1915px' : '1850px')
     };
   }
 }
