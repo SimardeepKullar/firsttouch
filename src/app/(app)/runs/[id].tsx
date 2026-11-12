@@ -3,12 +3,14 @@ import { useMemo } from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { BackLink } from '../../../components/BackLink';
 import { RsvpPanel } from '../../../components/RsvpPanel';
-import { RunHeaderCard } from '../../../components/RunHeaderCard';
+import { RunSummaryCard } from '../../../components/RunSummaryCard';
+import { RunTopBar } from '../../../components/RunTopBar';
+import { rsvpsClosed } from '../../../lib/torontoTime';
 import { WhosComing } from '../../../components/WhosComing';
 import { COLUMN, useNavClearance } from '../../../components/layout';
 import { useAuth } from '../../../lib/auth';
 import { homeVariant } from '../../../lib/homeVariant';
-import { positionCounts } from '../../../lib/runDetail';
+import { positionCounts, runChipKind } from '../../../lib/runDetail';
 import { useLiveRsvps } from '../../../lib/useLiveRsvps';
 import { useMe } from '../../../lib/useMe';
 import { useNow } from '../../../lib/useNow';
@@ -69,22 +71,28 @@ export default function RunDetail() {
   const { attackers, defenders } = positionCounts(data.roster);
   const iAmGoing = data.roster.some((p) => p.playerId === userId);
   const variant = me.data ? homeVariant(me.data.isAdmin, me.data.plays) : 'player';
+  const closed = rsvpsClosed(data.lockAt, now);
+  const chip = runChipKind(data.status, closed);
 
   return (
-    <ScrollView className={`flex-1 ${COLUMN}`} contentContainerStyle={{ paddingBottom: clearance }}>
-      <RunHeaderCard
+    <ScrollView
+      className={`flex-1 ${COLUMN}`}
+      contentContainerClassName="gap-[14px] px-4 pt-4"
+      contentContainerStyle={{ paddingBottom: clearance }}
+    >
+      <RunTopBar chip={chip} />
+      <RunSummaryCard
         runDate={data.runDate}
         startTime={data.startTime}
         location={data.location}
         seasonType={data.seasonType}
+        closed={chip !== 'open'}
         going={data.roster.length}
         attackers={attackers}
         defenders={defenders}
       />
-      <View className="gap-[14px] px-4 pb-3 pt-4">
-        <RsvpPanel runId={data.id} going={iAmGoing} lockAt={data.lockAt} now={now} variant={variant} />
-        <WhosComing players={data.roster} />
-      </View>
+      <RsvpPanel runId={data.id} going={iAmGoing} lockAt={data.lockAt} now={now} variant={variant} />
+      <WhosComing players={data.roster} />
     </ScrollView>
   );
 }
