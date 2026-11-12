@@ -71,6 +71,7 @@ export default function RunDetail() {
   const { attackers, defenders } = positionCounts(data.roster);
   const iAmGoing = data.roster.some((p) => p.playerId === userId);
   const variant = me.data ? homeVariant(me.data.isAdmin, me.data.plays) : 'player';
+  const isAdmin = me.data?.isAdmin === true;
   const closed = rsvpsClosed(data.lockAt, now);
   const chip = runChipKind(data.status, closed);
 
@@ -99,7 +100,7 @@ export default function RunDetail() {
         variant={variant}
         myTeam={data.myTeam}
       />
-      <WhosComing players={data.roster} myId={userId} />
+      <WhosComing players={data.roster} myId={userId} isAdmin={isAdmin} />
     </ScrollView>
   );
 }
