@@ -71,8 +71,8 @@ export type RsvpMe = { id: string; name: string; position: Position };
  *  - yes: I go at the end of the list (oldest yes first), unless I'm already on it;
  *  - no: I come off the list;
  *  - saying what's already true changes nothing.
- *  Never edits `data` itself: React Query needs a new object to notice a change. The "Morning of" badge
- *  is not guessed here (false); the refetch after the save brings the real value. */
+ *  Never edits `data` itself: React Query needs a new object to notice a change. The "Morning of" badge, stars 
+ *  and Unpaid are not guessed here (false / null); the refetch after the save brings the real values. */
 export function applyRsvpToDetail<T extends { roster: RosterPlayer[] }>(data: T, going: boolean, me: RsvpMe): T {
   const onList = data.roster.some((p) => p.playerId === me.id);
   if (going === onList) return data;
