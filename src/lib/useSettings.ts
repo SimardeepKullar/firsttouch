@@ -1,0 +1,47 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAuth } from './auth';
+import { supabase } from './supabase';
+import type { ThemeMode } from './themeMode';
+
+export type MySettings = { theme: ThemeMode | null };
+
+/** Your saved settings. `theme` is null until you have ever picked one (there is no row yet). */
+export function useMySettings() {
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
+  return useQuery({
+    queryKey: ['settings', userId],
+    enabled: !!userId,
+    queryFn: async (): Promise<MySettings> => {
+      if (!userId) throw new Error('Not signed in.');
+      const { data, error } = await supabase
+        .from('player_settings')
+        .select('theme')
+        .eq('player_id', userId)
+        .maybeSingle();
+      if (error) throw error;
+      return { theme: data?.theme ?? null };
+    },
+  });
+}
+
+/** Saves the Appearance choice to your row (creating it the first time). */
+export function useSaveTheme() {
+  const { session } = useAuth();
+  const queryClient = useQueryClient();
+  const userId = session?.user.id;
+
+  return useMutation({
+    mutationFn: async (theme: ThemeMode) => {
+      if (!userId) throw new Error('Not signed in.');
+      const { error } = await supabase
+        .from('player_settings')
+        .upsert({ player_id: userId, theme }, { onConflict: 'player_id' });
+      if (error) throw error;
+    },
+    onSuccess: (_data, theme) => {
+      queryClient.setQueryData<MySettings>(['settings', userId], { theme });
+    },
+  });
+}
