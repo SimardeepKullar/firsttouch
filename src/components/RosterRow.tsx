@@ -30,8 +30,12 @@ export function RosterRow({
         </Text>
         {extras.stars !== null ? <StarRating rating={extras.stars} size={12} /> : null}
       </View>
-      {player.morningOf ? <FlagBadge kind="morningOf" size="md" /> : null}
-      {extras.unpaid ? <FlagBadge kind="unpaid" size="md" /> : null}
+            {player.morningOf || extras.unpaid ? (
+        <View className="flex-row items-center gap-3">
+          {player.morningOf ? <FlagBadge kind="morningOf" size="md" /> : null}
+          {extras.unpaid ? <FlagBadge kind="unpaid" size="md" /> : null}
+        </View>
+      ) : null}
       <PositionTag position={positionTag(player.position)} />
     </View>
   );
