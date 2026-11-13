@@ -45,3 +45,30 @@ export function useSaveTheme() {
     },
   });
 }
+
+/** Your pass for the current season: `{ paid }`, or `null` when there is no current season.
+ *  No season_passes row counts as not paid, like on Home. */
+export function useMyPass() {
+  const { session } = useAuth();
+  const userId = session?.user.id;
+
+  return useQuery({
+    queryKey: ['my-pass', userId],
+    enabled: !!userId,
+    queryFn: async (): Promise<{ paid: boolean } | null> => {
+      if (!userId) throw new Error('Not signed in.');
+      const season = await supabase.from('seasons').select('id').eq('is_current', true).maybeSingle();
+      if (season.error) throw season.error;
+      if (!season.data) return null;
+
+      const pass = await supabase
+        .from('season_passes')
+        .select('paid')
+        .eq('season_id', season.data.id)
+        .eq('player_id', userId)
+        .maybeSingle();
+      if (pass.error) throw pass.error;
+      return { paid: pass.data?.paid ?? false };
+    },
+  });
+}
