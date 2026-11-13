@@ -1000,7 +1000,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-41 · Show "Teams are up" on Home and Run detail (#41)
 **Milestone:** Teams · **Labels:** player UI, design · **Size:** S
 
-**Summary:** Once teams are published, a closed run card on Home shows the Version 3 team panel in place of the "I'm in" button: your team's wash, a team dot, "You're on {team}" over "{n} players · ATT/DEF {a}:{d}", and a "View teams" button. Coach, and players who aren't going, see "Teams are up" with no team of their own.
+**Summary:** Once teams are published, a closed run card on Home shows the Version 3 team panel in place of the "I'm in" button: your team's wash, a team dot, "You're on {team}" over "{n} players · ATT/DEF {a}:{d}", and a "View teams" button. An admin with no team of their own (Coach, or a playing admin who isn't going) sees "Teams are up" instead. A player who isn't going sees no team panel. (Run detail's "Teams are up" panel is built in T-19; here it is reused on Home.)
 
 **Spec:** Key flows (players see teams the moment RSVPs close)
 **Design:** `02-home` (closed card panel; `plays = off` variant); README › 02 Home › Closed card (V3)
@@ -1009,10 +1009,10 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Acceptance criteria**
 - [ ] The panel replaces the "I'm in" button on a closed card (the card's bar is already `card-bar-closed` from T-14). It is radius 18 with a `line` border, a 16 px dot with a 4 px soft ring, a title (16 px / 800) over a subtitle (13 px, `muted`), and a "View teams" button (`button` gradient, `on-brand`) on the right.
 - [ ] Published and you're on a team: the panel is your team's `team-*-wash` over `surface-2`, the dot is your team colour, and it reads "You're on {team}" over "{n} players · ATT/DEF {a}:{d}". "View teams" opens Teams for that run.
-- [ ] Published and you don't play (Coach): the panel is `surface-2` with a `brand` dot, and reads "Teams are up" over "{n} teams · published h:mm AM", plus "View teams".
-- [ ] *Design gap:* published and you're a player who isn't going: the same "Teams are up" panel as Coach.
+- [ ] Published and you're an admin with no team (Coach, or a playing admin who isn't going): the panel is `surface-2` with a `brand` dot, and reads "Teams are up" over "{n} teams · published h:mm AM", plus "View teams".
+- [ ] *Design gap:* published and you're a player who isn't going: no team panel (players only see the team they're on). The closed card just has no button.
 - [ ] *Design gap:* locked with fewer than 4 players: a muted "Not enough players — no teams this time" and no button.
-- [ ] Run detail shows the same panel under the RSVP section. (T-18 already builds the player's "You're on {team}" case as the `TeamPanel` component. Here, add the "Teams are up" variants for Coach and a player who isn't going, and reuse `TeamPanel` on Home.)
+- [ ] Run detail already shows this panel under the RSVP section: T-18 builds the "You're on {team}" case as the `TeamPanel` component, and T-19 adds the admin "Teams are up" variant. Here, reuse `TeamPanel` on Home.
 - [ ] Matches the V3 mockup in light and dark.
 
 **Learning notes**
@@ -1644,7 +1644,7 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 9 | `03-run-detail` | V2 drew "Change" as a link back to Home. | The spec's RSVP is a toggle. V3 replaces "Change" with a pill ("You're in" / "I'm in") that toggles in place. (T-18) |
 | 10 | `04-teams` | *(Fixed in V2.)* The V1 mockup drew the 3-tab player nav for admins. V2 shows the Admin tab. | Nothing to resolve. One shared tab bar shows Admin for admins everywhere. (T-09, T-38) |
 | 11 | `04-teams`, `08-admin-team-builder` | No state for "teams not published yet" or "fewer than 4 players". | New empty states: "Teams publish automatically at {time}" and "Not enough players — no teams made" (wording from `07`). (T-38, T-44) |
-| 12 | `02-home` | The closed card is only drawn for a player on a team, and for Coach. Not for a player who said no, or a run locked with under 4. | Not going: Coach's "Teams are up" panel. Under 4: muted "Not enough players — no teams this time". (T-41) |
+| 12 | `02-home` | The closed card is only drawn for a player on a team, and for Coach. Not for a player who said no, or a run locked with under 4. | An admin with no team (Coach, or not going): "Teams are up" panel. A player who isn't going: no panel. Under 4: muted "Not enough players — no teams this time". (T-41; Run detail's version is T-19) |
 | 13 | README "Drag to swap" vs `08` mockup | The mockup moves one player (team sizes become 6 and 8); the README calls it a swap. The spec says "drag players between teams". | Drag **moves** one player; a swap is two moves. Unequal sizes are allowed and shown. (T-45) |
 | 14 | `08-admin-team-builder` | The 2/3 team picker: the design says "Changes save instantly". The spec says the override changes how teams are generated. | Picking a count sets `team_count_override` and reshuffles at once, which sends "Teams updated". (T-44) |
 | 15 | `07-admin-runs` edit sheet | No mention of telling players. The spec sends "run moved" on time/address changes. | Spec wins: database trigger sends the push. (T-48) |
