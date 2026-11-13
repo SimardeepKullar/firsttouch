@@ -16,3 +16,10 @@ export function themeAfterSignIn(saved: string | null | undefined, device: Theme
   if (saved === 'light' || saved === 'dark' || saved === 'system') return parseMode(saved);
   return device;
 }
+
+/** The grey line under the Appearance control. */
+export function appearanceHint(mode: ThemeMode): string {
+  return mode === 'system'
+    ? 'Follows your phone’s light or dark setting.'
+    : 'Light is the default. Dark mode is optional.';
+}

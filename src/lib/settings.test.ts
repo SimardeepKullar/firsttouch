@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { themeAfterSignIn, validateName } from './settings';
+import { appearanceHint, themeAfterSignIn, validateName } from './settings';
 
 describe('validateName', () => {
   it('accepts a normal name and trims it', () => {
@@ -29,5 +29,16 @@ describe('themeAfterSignIn', () => {
 
   it('ignores a saved value that is not a real mode', () => {
     expect(themeAfterSignIn('purple', 'dark')).toBe('dark');
+  });
+});
+
+describe('appearanceHint', () => {
+  it('explains the default for light and dark', () => {
+    expect(appearanceHint('light')).toBe('Light is the default. Dark mode is optional.');
+    expect(appearanceHint('dark')).toBe('Light is the default. Dark mode is optional.');
+  });
+
+  it('explains that System follows the phone', () => {
+    expect(appearanceHint('system')).toBe('Follows your phone’s light or dark setting.');
   });
 });
