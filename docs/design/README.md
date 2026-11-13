@@ -194,7 +194,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **After the lock, not going:** a disabled "Locked" pill (lock icon, `surface-2`, `line` border, `muted` text) takes the pill's place on the same line. There is no close line.
 - **Admins with Plays off (Coach), not drawn in the mockup:** the whole RSVP row is replaced by the line "You're managing this run", as on Home.
 - **Who's coming, player view:** a heading with the note "In order of RSVP" (13px / 600, `muted`) on the right, then a 24-radius card with 4px vertical padding. Rows are at least 48 tall with 8px / 16px padding: a 38px avatar (`surface-2`, `line` border, `ink-2` initials at 12px / 700), the name (15px / 600) with " · You" in `brand-text` on your own row, the "Morning of" badge (22 tall, amber) and the position tag. A player who isn't going isn't in the list. No stars, no Unpaid badge.
-- **Who's coming, admin view:** the note reads "In order of RSVP · admin view", each row shows a 12px star row under the name and the Unpaid badge, no " · You" suffix, and the bottom nav includes the Admin tab. Drawn as John, not going; Sim is listed like any player.
+- **Who's coming, admin view:** the note reads "In order of RSVP · admin view", each row shows a 12px star row under the name and the Unpaid badge (the " · You" suffix stays on your own row; the mockup drops it, see disagreement 29 in `docs/tickets.md`), and the bottom nav includes the Admin tab. Drawn as John, not going; Sim is listed like any player.
 
 ### 04 Teams (`04-teams.dc.html`)
 - **V3:** players see the Your team card under the "Published" line, in both Table and Field views. Team cards follow Shared components › Team card (V3).

@@ -484,20 +484,25 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-19 · Add the admin view of Run detail (#19)
 **Milestone:** RSVP loop · **Labels:** admin UI · **Size:** S
 
-**Summary:** For admins, each row on Run detail also shows the star rating and the Unpaid badge, and the list note reads "In order of RSVP · admin view". The data already comes back filled in for admins and empty for players.
+**Summary:** For admins, each "Who's coming" row also shows five small stars under the name and the Unpaid badge where it applies, and the list note reads "In order of RSVP · admin view". The data already comes back filled in for admins and empty (`null`) for players, because `run_roster` uses `case when is_admin() then …`; the screen decides from who is looking (`useMe`), not from whether the values happen to be there. Once teams are published, an admin with no team of their own (Coach, or a playing admin who isn't going) also sees the "Teams are up" panel in the RSVP card. A player who isn't going sees no panel.
 
 **Spec:** Lock time and player-facing views (`run_roster` returns stars and `flag_unpaid` only for admins)
 **Design:** `03-run-detail` with `role = admin` (drawn as John, not going, locked; Sim listed like any player)
 **Depends on:** T-18
 
 **Acceptance criteria**
-- [ ] Admins see five small stars and the Unpaid badge where it applies. Players never do, even by changing the request in dev tools (stars come back `null`).
+- [ ] Admins see five small stars (12 px) under each name and the Unpaid badge where it applies (after Morning of, centred in the row). Players never do, even by changing the request in dev tools: stars and `flag_unpaid` come back `null`.
+- [ ] The list note reads "In order of RSVP · admin view" for an admin and "In order of RSVP" for a player. Whether the viewer is an admin comes from `useMe`, in tested pure functions (`rosterListNote`, `rosterExtras`).
 - [ ] The screen looks the same whether the admin is going, not going, or doesn't play.
-- [ ] Playing admins appear in the list only when they've said yes, with no special badge.
+- [ ] Playing admins appear in the list only when they've said yes, with no special badge. Their own row keeps " · You" (see disagreement 29).
+- [ ] An admin who just said yes appears at once without stars or Unpaid; the refetch fills them in.
+- [ ] *Design gap:* after publish, an admin with no team (Coach, or not going) sees "Teams are up" over "{n} teams · published h:mm AM" with a `brand` dot and "View teams", inside the RSVP card. A going admin sees "You're on {team}" like any player. A player who isn't going sees no panel. (The Home card version is T-41.)
+- [ ] Matches the V3 mockup in light and dark.
 
 **Learning notes**
 - How `case when is_admin() then … end` in a view hides columns per caller
 - Checking a request's response in the browser Network tab
+- Deciding in a pure function from who is looking, not from what the data contains (`number | null` and narrowing)
 
 ---
 
@@ -1661,6 +1666,7 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 26 | `02-home` | "View all" next to "Upcoming runs" links to Run detail in the mockup. | Placeholder link. "View all" shows every upcoming run in the season. (T-14) |
 | 27 | `tokens.json` vs README | `size.button` is 48, but the README and the mockups' primary buttons are 56 tall. | Primary buttons are 56 (README and mockups). Smaller buttons follow each mockup. (T-08) |
 | 28 | `05-settings` | Appearance (Light / Dark / System) is new in V2 and not in the spec. | Built as designed, in the Settings ticket (T-20). |
+| 29 | `03-run-detail` admin view | The mockup and README drop the " · You" suffix for admins. | Decided: an admin who is going keeps " · You" on their own row, like any player (friendlier). (T-19) |
 
 ### Spec internal gaps and spec vs repo
 
