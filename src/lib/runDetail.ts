@@ -1,6 +1,7 @@
 // What the Run detail screen decides, as plain functions (no React, no network) so they can be tested.
 import type { HomeVariant } from './homeVariant';
 import type { RosterPlayer } from './useRunDetail';
+import { formatTorontoTime } from './torontoTime';
 
 type Position = 'attack' | 'defend';
 export type SeasonType = 'indoor' | 'outdoor';
@@ -101,6 +102,31 @@ export function teamSummary(team: TeamColor, positions: readonly Position[]) {
   return {
     title: `You’re on ${name}`,
     subtitle: `${count} ${count === 1 ? 'player' : 'players'} · ATT/DEF ${attackers}:${defenders}`,
+  };
+}
+
+export type TeamPanelKind = 'team' | 'teamsUp' | 'none';
+
+/** Which team panel to draw under the RSVP card. Only once teams are published: someone on a team sees
+ *  theirs; an admin without one (Coach, or an admin who isn't going) sees "Teams are up"; a player who
+ *  isn't on a team sees nothing. */
+export function teamPanelKind(o: { isAdmin: boolean; published: boolean; hasTeam: boolean }): TeamPanelKind {
+  if (!o.published) return 'none';
+  if (o.hasTeam) return 'team';
+  return o.isAdmin ? 'teamsUp' : 'none';
+}
+
+/** How many different teams a run has (3 indoors, 2 outdoors). */
+export function countTeams(assignments: readonly { team: TeamColor }[]): number {
+  return new Set(assignments.map((a) => a.team)).size;
+}
+
+/** The "Teams are up" panel's two lines: "3 teams · published 5:30 AM". The time is left out if unknown. */
+export function teamsUpSummary(teamCount: number, publishedAt: string | null) {
+  const teams = `${teamCount} ${teamCount === 1 ? 'team' : 'teams'}`;
+  return {
+    title: 'Teams are up',
+    subtitle: publishedAt ? `${teams} · published ${formatTorontoTime(new Date(publishedAt))}` : teams,
   };
 }
 
