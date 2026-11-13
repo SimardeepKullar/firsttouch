@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from './auth';
-import { findMyTeam, type RunStatus, type SeasonType, type TeamColor } from './runDetail';
+import { countTeams, findMyTeam, type RunStatus, type SeasonType, type TeamColor } from './runDetail';
 import { supabase } from './supabase';
 
 export type RosterPlayer = {
@@ -23,6 +23,10 @@ export type RunDetailData = {
   lockAt: string;
   seasonType: SeasonType;
   status: RunStatus;
+  /** When the teams were published (an ISO timestamp), or null before that. */
+  publishedAt: string | null;
+  /** How many teams the run has once published (3 indoors, 2 outdoors), else 0. */
+  teamCount: number;
   /** Your team once the run is published (colour + everyone's position on it), else null. */
   myTeam: { team: TeamColor; positions: ('attack' | 'defend')[] } | null;
   /** Everyone going (Plays on), oldest yes first. */
@@ -41,7 +45,7 @@ export function useRunDetail(runId: string) {
       const [runRes, rosterRes, teamRes] = await Promise.all([
         supabase
           .from('runs')
-          .select('id, run_date, start_time, location, run_lock_at, status, seasons(type)')
+          .select('id, run_date, start_time, location, run_lock_at, status, published_at, seasons(type)')
           .eq('id', runId)
           .maybeSingle(),
         supabase
@@ -90,6 +94,8 @@ export function useRunDetail(runId: string) {
         lockAt: run.run_lock_at,
         seasonType: run.seasons.type,
         status: run.status,
+        publishedAt: run.published_at,
+        teamCount: run.status === 'published' ? countTeams(teamRes.data) : 0,
         // Only a published run has teams the player should see (admins can read earlier drafts too).
         myTeam: run.status === 'published' ? findMyTeam(userId, teamRes.data, roster) : null,
         roster,

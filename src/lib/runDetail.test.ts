@@ -117,6 +117,8 @@ describe('applyRsvpToDetail', () => {
     lockAt: '2027-02-14T10:30:00Z',
     seasonType: 'indoor',
     status: 'open',
+    publishedAt: null,
+    teamCount: 0,
     myTeam: null,
     roster: [ann],
   };
