@@ -51,6 +51,32 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"player_settings": {
+                  Row: {
+                    "player_id": string,"theme": Database["public"]['Enums']["theme_mode"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "player_id": string,"theme"?: Database["public"]['Enums']["theme_mode"]
+                  }
+                  Update: {
+                    "player_id"?: string,"theme"?: Database["public"]['Enums']["theme_mode"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "player_settings_player_id_fkey"
+      columns: ["player_id"]
+isOneToOne: true
+      referencedRelation: "player_directory"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "player_settings_player_id_fkey"
+      columns: ["player_id"]
+isOneToOne: true
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "active": boolean,"created_at": string,"email": string,"full_name": string,"id": string,"plays": boolean,"position": Database["public"]['Enums']["position"],"role": Database["public"]['Enums']["user_role"],"stars": number
@@ -313,7 +339,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "position": "attack"|"defend","run_status": "open"|"locked"|"published"|"cancelled","season_type": "indoor"|"outdoor","team_color": "blue"|"yellow"|"red","user_role": "player"|"admin"
+            "position": "attack"|"defend","run_status": "open"|"locked"|"published"|"cancelled","season_type": "indoor"|"outdoor","team_color": "blue"|"yellow"|"red","theme_mode": "light"|"dark"|"system","user_role": "player"|"admin"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -433,7 +459,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "position": ["attack", "defend"],"run_status": ["open", "locked", "published", "cancelled"],"season_type": ["indoor", "outdoor"],"team_color": ["blue", "yellow", "red"],"user_role": ["player", "admin"]
+            "position": ["attack", "defend"],"run_status": ["open", "locked", "published", "cancelled"],"season_type": ["indoor", "outdoor"],"team_color": ["blue", "yellow", "red"],"theme_mode": ["light", "dark", "system"],"user_role": ["player", "admin"]
           }
         }
 } as const
