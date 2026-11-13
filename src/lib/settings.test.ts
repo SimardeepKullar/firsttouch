@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { appearanceHint, themeAfterSignIn, validateName } from './settings';
+import { appearanceHint, profileChip, themeAfterSignIn, validateName } from './settings';
 
 describe('validateName', () => {
   it('accepts a normal name and trims it', () => {
@@ -40,5 +40,21 @@ describe('appearanceHint', () => {
 
   it('explains that System follows the phone', () => {
     expect(appearanceHint('system')).toBe('Follows your phone’s light or dark setting.');
+  });
+});
+
+describe('profileChip', () => {
+  it('gives a manager (an admin who does not play) the Admin badge, pass or no pass', () => {
+    expect(profileChip('manager', null)).toBe('admin');
+    expect(profileChip('manager', { paid: false })).toBe('admin');
+  });
+
+  it('shows Paid or Not paid for a player in a current season', () => {
+    expect(profileChip('player', { paid: true })).toBe('paid');
+    expect(profileChip('player', { paid: false })).toBe('unpaid');
+  });
+
+  it('shows no chip when there is no current season', () => {
+    expect(profileChip('player', null)).toBeNull();
   });
 });

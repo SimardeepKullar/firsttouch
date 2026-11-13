@@ -1,5 +1,6 @@
 // Small decisions for the Settings screen, as plain functions so they can be tested.
 import { parseMode, type ThemeMode } from './themeMode';
+import type { HomeVariant } from './homeVariant';
 
 export type NameCheck = { ok: true; name: string } | { ok: false; message: string };
 
@@ -22,4 +23,14 @@ export function appearanceHint(mode: ThemeMode): string {
   return mode === 'system'
     ? 'Follows your phone’s light or dark setting.'
     : 'Light is the default. Dark mode is optional.';
+}
+
+export type ProfileChip = 'admin' | 'paid' | 'unpaid' | null;
+
+/** The chip on the profile card. A manager (admin who doesn't play) has no pass, so gets the Admin
+ *  badge. A player gets Paid or Not paid for the current season. With no current season: no chip. */
+export function profileChip(variant: HomeVariant, pass: { paid: boolean } | null): ProfileChip {
+  if (variant === 'manager') return 'admin';
+  if (pass === null) return null;
+  return pass.paid ? 'paid' : 'unpaid';
 }
