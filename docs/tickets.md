@@ -484,20 +484,25 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-19 · Add the admin view of Run detail (#19)
 **Milestone:** RSVP loop · **Labels:** admin UI · **Size:** S
 
-**Summary:** For admins, each row on Run detail also shows the star rating and the Unpaid badge, and the list note reads "In order of RSVP · admin view". The data already comes back filled in for admins and empty for players.
+**Summary:** For admins, each "Who's coming" row also shows five small stars under the name and the Unpaid badge where it applies, and the list note reads "In order of RSVP · admin view". The data already comes back filled in for admins and empty (`null`) for players, because `run_roster` uses `case when is_admin() then …`; the screen decides from who is looking (`useMe`), not from whether the values happen to be there. Once teams are published, an admin with no team of their own (Coach, or a playing admin who isn't going) also sees the "Teams are up" panel in the RSVP card. A player who isn't going sees no panel.
 
 **Spec:** Lock time and player-facing views (`run_roster` returns stars and `flag_unpaid` only for admins)
 **Design:** `03-run-detail` with `role = admin` (drawn as John, not going, locked; Sim listed like any player)
 **Depends on:** T-18
 
 **Acceptance criteria**
-- [ ] Admins see five small stars and the Unpaid badge where it applies. Players never do, even by changing the request in dev tools (stars come back `null`).
+- [ ] Admins see five small stars (12 px) under each name and the Unpaid badge where it applies (after Morning of, centred in the row). Players never do, even by changing the request in dev tools: stars and `flag_unpaid` come back `null`.
+- [ ] The list note reads "In order of RSVP · admin view" for an admin and "In order of RSVP" for a player. Whether the viewer is an admin comes from `useMe`, in tested pure functions (`rosterListNote`, `rosterExtras`).
 - [ ] The screen looks the same whether the admin is going, not going, or doesn't play.
-- [ ] Playing admins appear in the list only when they've said yes, with no special badge.
+- [ ] Playing admins appear in the list only when they've said yes, with no special badge. Their own row keeps " · You" (see disagreement 29).
+- [ ] An admin who just said yes appears at once without stars or Unpaid; the refetch fills them in.
+- [ ] *Design gap:* after publish, an admin with no team (Coach, or not going) sees "Teams are up" over "{n} teams · published h:mm AM" with a `brand` dot and "View teams", inside the RSVP card. A going admin sees "You're on {team}" like any player. A player who isn't going sees no panel. (The Home card version is T-41.)
+- [ ] Matches the V3 mockup in light and dark.
 
 **Learning notes**
 - How `case when is_admin() then … end` in a view hides columns per caller
 - Checking a request's response in the browser Network tab
+- Deciding in a pure function from who is looking, not from what the data contains (`number | null` and narrowing)
 
 ---
 
@@ -1000,7 +1005,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-41 · Show "Teams are up" on Home and Run detail (#41)
 **Milestone:** Teams · **Labels:** player UI, design · **Size:** S
 
-**Summary:** Once teams are published, a closed run card on Home shows the Version 3 team panel in place of the "I'm in" button: your team's wash, a team dot, "You're on {team}" over "{n} players · ATT/DEF {a}:{d}", and a "View teams" button. Coach, and players who aren't going, see "Teams are up" with no team of their own.
+**Summary:** Once teams are published, a closed run card on Home shows the Version 3 team panel in place of the "I'm in" button: your team's wash, a team dot, "You're on {team}" over "{n} players · ATT/DEF {a}:{d}", and a "View teams" button. An admin with no team of their own (Coach, or a playing admin who isn't going) sees "Teams are up" instead. A player who isn't going sees no team panel. (Run detail's "Teams are up" panel is built in T-19; here it is reused on Home.)
 
 **Spec:** Key flows (players see teams the moment RSVPs close)
 **Design:** `02-home` (closed card panel; `plays = off` variant); README › 02 Home › Closed card (V3)
@@ -1009,10 +1014,10 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Acceptance criteria**
 - [ ] The panel replaces the "I'm in" button on a closed card (the card's bar is already `card-bar-closed` from T-14). It is radius 18 with a `line` border, a 16 px dot with a 4 px soft ring, a title (16 px / 800) over a subtitle (13 px, `muted`), and a "View teams" button (`button` gradient, `on-brand`) on the right.
 - [ ] Published and you're on a team: the panel is your team's `team-*-wash` over `surface-2`, the dot is your team colour, and it reads "You're on {team}" over "{n} players · ATT/DEF {a}:{d}". "View teams" opens Teams for that run.
-- [ ] Published and you don't play (Coach): the panel is `surface-2` with a `brand` dot, and reads "Teams are up" over "{n} teams · published h:mm AM", plus "View teams".
-- [ ] *Design gap:* published and you're a player who isn't going: the same "Teams are up" panel as Coach.
+- [ ] Published and you're an admin with no team (Coach, or a playing admin who isn't going): the panel is `surface-2` with a `brand` dot, and reads "Teams are up" over "{n} teams · published h:mm AM", plus "View teams".
+- [ ] *Design gap:* published and you're a player who isn't going: no team panel (players only see the team they're on). The closed card just has no button.
 - [ ] *Design gap:* locked with fewer than 4 players: a muted "Not enough players — no teams this time" and no button.
-- [ ] Run detail shows the same panel under the RSVP section. (T-18 already builds the player's "You're on {team}" case as the `TeamPanel` component. Here, add the "Teams are up" variants for Coach and a player who isn't going, and reuse `TeamPanel` on Home.)
+- [ ] Run detail already shows this panel under the RSVP section: T-18 builds the "You're on {team}" case as the `TeamPanel` component, and T-19 adds the admin "Teams are up" variant. Here, reuse `TeamPanel` on Home.
 - [ ] Matches the V3 mockup in light and dark.
 
 **Learning notes**
@@ -1644,7 +1649,7 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 9 | `03-run-detail` | V2 drew "Change" as a link back to Home. | The spec's RSVP is a toggle. V3 replaces "Change" with a pill ("You're in" / "I'm in") that toggles in place. (T-18) |
 | 10 | `04-teams` | *(Fixed in V2.)* The V1 mockup drew the 3-tab player nav for admins. V2 shows the Admin tab. | Nothing to resolve. One shared tab bar shows Admin for admins everywhere. (T-09, T-38) |
 | 11 | `04-teams`, `08-admin-team-builder` | No state for "teams not published yet" or "fewer than 4 players". | New empty states: "Teams publish automatically at {time}" and "Not enough players — no teams made" (wording from `07`). (T-38, T-44) |
-| 12 | `02-home` | The closed card is only drawn for a player on a team, and for Coach. Not for a player who said no, or a run locked with under 4. | Not going: Coach's "Teams are up" panel. Under 4: muted "Not enough players — no teams this time". (T-41) |
+| 12 | `02-home` | The closed card is only drawn for a player on a team, and for Coach. Not for a player who said no, or a run locked with under 4. | An admin with no team (Coach, or not going): "Teams are up" panel. A player who isn't going: no panel. Under 4: muted "Not enough players — no teams this time". (T-41; Run detail's version is T-19) |
 | 13 | README "Drag to swap" vs `08` mockup | The mockup moves one player (team sizes become 6 and 8); the README calls it a swap. The spec says "drag players between teams". | Drag **moves** one player; a swap is two moves. Unequal sizes are allowed and shown. (T-45) |
 | 14 | `08-admin-team-builder` | The 2/3 team picker: the design says "Changes save instantly". The spec says the override changes how teams are generated. | Picking a count sets `team_count_override` and reshuffles at once, which sends "Teams updated". (T-44) |
 | 15 | `07-admin-runs` edit sheet | No mention of telling players. The spec sends "run moved" on time/address changes. | Spec wins: database trigger sends the push. (T-48) |
@@ -1661,6 +1666,7 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 26 | `02-home` | "View all" next to "Upcoming runs" links to Run detail in the mockup. | Placeholder link. "View all" shows every upcoming run in the season. (T-14) |
 | 27 | `tokens.json` vs README | `size.button` is 48, but the README and the mockups' primary buttons are 56 tall. | Primary buttons are 56 (README and mockups). Smaller buttons follow each mockup. (T-08) |
 | 28 | `05-settings` | Appearance (Light / Dark / System) is new in V2 and not in the spec. | Built as designed, in the Settings ticket (T-20). |
+| 29 | `03-run-detail` admin view | The mockup and README drop the " · You" suffix for admins. | Decided: an admin who is going keeps " · You" on their own row, like any player (friendlier). (T-19) |
 
 ### Spec internal gaps and spec vs repo
 

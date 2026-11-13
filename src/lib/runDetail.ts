@@ -1,6 +1,7 @@
 // What the Run detail screen decides, as plain functions (no React, no network) so they can be tested.
 import type { HomeVariant } from './homeVariant';
 import type { RosterPlayer } from './useRunDetail';
+import { formatTorontoTime } from './torontoTime';
 
 type Position = 'attack' | 'defend';
 export type SeasonType = 'indoor' | 'outdoor';
@@ -17,6 +18,21 @@ export function positionTag(position: Position): 'ATT' | 'DEF' {
 }
 
 export type RsvpPanelKind = 'managing' | 'open' | 'team' | 'locked';
+
+/** The note beside "Who's coming". Admins are told they are looking at the admin view. */
+export function rosterListNote(isAdmin: boolean): string {
+  return isAdmin ? 'In order of RSVP · admin view' : 'In order of RSVP';
+}
+
+/** The admin-only extras for one row. Decided by who is looking, not by what the data happens to contain:
+ *  a player gets nothing, and an admin gets stars only if we have a number and Unpaid only if it is true. */
+export function rosterExtras(
+  isAdmin: boolean,
+  player: { stars: number | null; flagUnpaid: boolean | null },
+): { stars: number | null; unpaid: boolean } {
+  if (!isAdmin) return { stars: null, unpaid: false };
+  return { stars: player.stars, unpaid: player.flagUnpaid === true };
+}
 
 /** Which RSVP panel to draw. A manager (admin who doesn't play) never RSVPs. After the lock a player
  *  with a team (teams are published) sees it; everyone else sees the disabled "Locked" pill. */
@@ -56,13 +72,14 @@ export type RsvpMe = { id: string; name: string; position: Position };
  *  - yes: I go at the end of the list (oldest yes first), unless I'm already on it;
  *  - no: I come off the list;
  *  - saying what's already true changes nothing.
- *  Never edits `data` itself: React Query needs a new object to notice a change. The "Morning of" badge
- *  is not guessed here (false); the refetch after the save brings the real value. */
+ *  Never edits `data` itself: React Query needs a new object to notice a change. The "Morning of" badge, stars 
+ *  and Unpaid are not guessed here (false / null); the refetch after the save brings the real values. */
 export function applyRsvpToDetail<T extends { roster: RosterPlayer[] }>(data: T, going: boolean, me: RsvpMe): T {
   const onList = data.roster.some((p) => p.playerId === me.id);
   if (going === onList) return data;
   if (going) {
-    return { ...data, roster: [...data.roster, { playerId: me.id, name: me.name, position: me.position, morningOf: false }] };
+    const row: RosterPlayer = { playerId: me.id, name: me.name, position: me.position, morningOf: false, stars: null, flagUnpaid: null };
+    return { ...data, roster: [...data.roster, row] };
   }
   return { ...data, roster: data.roster.filter((p) => p.playerId !== me.id) };
 }
@@ -85,6 +102,31 @@ export function teamSummary(team: TeamColor, positions: readonly Position[]) {
   return {
     title: `You’re on ${name}`,
     subtitle: `${count} ${count === 1 ? 'player' : 'players'} · ATT/DEF ${attackers}:${defenders}`,
+  };
+}
+
+export type TeamPanelKind = 'team' | 'teamsUp' | 'none';
+
+/** Which team panel to draw under the RSVP card. Only once teams are published: someone on a team sees
+ *  theirs; an admin without one (Coach, or an admin who isn't going) sees "Teams are up"; a player who
+ *  isn't on a team sees nothing. */
+export function teamPanelKind(o: { isAdmin: boolean; published: boolean; hasTeam: boolean }): TeamPanelKind {
+  if (!o.published) return 'none';
+  if (o.hasTeam) return 'team';
+  return o.isAdmin ? 'teamsUp' : 'none';
+}
+
+/** How many different teams a run has (3 indoors, 2 outdoors). */
+export function countTeams(assignments: readonly { team: TeamColor }[]): number {
+  return new Set(assignments.map((a) => a.team)).size;
+}
+
+/** The "Teams are up" panel's two lines: "3 teams · published 5:30 AM". The time is left out if unknown. */
+export function teamsUpSummary(teamCount: number, publishedAt: string | null) {
+  const teams = `${teamCount} ${teamCount === 1 ? 'team' : 'teams'}`;
+  return {
+    title: 'Teams are up',
+    subtitle: publishedAt ? `${teams} · published ${formatTorontoTime(new Date(publishedAt))}` : teams,
   };
 }
 

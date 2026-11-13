@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { applyRsvpToDetail, findMyTeam, longDate, positionCounts, positionTag, rsvpPanelKind, rsvpPanelText, runChipKind, runKicker, teamSummary } from './runDetail';
+import { applyRsvpToDetail, countTeams, findMyTeam, longDate, positionCounts, positionTag, rosterExtras, rosterListNote, rsvpPanelKind, rsvpPanelText, runChipKind, runKicker, teamPanelKind, teamsUpSummary, teamSummary } from './runDetail';
 import type { RunDetailData } from './useRunDetail';
 
 describe('positionCounts', () => {
@@ -108,7 +108,7 @@ describe('findMyTeam', () => {
 
 describe('applyRsvpToDetail', () => {
   const me = { id: 'me', name: 'Me', position: 'defend' as const };
-  const ann = { playerId: 'a', name: 'Ann', position: 'attack' as const, morningOf: false };
+  const ann = { playerId: 'a', name: 'Ann', position: 'attack' as const, morningOf: false, stars: 4, flagUnpaid: false };
   const base: RunDetailData = {
     id: 'r1',
     runDate: '2027-02-14',
@@ -117,6 +117,8 @@ describe('applyRsvpToDetail', () => {
     lockAt: '2027-02-14T10:30:00Z',
     seasonType: 'indoor',
     status: 'open',
+    publishedAt: null,
+    teamCount: 0,
     myTeam: null,
     roster: [ann],
   };
@@ -124,7 +126,7 @@ describe('applyRsvpToDetail', () => {
   it('adds me at the end when I say yes', () => {
     const next = applyRsvpToDetail(base, true, me);
     expect(next.roster.map((p) => p.name)).toEqual(['Ann', 'Me']);
-    expect(next.roster[1]).toEqual({ playerId: 'me', name: 'Me', position: 'defend', morningOf: false });
+    expect(next.roster[1]).toEqual({ playerId: 'me', name: 'Me', position: 'defend', morningOf: false, stars: null, flagUnpaid: null });
   });
   it('does not add me twice', () => {
     const once = applyRsvpToDetail(base, true, me);
@@ -140,5 +142,70 @@ describe('applyRsvpToDetail', () => {
   it('never changes the data it was given', () => {
     applyRsvpToDetail(base, true, me);
     expect(base.roster).toEqual([ann]);
+  });
+});
+
+describe('rosterListNote', () => {
+  it('is plain for a player', () => {
+    expect(rosterListNote(false)).toBe('In order of RSVP');
+  });
+  it('adds "admin view" for an admin', () => {
+    expect(rosterListNote(true)).toBe('In order of RSVP · admin view');
+  });
+});
+
+describe('rosterExtras', () => {
+  it('gives an admin the stars and the Unpaid badge', () => {
+    expect(rosterExtras(true, { stars: 4, flagUnpaid: true })).toEqual({ stars: 4, unpaid: true });
+  });
+  it('shows no Unpaid badge for an admin when the player has paid', () => {
+    expect(rosterExtras(true, { stars: 4, flagUnpaid: false })).toEqual({ stars: 4, unpaid: false });
+  });
+  it('shows no stars and no badge when the values are not known yet (null)', () => {
+    expect(rosterExtras(true, { stars: null, flagUnpaid: null })).toEqual({ stars: null, unpaid: false });
+  });
+  it('gives a player nothing, even if the values were somehow present', () => {
+    expect(rosterExtras(false, { stars: 5, flagUnpaid: true })).toEqual({ stars: null, unpaid: false });
+  });
+});
+
+describe('teamPanelKind', () => {
+  it('shows nothing until the teams are published', () => {
+    expect(teamPanelKind({ isAdmin: true, published: false, hasTeam: false })).toBe('none');
+    expect(teamPanelKind({ isAdmin: false, published: false, hasTeam: true })).toBe('none');
+  });
+  it('shows "your team" to anyone on a team, admin or not', () => {
+    expect(teamPanelKind({ isAdmin: false, published: true, hasTeam: true })).toBe('team');
+    expect(teamPanelKind({ isAdmin: true, published: true, hasTeam: true })).toBe('team');
+  });
+  it('shows "Teams are up" to an admin without a team (Coach, or not going)', () => {
+    expect(teamPanelKind({ isAdmin: true, published: true, hasTeam: false })).toBe('teamsUp');
+  });
+  it('shows a player who is not on a team nothing', () => {
+    expect(teamPanelKind({ isAdmin: false, published: true, hasTeam: false })).toBe('none');
+  });
+});
+
+describe('countTeams', () => {
+  it('counts the different team colours', () => {
+    expect(countTeams([{ team: 'blue' }, { team: 'blue' }, { team: 'red' }, { team: 'yellow' }])).toBe(3);
+  });
+  it('is 0 when there are no assignments', () => {
+    expect(countTeams([])).toBe(0);
+  });
+});
+
+describe('teamsUpSummary', () => {
+  it('gives the title, the team count and the Toronto publish time', () => {
+    expect(teamsUpSummary(3, '2027-02-13T10:30:00Z')).toEqual({
+      title: 'Teams are up',
+      subtitle: '3 teams · published 5:30 AM',
+    });
+  });
+  it('says "1 team" for one team', () => {
+    expect(teamsUpSummary(1, '2027-02-13T10:30:00Z').subtitle).toBe('1 team · published 5:30 AM');
+  });
+  it('leaves the time out when it is not known', () => {
+    expect(teamsUpSummary(3, null)).toEqual({ title: 'Teams are up', subtitle: '3 teams' });
   });
 });

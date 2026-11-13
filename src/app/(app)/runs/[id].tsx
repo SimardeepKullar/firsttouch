@@ -10,7 +10,7 @@ import { WhosComing } from '../../../components/WhosComing';
 import { COLUMN, useNavClearance } from '../../../components/layout';
 import { useAuth } from '../../../lib/auth';
 import { homeVariant } from '../../../lib/homeVariant';
-import { positionCounts, runChipKind } from '../../../lib/runDetail';
+import { positionCounts, runChipKind, teamPanelKind } from '../../../lib/runDetail';
 import { useLiveRsvps } from '../../../lib/useLiveRsvps';
 import { useMe } from '../../../lib/useMe';
 import { useNow } from '../../../lib/useNow';
@@ -71,8 +71,13 @@ export default function RunDetail() {
   const { attackers, defenders } = positionCounts(data.roster);
   const iAmGoing = data.roster.some((p) => p.playerId === userId);
   const variant = me.data ? homeVariant(me.data.isAdmin, me.data.plays) : 'player';
+  const isAdmin = me.data?.isAdmin === true;
   const closed = rsvpsClosed(data.lockAt, now);
   const chip = runChipKind(data.status, closed);
+  const teamsUp =
+    teamPanelKind({ isAdmin, published: data.status === 'published', hasTeam: data.myTeam !== null }) === 'teamsUp'
+      ? { teamCount: data.teamCount, publishedAt: data.publishedAt }
+      : null;
 
   return (
     <ScrollView
@@ -98,8 +103,9 @@ export default function RunDetail() {
         lockAt={data.lockAt}
         variant={variant}
         myTeam={data.myTeam}
+        teamsUp={teamsUp}
       />
-      <WhosComing players={data.roster} myId={userId} />
+      <WhosComing players={data.roster} myId={userId} isAdmin={isAdmin} />
     </ScrollView>
   );
 }
