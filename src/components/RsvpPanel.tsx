@@ -5,11 +5,13 @@ import { formatTorontoTime } from '../lib/torontoTime';
 import { useRsvp } from '../lib/useRsvp';
 import { CheckIcon, LockIcon, PlusIcon } from './RunIcons';
 import { TeamPanel } from './TeamPanel';
+import { TeamsUpPanel } from './TeamsUpPanel';
 import { FOCUS_RING } from './pressable';
 
 const CARD = 'gap-[14px] rounded-card border border-line bg-surface p-4 shadow-card';
 
 type MyTeam = { team: TeamColor; positions: ('attack' | 'defend')[] } | null;
+type TeamsUp = { teamCount: number; publishedAt: string | null };
 
 type Props = {
   runId: string;
@@ -20,23 +22,28 @@ type Props = {
   lockAt: string;
   variant: HomeVariant;
   myTeam: MyTeam;
+  /** Set for an admin with no team once teams are published ("Teams are up"); null for everyone else. */
+  teamsUp: TeamsUp | null;
 };
 
 /** "Your RSVP" on Run detail (03, V3). A manager (admin who doesn't play) gets a note; a player gets the
  *  pill while open, then their team (once published) or a disabled "Locked" pill. */
-export function RsvpPanel({ runId, going, closed, lockAt, variant, myTeam }: Props) {
+export function RsvpPanel({ runId, going, closed, lockAt, variant, myTeam, teamsUp }: Props) {
   if (variant === 'manager') {
     return (
       <View role="region" aria-label="Your RSVP" className={CARD}>
         <Text className="font-inter-semibold text-[15px] text-muted">You’re managing this run</Text>
+        {teamsUp ? <TeamsUpPanel teamCount={teamsUp.teamCount} publishedAt={teamsUp.publishedAt} /> : null}
       </View>
     );
   }
-  return <PlayerPanel runId={runId} going={going} closed={closed} lockAt={lockAt} myTeam={myTeam} />;
+  return (
+    <PlayerPanel runId={runId} going={going} closed={closed} lockAt={lockAt} myTeam={myTeam} teamsUp={teamsUp} />
+  );
 }
 
 // Its own component so the useRsvp hook only runs for players, never for a manager.
-function PlayerPanel({ runId, going, closed, lockAt, myTeam }: Omit<Props, 'variant'>) {
+function PlayerPanel({ runId, going, closed, lockAt, myTeam, teamsUp }: Omit<Props, 'variant'>) {
   const rsvp = useRsvp(runId);
   const kind = rsvpPanelKind('player', closed, myTeam !== null);
   const text = rsvpPanelText(going);
@@ -89,6 +96,7 @@ function PlayerPanel({ runId, going, closed, lockAt, myTeam }: Omit<Props, 'vari
       </View>
 
       {kind === 'team' && myTeam ? <TeamPanel team={myTeam.team} positions={myTeam.positions} /> : null}
+      {teamsUp ? <TeamsUpPanel teamCount={teamsUp.teamCount} publishedAt={teamsUp.publishedAt} /> : null}
 
       {rsvp.errorMessage ? (
         <Text role="alert" className="text-center text-[14px] font-inter-semibold text-danger">
