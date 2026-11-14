@@ -72,3 +72,18 @@ export function useMyPass() {
     },
   });
 }
+
+/** Changes your display name through the update_my_name database function. */
+export function useUpdateName() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (name: string) => {
+      const { error } = await supabase.rpc('update_my_name', { new_name: name });
+      if (error) throw error;
+    },
+    // The name shows on Home, in rosters and in lists. Rather than hunt for each cached copy,
+    // mark everything as out of date: whatever is on screen refetches, the rest on next use.
+    onSuccess: () => queryClient.invalidateQueries(),
+  });
+}
