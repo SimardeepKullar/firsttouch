@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Pressable, Text } from 'react-native';
+import { EditNameSheet } from '../../components/EditNameSheet';
 import { ProfileCard } from '../../components/ProfileCard';
 import { Screen } from '../../components/Screen';
 import { SegmentedControl, type SegmentedOption } from '../../components/SegmentedControl';
@@ -21,6 +23,7 @@ export default function Settings() {
   const { session, signOut } = useAuth();
   const me = useMe();
   const pass = useMyPass();
+  const [editingName, setEditingName] = useState(false);
   const { mode, setMode } = useTheme();
   const saveTheme = useSaveTheme();
 
@@ -39,8 +42,11 @@ export default function Settings() {
           name={me.data.name}
           email={session?.user.email ?? ''}
           chip={profileChip(homeVariant(me.data.isAdmin, me.data.plays), pass.data ?? null)}
-          onEdit={() => undefined} // the name sheet comes in a later step
+          onEdit={() => setEditingName(true)}
         />
+      ) : null}
+      {editingName && me.data ? (
+        <EditNameSheet currentName={me.data.name} onClose={() => setEditingName(false)} />
       ) : null}
       <Text className="mt-[10px] px-1 font-inter-extrabold text-[13px] uppercase tracking-[0.08em] text-muted">
         Appearance
