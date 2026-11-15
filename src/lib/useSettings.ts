@@ -87,3 +87,18 @@ export function useUpdateName() {
     onSuccess: () => queryClient.invalidateQueries(),
   });
 }
+
+/** Deletes your account for good, then clears this browser's session. */
+export function useDeleteAccount() {
+  return useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.rpc('delete_my_account');
+      if (error) throw error;
+      // The account no longer exists, so there is nothing on the server to sign out of.
+      // scope: 'local' clears only this browser's saved session. That fires SIGNED_OUT, which
+      // empties the cache and sends the app back to sign-in (see auth.tsx and _layout.tsx).
+      const { error: signOutError } = await supabase.auth.signOut({ scope: 'local' });
+      if (signOutError) throw signOutError;
+    },
+  });
+}
