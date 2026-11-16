@@ -1,0 +1,36 @@
+// Small decisions for the Settings screen, as plain functions so they can be tested.
+import { parseMode, type ThemeMode } from './themeMode';
+import type { HomeVariant } from './homeVariant';
+
+export type NameCheck = { ok: true; name: string } | { ok: false; message: string };
+
+/** Trims the typed name and says whether it can be sent to update_my_name. */
+export function validateName(raw: string): NameCheck {
+  const name = raw.trim();
+  if (name === '') return { ok: false, message: 'Enter your name.' };
+  return { ok: true, name };
+}
+
+/** Which theme to show after sign-in. The saved choice (from the database) wins; with nothing
+ *  saved yet, the device's choice stays. A value that isn't a real mode counts as nothing saved. */
+export function themeAfterSignIn(saved: string | null | undefined, device: ThemeMode): ThemeMode {
+  if (saved === 'light' || saved === 'dark' || saved === 'system') return parseMode(saved);
+  return device;
+}
+
+/** The grey line under the Appearance control. */
+export function appearanceHint(mode: ThemeMode): string {
+  return mode === 'system'
+    ? 'Follows your phone’s light or dark setting.'
+    : 'Light is the default. Dark mode is optional.';
+}
+
+export type ProfileChip = 'admin' | 'paid' | 'unpaid' | null;
+
+/** The chip on the profile card. A manager (admin who doesn't play) has no pass, so gets the Admin
+ *  badge. A player gets Paid or Not paid for the current season. With no current season: no chip. */
+export function profileChip(variant: HomeVariant, pass: { paid: boolean } | null): ProfileChip {
+  if (variant === 'manager') return 'admin';
+  if (pass === null) return null;
+  return pass.paid ? 'paid' : 'unpaid';
+}

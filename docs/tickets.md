@@ -509,7 +509,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-20 · Build the Settings screen: profile, name, appearance, privacy, sign out, delete account (#20)
 **Milestone:** RSVP loop · **Labels:** player UI, database, design · **Size:** L
 
-**Summary:** Build Settings without the Notifications section (T-32): profile card with avatar, name, pass chip and email; a pencil button to change your display name; the Appearance control (Light, Dark or System); the privacy link; Sign out; and Delete account with a confirmation. The Appearance choice is saved per player in a new `player_settings` table, which T-32 later adds the notification switches to.
+**Summary:** Build Settings without the Notifications section (T-32): profile card with avatar, name, pass chip and email; a pencil button to change your display name; the Appearance control (Light, Dark or System); the privacy link; Sign out; and Delete account with a confirmation. The Appearance choice is saved per player in a new `player_settings` table, which T-32 later adds the notification switches to. The edit-name sheet and the delete confirmation are built as reusable `BottomSheet` and `ConfirmDialog` components, so later admin tickets (T-23, T-26, T-27) reuse them.
 
 **Spec:** Database functions (`update_my_name`); Non-functional requirements › Privacy (Delete account); Access control (players change only their name; own-row pattern like `push_subscriptions`). Appearance isn't in the spec (new in the V2 design)
 **Design:** `05-settings` with `emailAuth = off` and `theme = light | dark` (profile card, Appearance between Notifications and Privacy, Privacy, Account); README › Global rules › Light and dark. The edit-name sheet and delete confirmation have no mockup: reuse the bottom sheet and confirm dialog from `07-admin-runs` (`overlay = sheet | confirm`)
@@ -518,18 +518,19 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Acceptance criteria**
 
 *Profile and account*
-- [ ] The profile card shows avatar, name, email, and a "Paid" or "Not paid" chip for the current season. *Design gap:* for an admin with Plays off, show the Admin badge instead of a pass chip.
+- [ ] The profile card shows avatar, name, email, and a "Paid" or "Not paid" chip for the current season. *Design gap:* for an admin with Plays off, show the Admin badge instead of a pass chip. With no current season, no chip is shown.
 - [ ] The pencil opens a sheet with a Name field. Saving calls `update_my_name`, and an empty name shows an error. The new name shows on Home and in lists.
 - [ ] "Privacy policy" opens `/privacy`.
 - [ ] Sign out returns to sign-in.
-- [ ] "Delete account" (red) asks "Delete your account?" with what gets deleted. Confirming calls `delete_my_account`, signs out, and shows sign-in. Your RSVPs disappear from other screens.
+- [ ] "Delete account" (red) asks "Delete your account?" with what gets deleted. Confirming calls `delete_my_account`, then clears this browser's session (`signOut({ scope: 'local' })`, because the account is already gone on the server) and shows sign-in. Your RSVPs disappear from other screens.
 - [ ] Your email isn't editable here (it comes from Google).
+- [ ] The edit-name sheet and the delete confirmation use two reusable components, `BottomSheet` and `ConfirmDialog` (React Native `Modal`, 50% scrim, closing with the X button, the scrim or Escape), built from the `07-admin-runs` mockup.
 
 *Appearance*
-- [ ] New migration: `player_settings` (one row per player, `theme` = `light` | `dark` | `system`, default `light`). RLS: players read and write only their own row; no access for `anon`. pgTAP tests prove a player can't read or change anyone else's row. `npm run db:types` is re-run and committed.
+- [ ] New migration: `player_settings` (one row per player, `theme` is a `theme_mode` enum of `light` | `dark` | `system`, default `light`). RLS: players read and write only their own row; no access for `anon`. pgTAP tests prove a player can't read or change anyone else's row. `npm run db:types` is re-run and committed.
 - [ ] The three-option control (a radio group built on the T-08 segmented control) shows the saved choice. Picking one switches the theme at once (using the T-05 theme module) and saves it.
 - [ ] The hint changes with the choice: "Light is the default. Dark mode is optional." or, for System, "Follows your phone's light or dark setting."
-- [ ] Signing in on a new browser applies the saved theme. Before sign-in (sign-in and /privacy), the device's last choice is used, or Light.
+- [ ] Signing in on a new browser applies the saved theme: once you're signed in, the saved choice wins over the device's (a pure, tested function, `themeAfterSignIn`). With nothing saved, the device's choice stays and no row is written until you pick one. Before sign-in (sign-in and /privacy), the device's last choice is used, or Light.
 
 **Learning notes**
 - supabase-js `rpc()` for database functions, and `upsert` for a one-row-per-player table
@@ -589,7 +590,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** The spec says admins promote others from the Players screen, but the mockup has no control for it. Add one using existing patterns: tapping a player's name opens a small sheet with an "Admin" switch. An admin can't remove their own admin role, so the group never loses its last admin by accident.
 
 **Spec:** Access control › Admins ("admins promote others and switch plays on or off from the Players screen")
-**Design:** No mockup for this control. Use the bottom sheet (`07-admin-runs`, `overlay = sheet`) plus the Switch from `05-settings`
+**Design:** No mockup for this control. Use the bottom sheet (`07-admin-runs`, `overlay = sheet`; the `BottomSheet` component from T-20) plus the Switch from `05-settings`
 **Depends on:** T-22
 
 **Acceptance criteria**
@@ -597,6 +598,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 - [ ] Turning it on sets `role = 'admin'`. That person sees the Admin tab after their next load.
 - [ ] Your own Admin switch is disabled, with the line "You can't remove your own admin role". Enforce this in the database too (a check in the guard trigger), with a pgTAP test.
 - [ ] Admins move to the top of the list after promotion.
+- [ ] Decide whether `delete_my_account` should also refuse for the last remaining admin (see S13), and if so, enforce it in the database with a pgTAP test.
 
 **Learning notes**
 - Extending a trigger function in a new migration (before the first prod deploy you may still edit the original)
@@ -655,7 +657,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** Tapping a run opens a bottom sheet to change its start time and address, or delete it. Deleting a run that has yes RSVPs asks for confirmation first. The sheet also has "Cancel run" (decision D2), which keeps the run but marks it cancelled. The pushes for these changes come in T-48.
 
 **Spec:** Key flows › Season run list (admin) step 4; Data model (`run_status` includes `cancelled`); Notifications › Messages (run moved; run cancelled or deleted)
-**Design:** `07-admin-runs` with `overlay = sheet` and `overlay = confirm` (`compact = true`)
+**Design:** `07-admin-runs` with `overlay = sheet` and `overlay = confirm` (`compact = true`). Use the `BottomSheet` and `ConfirmDialog` components built in T-20.
 **Depends on:** T-25
 
 **Acceptance criteria**
@@ -679,7 +681,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 **Spec:** Key flows › Long-weekend Mondays; Database functions (`set_holiday_active`)
 **Design:** `11-admin-holidays`
-**Depends on:** T-24, T-26 (reuses the confirm dialog)
+**Depends on:** T-24, T-26 (reuses the `ConfirmDialog` built in T-20)
 
 **Acceptance criteria**
 - [ ] A back link to Runs, the title, and the note "Holiday Mondays inside a season become runs automatically."
@@ -699,7 +701,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** The "Add date" button opens a sheet for a Monday and a name. A new database function inserts it and, as with switching a holiday on, adds its run straight away if it falls inside a season that already has runs.
 
 **Spec:** Key flows › Long-weekend Mondays ("Admins can add a one-off date"); Access control (holidays: admins write)
-**Design:** `11-admin-holidays` ("Add date" dashed button). The form has no mockup: reuse the bottom sheet from `07-admin-runs`
+**Design:** `11-admin-holidays` ("Add date" dashed button). The form has no mockup: reuse the `BottomSheet` from T-20 (`07-admin-runs`)
 **Depends on:** T-27
 
 **Acceptance criteria**
@@ -794,7 +796,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** Add the Notifications section to Settings. Until this browser is subscribed it shows an "Enable notifications" button (the permission prompt must come from a tap, which iOS requires). After that it shows the design's three switches. The subscription is saved to `push_subscriptions`, and the switches are saved per player (see decision D1).
 
 **Spec:** Notifications › Setup steps 3–4; Access control (push_subscriptions: own insert/delete)
-**Design:** `05-settings` (Notifications: "Night-before reminder", "Teams published", "Changes and cancellations"). The "Enable notifications" button has no mockup: use the primary button style inside the same card
+**Design:** `05-settings` (Notifications: "Night-before reminder", "Teams published", "Changes and cancellations"). The "Enable notifications" button has no mockup: use the primary button style inside the same card. Reuse `SectionHeading`, `SettingsCard` and `SettingsRow` from T-20, and extend `useMySettings` and `useSaveTheme` (in `src/lib/useSettings.ts`) with the three switches.
 **Depends on:** T-20, T-31
 
 **Acceptance criteria**
@@ -1667,6 +1669,8 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 27 | `tokens.json` vs README | `size.button` is 48, but the README and the mockups' primary buttons are 56 tall. | Primary buttons are 56 (README and mockups). Smaller buttons follow each mockup. (T-08) |
 | 28 | `05-settings` | Appearance (Light / Dark / System) is new in V2 and not in the spec. | Built as designed, in the Settings ticket (T-20). |
 | 29 | `03-run-detail` admin view | The mockup and README drop the " · You" suffix for admins. | Decided: an admin who is going keeps " · You" on their own row, like any player (friendlier). (T-19) |
+| 30 | `05-settings` Appearance | Nothing says which choice wins after sign-in when this device's saved theme and the one saved in the database differ. | Decided: once signed in, the database wins. With nothing saved, the device's choice stays and no row is written until the player picks one. It's a pure, tested function, `themeAfterSignIn`. (T-20) |
+| 31 | `05-settings` profile card | The Paid / Not paid chip has no state for "no current season". Home shows "Not paid" in that case. | Decided: no chip on Settings, because "Not paid" would be misleading. Admins who don't play still get the Admin badge. (T-20) |
 
 ### Spec internal gaps and spec vs repo
 
@@ -1684,3 +1688,4 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | S10 | spec Access control › Admins | Nothing stops the last admin from demoting themselves. | Block demoting yourself, in the UI and the guard trigger. (T-23) |
 | S11 | privacy.md | "Effective date: [date]" is a placeholder. | Filled in at launch. (T-66) |
 | S12 | seed.sql | No runs, RSVPs, passes or teams, so screens would be empty locally. | T-13. |
+| S13 | spec Privacy › Account deletion | `delete_my_account` lets any admin delete their own account, including the last admin (S10 only covers demoting yourself). | Not built in T-20. Decide in T-23 whether the function should refuse for the last admin. |

@@ -1,9 +1,14 @@
 import { Tabs } from 'expo-router';
+import { useEffect, useRef } from 'react';
 import { ActivityIndicator, Platform, Pressable, Text, View, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TabBar } from '../../components/TabBar';
 import { useAuth } from '../../lib/auth';
+import { themeAfterSignIn } from '../../lib/settings';
+import { setThemeMode, useTheme } from '../../lib/theme';
 import { useMe } from '../../lib/useMe';
+import { useMySettings } from '../../lib/useSettings';
+
 
 // On web, a tab you've left stays mounted just behind the active one (there is no native screen
 // container to hide it). The navigator's own background is transparent so the page glow shows,
@@ -14,8 +19,21 @@ const sceneStyle = (Platform.OS === 'web'
 
 export default function AppLayout() {
   const me = useMe();
-  const { signOut } = useAuth();
+  const { session, signOut } = useAuth();
   const { top } = useSafeAreaInsets();
+
+  // After sign-in, the choice saved in the database wins over this device's last choice. Once per
+  // sign-in: picking a theme in Settings later is never overwritten by this.
+  const { mode } = useTheme();
+  const settings = useMySettings();
+  const appliedFor = useRef<string | null>(null);
+  const userId = session?.user.id ?? null;
+  useEffect(() => {
+    if (!userId || !settings.isSuccess || appliedFor.current === userId) return;
+    appliedFor.current = userId;
+    const next = themeAfterSignIn(settings.data.theme, mode);
+    if (next !== mode) setThemeMode(next);
+  }, [userId, settings.isSuccess, settings.data, mode]);
 
   // Wait for "who am I" before building the tabs. Showing a spinner (not redirecting) means an
   // admin who reloads /admin/runs isn't bounced to Home while we still don't know they're an admin.

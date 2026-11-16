@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch V3 · Admin seasons</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: {{rootH}}; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; min-height: 0; padding: 16px 16px 16px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Admin</h1>
+      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{t.brandSoft}}; color: {{t.brandText}}; font-size: 12px; font-weight: 800; display: flex; align-items: center; letter-spacing: 0.04em">ADMIN</span>
+    </div>
+    <nav aria-label="Admin sections" style="flex-shrink: 0; display: flex; gap: 6px; margin: 0 -16px; padding: 0 16px; overflow: hidden">
+      <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="5">
+        <a href="{{tb.href}}" aria-current="{{tb.current}}" style="height: 44px; flex-shrink: 0; padding: 0 14px; border-radius: 999px; box-sizing: border-box; background: {{tb.bg}}; border: 1px solid {{tb.border}}; color: {{tb.fg}}; font-size: 14px; font-weight: {{tb.weight}}; text-decoration: none; display: flex; align-items: center; white-space: nowrap">{{tb.label}}</a>
+      </sc-for>
+    </nav>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2px">
+      <h2 style="margin: 0 4px; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: {{t.muted}}">{{currentHeading}}</h2>
+      <button type="button" onClick="{{ openNew }}" style="height: 40px; padding: 0 14px 0 12px; border: none; border-radius: 999px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New season
+      </button>
+    </div>
+
+    <section aria-label="{{season.name}}" style="position: relative; border: 0; border-left: 6px solid transparent; border-radius: 26px; background: {{season.frame}}; box-shadow: {{t.shadow}}; padding: 18px 16px 16px 18px; overflow: hidden">
+      <svg width="190" height="190" viewBox="0 0 64 64" style="position: absolute; right: -60px; top: -34px" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" fill="{{t.ballFill}}" stroke="{{t.ballLine}}" stroke-width="0.8"></circle>
+        <g fill="{{t.ballPatch}}" stroke="{{t.ballLine}}" stroke-width="0.8" stroke-linejoin="round">
+          <path d="M32 21l10.5 7.6-4 12.4h-13l-4-12.4z"></path>
+          <path d="M32 2.2l6.3 4.4-1.6 6.6h-9.4l-1.6-6.6z"></path>
+          <path d="M60.3 24.6l-1.7 7.6-6.2 2.6-5.2-6.2 3.3-7.7z"></path>
+          <path d="M50.6 55.5l-6.9 3.2-5.1-4.6 2.6-7.4h8.1z"></path>
+          <path d="M13.4 55.5l3.4-8.8h8.1l2.6 7.4-5.1 4.6z"></path>
+          <path d="M3.7 24.6l7.8-3.7 3.3 7.7-5.2 6.2-6.2-2.6z"></path>
+        </g>
+        <g stroke="{{t.ballLine}}" stroke-width="0.8" fill="none">
+          <path d="M32 21v-7.8M42.5 28.6l7.4-2.5M38.5 41l5.6 5.7M25.5 41l-5.6 5.7M21.5 28.6l-7.4-2.5"></path>
+        </g>
+      </svg>
+      <div style="position: relative">
+        <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{season.chipBg}}; color: {{season.chipFg}}; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: {{season.chipFg}}"></span>{{season.status}}
+        </span>
+        <div style="font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-top: 10px">{{season.name}}</div>
+        <div style="font-size: 15px; color: {{t.ink2}}; margin-top: 6px">{{season.dates}}</div>
+        <div style="margin-top: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{ season.stats }}" as="s" hint-placeholder-count="3">
+            <div style="border-radius: 16px; background: {{tileBg}}; border: 1px solid {{t.line}}; padding: 10px 12px">
+              <div style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: {{s.color}}">{{s.n}}</div>
+              <div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">{{s.label}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <sc-if value="{{ isActive }}" hint-placeholder-val="{{ true }}">
+      <section aria-label="Join code" style="border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
+          <div>
+            <div style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: {{t.muted}}">JOIN CODE</div>
+            <div style="font-size: 34px; font-weight: 800; letter-spacing: 0.14em; margin-top: 4px; color: {{codeColor}}; font-variant-numeric: tabular-nums">{{code}}</div>
+            <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px">{{codeNote}}</div>
+          </div>
+          <button type="button" onClick="{{ newCode }}" style="height: 36px; flex-shrink: 0; padding: 0 12px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.surface2}}; color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4"></path></svg>New code
+          </button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <button type="button" style="height: 46px; border-radius: 14px; border: 1.5px solid {{t.brandLine}}; background: transparent; color: {{t.brandText}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>Copy code
+          </button>
+          <button type="button" style="height: 46px; border: none; border-radius: 14px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg>Share link
+          </button>
+        </div>
+        <div style="border-top: 1px solid {{t.line}}; display: flex; flex-direction: column">
+          <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0 0">
+              <div style="flex-grow: 1; min-width: 0">
+                <div style="font-size: 15px; font-weight: 700">{{sw.label}}</div>
+                <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px; line-height: 1.35">{{sw.note}}</div>
+              </div>
+              <button type="button" role="switch" aria-checked="{{sw.on}}" aria-label="{{sw.label}}" onClick="{{ sw.toggle }}" style="width: 46px; height: 28px; flex-shrink: 0; border: none; border-radius: 999px; padding: 3px; box-sizing: border-box; background: {{sw.track}}; display: flex; justify-content: {{sw.side}}; cursor: pointer">
+                <span style="width: 22px; height: 22px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span>
+              </button>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <div style="display: flex; align-items: baseline; justify-content: space-between; margin: 4px 4px 0">
+        <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: {{t.muted}}">WAITING FOR APPROVAL · {{reqCount}}</h2>
+        <button type="button" onClick="{{ approveAll }}" style="min-height: 44px; border: none; background: transparent; padding: 0; color: {{t.brandText}}; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Approve all</button>
+      </div>
+      <ul style="list-style: none; margin: -6px 0 0; padding: 4px 0; border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: flex; flex-direction: column">
+        <sc-for list="{{ requests }}" as="r" hint-placeholder-count="3">
+          <li style="display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 16px; border-top: {{r.divider}}">
+            <span style="width: 38px; height: 38px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; background: {{t.surface2}}; border: 1px solid {{t.line}}; color: {{t.ink2}}; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{r.ini}}</span>
+            <div style="flex-grow: 1; min-width: 0">
+              <div style="display: flex; align-items: center; gap: 6px">
+                <span style="font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span>
+                <span style="height: 20px; flex-shrink: 0; padding: 0 7px; border-radius: 999px; background: {{r.tagBg}}; color: {{r.tagFg}}; font-size: 11px; font-weight: 700; display: flex; align-items: center">{{r.tag}}</span>
+              </div>
+              <div style="font-size: 12px; color: {{t.muted}}; margin-top: 2px">{{r.when}}</div>
+            </div>
+            <button type="button" aria-label="Decline {{r.name}}" style="width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; border: 1px solid {{t.line}}; background: {{t.surface2}}; color: {{t.muted}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+            </button>
+            <button type="button" aria-label="Approve {{r.name}}" style="width: 40px; height: 40px; flex-shrink: 0; border: none; border-radius: 12px; background: {{t.btn}}; color: {{t.onBrand}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+            </button>
+          </li>
+        </sc-for>
+      </ul>
+
+      <section aria-label="Invite last season" style="border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; padding: 16px; display: flex; align-items: center; gap: 12px">
+        <span style="width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; background: {{t.brandSoft}}; color: {{t.brandText}}; display: flex; align-items: center; justify-content: center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"></path><path d="M4 7l8 6 8-6"></path></svg>
+        </span>
+        <div style="flex-grow: 1; min-width: 0">
+          <div style="font-size: 15px; font-weight: 800">Invite last season's players</div>
+          <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px; line-height: 1.35">{{inviteNote}}</div>
+        </div>
+        <button type="button" style="height: 40px; flex-shrink: 0; padding: 0 14px; border-radius: 999px; border: 1.5px solid {{t.brandLine}}; background: transparent; color: {{t.brandText}}; font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Send</button>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isEnded }}" hint-placeholder-val="{{ false }}">
+      <section aria-label="No current season" style="border-radius: 24px; background: {{t.surface}}; border: 1px dashed {{t.inputBorder}}; padding: 18px 16px; display: flex; flex-direction: column; gap: 10px">
+        <div style="font-size: 17px; font-weight: 800">No season is open</div>
+        <div style="font-size: 14px; color: {{t.muted}}; line-height: 1.45">Players can sign in, but they see "Join a season" until you open the next one and share its code. Their stars, position and history carry over.</div>
+        <button type="button" onClick="{{ openNew }}" style="height: 48px; border: none; border-radius: 14px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Start the next season</button>
+      </section>
+    </sc-if>
+
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin: 4px 4px 0">
+      <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: {{t.muted}}">PAST SEASONS</h2>
+    </div>
+    <ul style="list-style: none; margin: -6px 0 0; padding: 4px 0; border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: flex; flex-direction: column">
+      <sc-for list="{{ past }}" as="ps" hint-placeholder-count="2">
+        <li style="display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 16px; min-height: 48px; border-top: {{ps.divider}}">
+          <span style="width: 10px; height: 10px; flex-shrink: 0; border-radius: 50%; background: {{t.muted2}}"></span>
+          <div style="flex-grow: 1; min-width: 0">
+            <div style="font-size: 15px; font-weight: 700">{{ps.name}}</div>
+            <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px">{{ps.meta}}</div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+        </li>
+      </sc-for>
+    </ul>
+
+    <sc-if value="{{ isActive }}" hint-placeholder-val="{{ true }}">
+      <button type="button" onClick="{{ openEnd }}" style="height: 48px; border-radius: 14px; border: 1.5px solid {{t.redRowBorder}}; background: transparent; color: {{t.redFg}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">End {{season.name}}</button>
+    </sc-if>
+  </div>
+
+  <nav aria-label="Main" style="flex-shrink: 0; margin: 0 12px 14px; height: 76px; box-sizing: border-box; padding: 6px 8px; border-radius: 26px; background: {{t.nav}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="02-home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+      <span style="width: 22px; height: 3px"></span>
+    </a>
+    <a href="04-teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"></path><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4v4h-4z"></path></svg>Teams
+      <span style="width: 22px; height: 3px"></span>
+    </a>
+    <a href="13-admin-seasons.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 700">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5.2v6.3c0 4.8 3.4 9.1 8 10.5 4.6-1.4 8-5.7 8-10.5V5.2z"></path></svg>Admin
+      <span style="width: 22px; height: 3px; border-radius: 2px; background: {{t.brand}}"></span>
+    </a>
+    <a href="05-settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>Settings
+      <span style="width: 22px; height: 3px"></span>
+    </a>
+  </nav>
+
+  <sc-if value="{{ showScrim }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeAll }}" style="position: absolute; inset: 0; background: rgba(0,0,0,0.45)"></div>
+  </sc-if>
+
+  <sc-if value="{{ showNew }}" hint-placeholder-val="{{ false }}">
+    <section role="dialog" aria-label="New season" style="position: absolute; left: 0; right: 0; bottom: 0; border-radius: 28px 28px 0 0; background: {{t.surface}}; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 -10px 40px rgba(0,0,0,0.25)">
+      <span style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: {{t.line}}"></span>
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <h2 style="margin: 0; font-size: 22px; font-weight: 800">New season</h2>
+        <button type="button" aria-label="Close" onClick="{{ closeAll }}" style="width: 44px; height: 44px; border: none; border-radius: 12px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+      <div role="group" aria-label="Season type" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; padding: 3px; border-radius: 14px; background: {{t.surface2}}">
+        <sc-for list="{{ types }}" as="ty" hint-placeholder-count="2">
+          <button type="button" aria-pressed="{{ty.pressed}}" onClick="{{ ty.pick }}" style="height: 42px; border: none; border-radius: 11px; background: {{ty.bg}}; color: {{ty.fg}}; box-shadow: {{ty.shadow}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{ty.label}}</button>
+        </sc-for>
+      </div>
+      <sc-for list="{{ fields }}" as="fd" hint-placeholder-count="3">
+        <div style="display: grid; grid-template-columns: {{fd.cols}}; gap: 10px">
+          <sc-for list="{{ fd.items }}" as="it" hint-placeholder-count="2">
+            <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
+              <label style="font-size: 13px; font-weight: 700">{{it.label}}</label>
+              <input type="text" value="{{it.value}}" style="height: 48px; width: 100%; box-sizing: border-box; border-radius: 14px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 12px; font-family: inherit; font-size: 15px; color: {{t.ink}}">
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+      <label style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 16px; background: {{t.brandSoft}}; cursor: pointer">
+        <span style="width: 22px; height: 22px; flex-shrink: 0; border-radius: 7px; background: {{t.brand}}; color: {{t.onBrand}}; display: flex; align-items: center; justify-content: center; margin-top: 1px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+        </span>
+        <span>
+          <span style="display: block; font-size: 15px; font-weight: 700">Invite Indoor 2026–27 players</span>
+          <span style="display: block; font-size: 13px; color: {{t.muted}}; margin-top: 2px; line-height: 1.35">38 players get a notification with the new code. They still tap Join, so you know who's coming back.</span>
+        </span>
+      </label>
+      <div style="font-size: 13px; color: {{t.muted}}; line-height: 1.45">The season gets its own join code and opens as <b style="color: {{t.ink}}">Upcoming</b>, so players can join before it starts. It becomes the current season on its start date. Create its runs from the Runs tab.</div>
+      <button type="button" style="height: 52px; border: none; border-radius: 16px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Create {{newName}}</button>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ showEnd }}" hint-placeholder-val="{{ false }}">
+    <section role="alertdialog" aria-label="End season" style="position: absolute; left: 20px; right: 20px; top: 260px; border-radius: 24px; background: {{t.surface}}; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.3)">
+      <h2 style="margin: 0; font-size: 21px; font-weight: 800">End {{season.name}}?</h2>
+      <ul style="margin: 0; padding-left: 18px; font-size: 14px; color: {{t.ink2}}; line-height: 1.5; display: flex; flex-direction: column; gap: 4px">
+        <li>Runs after today are deleted. Past runs, teams and passes are kept.</li>
+        <li>The join code stops working.</li>
+        <li>Members can't RSVP until they join the next season. Stars and positions carry over.</li>
+      </ul>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 4px">
+        <button type="button" onClick="{{ closeAll }}" style="height: 48px; border-radius: 14px; border: 1px solid {{t.line}}; background: {{t.surface2}}; color: {{t.ink}}; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Cancel</button>
+        <button type="button" style="height: 48px; border: none; border-radius: 14px; background: #DC2626; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">End season</button>
+      </div>
+    </section>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"state":{"editor":"enum","options":["active","ended"],"default":"active"},"overlay":{"editor":"enum","options":["none","new","end"],"default":"none"},"$preview":{"width":390,"height":1600}}'>
+class Component extends DCLogic {
+  tok() {
+    const light = this.props.theme !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)', barGrad: 'linear-gradient(180deg, #16A866 0%, #0B7A45 55%, rgba(11,122,69,0.5) 100%)', ballFill: 'rgba(13,26,20,0.025)', ballPatch: 'rgba(13,26,20,0.06)', ballLine: 'rgba(13,26,20,0.09)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(120% 45% at 100% 0%, #0F2A1D 0%, #0D1110 55%, #0B0E0D 100%)',
+      bg: '#0D1110', surface: '#171B1B', surface2: '#202525', line: '#2A3030', inputBorder: '#343B3A',
+      ink: '#F2F4F3', ink2: '#CBD1CE', muted: '#9BA39F', muted2: '#737B78',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(20,24,24,0.96)', switchOff: '#3A4140',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#262B2B', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F2F4F3', starOff: '#3A4140', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)', barGrad: 'linear-gradient(180deg, #4BE89A 0%, #2FCB7D 55%, rgba(47,203,125,0.5) 100%)', ballFill: 'rgba(255,255,255,0.035)', ballPatch: 'rgba(0,0,0,0.35)', ballLine: 'rgba(255,255,255,0.08)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const t = this.tok();
+    const dark = this.props.theme === 'dark';
+    const ended = this.props.state === 'ended';
+    const overlay = this.state.overlay ?? (this.props.overlay || 'none');
+    const codeOn = this.state.codeOn ?? true;
+    const approve = this.state.approve ?? true;
+    const newType = this.state.newType ?? 'outdoor';
+    const tabNames = [['Players', '06-admin-players.dc.html'], ['Runs', '07-admin-runs.dc.html'], ['Seasons', '13-admin-seasons.dc.html'], ['Team builder', '08-admin-team-builder.dc.html'], ['Passes', '09-admin-season-passes.dc.html']];
+    const wash = 'linear-gradient(160deg, rgba(' + (dark ? '62,224,143' : '11,122,69') + ',' + (dark ? 0.14 : 0.12) + ') 0%, rgba(' + (dark ? '62,224,143' : '11,122,69') + ',' + (dark ? 0.028 : 0.024) + ') 70%)';
+    const closedBar = 'linear-gradient(180deg, ' + t.muted2 + ' 0%, ' + t.muted2 + ' 60%, rgba(128,140,134,0.4) 100%)';
+    const sw = (label, note, on, key) => ({
+      label, note, on: on ? 'true' : 'false',
+      track: on ? t.brand : t.switchOff, side: on ? 'flex-end' : 'flex-start',
+      toggle: () => this.setState({ [key]: !on })
+    });
+    const reqs = [['Arjun Malhotra', 'New', '2h ago'], ['Chloe Martin', 'New', 'Yesterday'], ['Ravi Singh', 'New', '2 days ago']];
+    const newName = newType === 'indoor' ? 'Indoor 2027–28' : 'Outdoor 2027';
+    return {
+      t,
+      tabs: tabNames.map(([label, href]) => {
+        const on = label === 'Seasons';
+        return { label, href, current: on ? 'page' : 'false', bg: on ? t.ink : t.surface, fg: on ? t.bg : t.ink, border: on ? t.ink : t.line, weight: on ? 800 : 700 };
+      }),
+      currentHeading: ended ? 'LAST SEASON' : 'CURRENT SEASON',
+      isActive: !ended, isEnded: ended,
+      season: ended
+        ? { name: 'Indoor 2026–27', status: 'Ended Apr 25', chipBg: t.lockedBg, chipFg: t.muted, dates: 'Nov 7, 2026 – Apr 25, 2027',
+            frame: 'linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + closedBar + ' border-box',
+            stats: [{ n: '38', label: 'members', color: t.ink }, { n: '52', label: 'runs played', color: t.ink }, { n: '36', label: 'paid', color: t.ink }] }
+        : { name: 'Indoor 2026–27', status: 'Current · open to join', chipBg: t.okBg, chipFg: t.okFg, dates: 'Nov 7, 2026 – Apr 25, 2027 · 52 runs',
+            frame: wash + ' padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + t.barGrad + ' border-box',
+            stats: [{ n: '38', label: 'members', color: t.ink }, { n: '3', label: 'waiting', color: t.amberFg }, { n: '24', label: 'paid', color: t.ink }] },
+      tileBg: dark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.7)',
+      code: 'KX7 42P', codeColor: codeOn ? t.ink : t.muted2,
+      codeNote: codeOn ? 'firsttouch.app/join/KX742P' : 'Code is off · nobody new can join',
+      newCode: () => {},
+      switches: [
+        sw('Code is on', 'Turn off to stop new people joining. Members stay in.', codeOn, 'codeOn'),
+        sw('Approve new players', 'People who weren’t in a past season wait for an admin to approve them.', approve, 'approve')
+      ],
+      reqCount: String(reqs.length),
+      requests: reqs.map(([name, tag, when], i) => ({
+        name, tag, when: 'Joined with code · ' + when,
+        ini: name.split(' ').map((w) => w[0]).join(''),
+        tagBg: tag === 'New' ? t.amberBg : t.surface2, tagFg: tag === 'New' ? t.amberFg : t.muted,
+        divider: i === 0 ? 'none' : '1px solid ' + t.line
+      })),
+      approveAll: () => {},
+      inviteNote: '9 players from Outdoor 2026 haven’t joined yet. Sends them the code.',
+      past: [['Outdoor 2026', 'May 2 – Oct 25, 2026 · 41 members'], ['Indoor 2025–26', 'Nov 8, 2025 – Apr 26, 2026 · 35 members']].map(([name, meta], i) => ({ name, meta, divider: i === 0 ? 'none' : '1px solid ' + t.line })),
+      showScrim: overlay !== 'none', showNew: overlay === 'new', showEnd: overlay === 'end',
+      openNew: () => this.setState({ overlay: 'new' }),
+      openEnd: () => this.setState({ overlay: 'end' }),
+      closeAll: () => this.setState({ overlay: 'none' }),
+      types: [['indoor', 'Indoor'], ['outdoor', 'Outdoor']].map(([k, label]) => {
+        const on = k === newType;
+        return { label, pressed: on ? 'true' : 'false', bg: on ? t.surface : 'transparent', fg: on ? t.ink : t.muted, shadow: on ? '0 1px 4px rgba(0,0,0,0.12)' : 'none', pick: () => this.setState({ newType: k }) };
+      }),
+      newName,
+      fields: [
+        { cols: '1fr', items: [{ label: 'Name', value: newName }] },
+        { cols: 'repeat(2, minmax(0, 1fr))', items: [{ label: 'Start date', value: newType === 'indoor' ? 'Nov 6, 2027' : 'May 1, 2027' }, { label: 'End date', value: newType === 'indoor' ? 'Apr 23, 2028' : 'Oct 31, 2027' }] },
+        { cols: '96px minmax(0, 1fr)', items: [{ label: 'Start time', value: newType === 'indoor' ? '6:30 AM' : '7:00 AM' }, { label: 'Address', value: newType === 'indoor' ? '7855 Finch Ave W, Brampton' : '32 Kennedy Rd N, Brampton' }] },
+        { cols: '120px minmax(0, 1fr)', items: [{ label: 'Pass price', value: '$120' }] }
+      ],
+      rootH: ended ? '1000px' : '1600px'
+    };
+  }
+}
+</script>
+</body>
+</html>
