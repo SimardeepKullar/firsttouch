@@ -4,11 +4,11 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 **How to read this file**
 
-- Every ticket is titled `T-NN · <verb> …` (the AGENTS.md convention). T-numbers follow dependency order. Each ticket's GitHub issue number is in brackets. T-NN is issue #NN, except T-02 (#1) and T-03 (#2), which existed before the plan.
+- Every ticket is titled `T-NN · <verb> …` (the AGENTS.md convention). T-numbers follow dependency order. Each ticket's GitHub issue number is in brackets. T-NN is issue #NN, except T-02 (#1) and T-03 (#2), which existed before the plan, and tickets from T-81 on, which were added later (their issue numbers are in brackets). T-82 to T-93 and the new T-69 were added on Nov 15, 2026 for groups, seasons and join codes; they come before the remaining admin and player tickets in the order of work.
 - **Sources:** `docs/spec.md` (behaviour, data, rules, permissions), `docs/design/` (look and layout), `docs/privacy.md`. Where they disagree, the spec wins on behaviour and permissions and the design wins on visuals. See [Spec and design disagreements](#spec-and-design-disagreements) at the end.
 - **Sizes:** S = one sitting. M = one or two sittings. L = two full sittings (used rarely).
 - **Labels:** `database`, `functions`, `player UI`, `admin UI`, `infra`, `tests`, `design`, `later`. `design` marks a ticket that also fills a gap with no mockup (it reuses existing patterns, and the gap is spelled out in the ticket).
-- **Designs:** this plan follows **Version 3** of the designs (`docs/design/README.md`, switched in T-78 on Nov 10, 2026): Version 2's Inter, green gradients, floating bottom nav and Appearance setting, plus grey-black dark mode, the new Home run cards (curved `card-bar`, "{n} going" pill, full-width "I'm in" / "You're in" button) and the new Teams cards (team wash, curved team bar, team-colour chips, and a "Your team" card for players). Only `02-home` and `04-teams` have new mockups; every other screen keeps its Version 2 mockup with the new dark colours.
+- **Designs:** this plan follows **Version 3**, the only design (`docs/design/README.md`). Every screen in `docs/design/screens/` is Version 3. Groups, seasons and join codes are detailed in `docs/design/seasons-and-join-codes.md` (screens 12, 13, 14, the Home welcome popup and the Players admin controls).
 - **Expo docs:** the app is on Expo SDK 58, so "Expo docs" in the learning notes means `https://docs.expo.dev/versions/v58.0.0/`, not memory or older tutorials.
 
 **Already done (no tickets):** Expo app with NativeWind and Expo Router in `src/app`; Vitest; the `balance.ts` placeholder and test; the first migration (tables, RLS, views, holiday functions, `generate_season_runs`, `set_holiday_active`, triggers, `update_my_name`, `delete_my_account`, grants, Realtime on `rsvps`) and `seed.sql`, pushed to dev.
@@ -40,71 +40,84 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 16. T-18 · Build the Run detail screen (player view) (#18)
 17. T-19 · Add the admin view of Run detail (#19)
 18. T-20 · Build the Settings screen: profile, name, appearance, privacy, sign out, delete account (#20)
-19. T-21 · Build the Admin · Players list with search and filters (#21)
-20. T-22 · Let admins set stars, position and Plays (#22)
-21. T-23 · Let admins make or remove other admins (#23)
-22. T-24 · Build the season card on Admin · Runs (#24)
-23. T-25 · List every run of the season on Admin · Runs (#25)
-24. T-26 · Add the edit-run sheet: time, address, cancel and delete (#26)
-25. T-27 · Build the Admin · Holidays screen (#27)
-26. T-28 · Let admins add a one-off holiday date (#28)
+19. T-82 · Write the groups, seasons and join codes plan into the docs (#106)
+20. T-83 · Restyle the ADMIN tag and Admin badge to soft green (#107)
+21. T-69 · Add groups and per-group roles to the database (#69)
+22. T-84 · Scope runs and holidays to a group (#108)
+23. T-85 · Add season membership, join codes and approval (#109)
+24. T-86 · Add the admin season functions (#110)
+25. T-81 · Build the Join a season screen and the season gate (#104)
+26. T-87 · Build Start your own runs (#111)
+27. T-88 · Show the welcome popup on Home (#112)
+28. T-89 · Build the Admin · Seasons tab (#113)
+29. T-90 · Add the New season sheet and the End season dialog (#114)
+30. T-21 · Build the Admin · Players list with search and filters (#21)
+31. T-22 · Let admins set stars, position and Plays (#22)
+32. T-23 · Add the player sheet's admin controls: make, remove and transfer admin, and remove from the group (#23)
+33. T-24 · Build the season card on Admin · Runs (#24)
+34. T-25 · List every run of the season on Admin · Runs (#25)
+35. T-26 · Add the edit-run sheet: time, address, cancel and delete (#26)
+36. T-27 · Build the Admin · Holidays screen (#27)
+37. T-28 · Let admins add a one-off holiday date (#28)
 
 ### Teams
-27. T-29 · Implement balanceTeams: team count, sizes and snake draft (#29)
-28. T-30 · Finish balanceTeams: swaps, restarts, slots and output checks (#30)
-29. T-31 · Add the web manifest, service worker and VAPID keys (#31)
-30. T-32 · Let players turn on notifications in Settings (#32)
-31. T-33 · Show the "Add to Home Screen" banner on iPhone (#33)
-32. T-34 · Build the send-push Edge Function (#34)
-33. T-35 · Add save_teams, publish_teams and the service_role grants (#35)
-34. T-36 · Build the generate-teams Edge Function (#36)
-35. T-37 · Schedule the lock-and-publish job with pg_cron (#37)
-36. T-38 · Build the Teams screen table view (#38)
-37. T-39 · Draw the indoor Field view (three half-pitches) (#39)
-38. T-40 · Draw the outdoor Field view (full pitch) (#40)
-39. T-41 · Show "Teams are up" on Home and Run detail (#41)
-40. T-42 · Push team and run changes live with Realtime (#42)
-41. T-43 · Add the Next run card to Admin · Runs (#43)
-42. T-44 · Build the Admin · Team builder: summary, team count and Reshuffle (#44)
-43. T-45 · Let admins drag players between teams with the fairness bar (#45)
-44. T-46 · Build the desktop Team builder with the admin sidebar (#46)
-45. T-47 · Schedule the evening reminder job (#47)
-46. T-48 · Send pushes when a run is moved, cancelled or deleted (#48)
-47. T-49 · Schedule the yearly holiday fill job (#49)
-48. T-50 · Add Deno tests for generate-teams and send-push (#50)
+38. T-29 · Implement balanceTeams: team count, sizes and snake draft (#29)
+39. T-30 · Finish balanceTeams: swaps, restarts, slots and output checks (#30)
+40. T-31 · Add the web manifest, service worker and VAPID keys (#31)
+41. T-32 · Let players turn on notifications in Settings (#32)
+42. T-33 · Show the "Add to Home Screen" banner on iPhone (#33)
+43. T-34 · Build the send-push Edge Function (#34)
+44. T-35 · Add save_teams, publish_teams and the service_role grants (#35)
+45. T-36 · Build the generate-teams Edge Function (#36)
+46. T-37 · Schedule the lock-and-publish job with pg_cron (#37)
+47. T-38 · Build the Teams screen table view (#38)
+48. T-39 · Draw the indoor Field view (three half-pitches) (#39)
+49. T-40 · Draw the outdoor Field view (full pitch) (#40)
+50. T-41 · Show "Teams are up" on Home and Run detail (#41)
+51. T-42 · Push team and run changes live with Realtime (#42)
+52. T-43 · Add the Next run card to Admin · Runs (#43)
+53. T-44 · Build the Admin · Team builder: summary, team count and Reshuffle (#44)
+54. T-45 · Let admins drag players between teams with the fairness bar (#45)
+55. T-46 · Build the desktop Team builder with the admin sidebar (#46)
+56. T-47 · Schedule the evening reminder job (#47)
+57. T-48 · Send pushes when a run is moved, cancelled or deleted (#48)
+58. T-91 · Invite last season's players and push approvals (#115)
+59. T-49 · Schedule the yearly holiday fill job (#49)
+60. T-92 · Roll seasons over with a daily job (#116)
+61. T-50 · Add Deno tests for generate-teams and send-push (#50)
 
 ### Season passes and flags
-49. T-51 · Record who marked a pass paid, with a trigger and tests (#51)
-50. T-52 · Build the Admin · Season passes screen (#52)
-51. T-53 · Add the Flagged list to Admin · Runs (#53)
+62. T-51 · Record who marked a pass paid, with a trigger and tests (#51)
+63. T-52 · Build the Admin · Season passes screen (#52)
+64. T-53 · Add the Flagged list to Admin · Runs (#53)
 
 ### Web launch
-52. T-54 · Create the prod Supabase project and GitHub production environment (#54)
-53. T-03 · Deploy the website from CI, after prod migrations (#2)
-54. T-55 · Deploy Edge Functions and their secrets from CI (#55)
-55. T-56 · Add the real seasons to prod with a data migration (#56)
-56. T-57 · Back up the prod database weekly to firsttouch-backups (#57)
-57. T-58 · Show failed jobs and pushes on the admin screen (#58)
-58. T-59 · Add the EXPO_PUBLIC_EMAIL_AUTH switch and the email sign-in form (#59)
-59. T-60 · Build the Create account screen (#60)
-60. T-61 · Build the Forgot password and Set a new password screens (#61)
-61. T-62 · Add Change password to Settings (#62)
-62. T-63 · Test email sign-in locally with Mailpit and Playwright (#63)
-63. T-64 · Add a Playwright end-to-end test against the preview URL (#64)
-64. T-65 · Publish the Google sign-in app out of Testing mode (#65)
-65. T-66 · Run the launch checklist (#66)
+65. T-54 · Create the prod Supabase project and GitHub production environment (#54)
+66. T-03 · Deploy the website from CI, after prod migrations (#2)
+67. T-55 · Deploy Edge Functions and their secrets from CI (#55)
+68. T-56 · Check holiday Mondays and create the first real season in prod (#56)
+69. T-57 · Back up the prod database weekly to firsttouch-backups (#57)
+70. T-58 · Show failed jobs and pushes on the admin screen (#58)
+71. T-59 · Add the EXPO_PUBLIC_EMAIL_AUTH switch and the email sign-in form (#59)
+72. T-60 · Build the Create account screen (#60)
+73. T-61 · Build the Forgot password and Set a new password screens (#61)
+74. T-62 · Add Change password to Settings (#62)
+75. T-63 · Test email sign-in locally with Mailpit and Playwright (#63)
+76. T-64 · Add a Playwright end-to-end test against the preview URL (#64)
+77. T-65 · Publish the Google sign-in app out of Testing mode (#65)
+78. T-66 · Run the launch checklist (#66)
 
 ### Later (no milestone, label `later`)
 - T-67 · Switch on email sign-in with a domain and Resend (#67)
 - T-68 · Send a weekly reminder about unpaid season passes (#68)
-- T-69 · Add season join codes (#69)
 - T-70 · Let admins add walk-ins to a locked or published run (#70)
 - T-71 · Let admins mark no-shows (#71)
 - T-72 · Add a player cap and waitlist (#72)
 - T-73 · Take season pass payments in the app with Stripe (#73)
 - T-74 · Add match rotation and scores (#74)
 - T-75 · Ship App Store and Google Play builds (#75)
-- T-76 · Let admins deactivate players (#76)
+- T-93 · Let a player be in more than one group (#117)
+- ~~T-76 · Let admins deactivate players (#76)~~ closed: superseded by T-23 and T-86
 
 ---
 
@@ -540,24 +553,355 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 ---
 
+### T-82 · Write the groups, seasons and join codes plan into the docs (#106)
+**Milestone:** RSVP loop · **Labels:** documentation · **Size:** S
+
+**Summary:** Planning chore, no app code. Brings the Version 3 designs for groups, seasons and join codes into the repo and writes the agreed plan into the spec, this ticket plan and the GitHub issues, replacing the old one-line T-69.
+
+**Spec:** Overview; Data model; Access control; Server functions and scheduled jobs; Key flows › Groups, seasons and join codes; Notifications; Later and open items
+**Design:** all of `docs/design/` (Version 3 only), especially `seasons-and-join-codes.md`, `12-join-season`, `13-admin-seasons`, `14-start-your-runs`
+**Depends on:** T-20
+
+**Acceptance criteria**
+- [ ] The Version 3 design files are committed, and `docs/design/README.md` describes Version 3 only, with screens 12, 13 and 14 and every new prop.
+- [ ] `docs/spec.md`: join codes leave "Out of scope"; groups, `group_members`, `season_members` and the new season columns are in the Data model; Access control, functions, jobs, Key flows, Notifications and Later are updated.
+- [ ] This file: the new tickets, the changed tickets (T-21, T-22, T-23, T-24, T-35, T-36, T-43, T-46, T-49, T-52, T-56, T-64), D5 in place of D3, and T-76 closed as superseded.
+- [ ] The GitHub issues match this file and are on the project board.
+
+---
+
+### T-83 · Restyle the ADMIN tag and Admin badge to soft green (#107)
+**Milestone:** RSVP loop · **Labels:** player UI, admin UI · **Size:** S
+
+**Summary:** Version 3 changed the ADMIN tag in the Admin header and the small Admin badge from the green `hero` gradient with white text to soft green: `brand-soft` background with `brand-text`. Everything else on the built screens (sign in, Home, Run detail, Settings, the tab bar at 76 tall) already matches Version 3.
+
+**Spec:** —
+**Design:** `06-admin-players` and `07-admin-runs` (ADMIN tag in the header; Admin badge on player rows); README › Shared components › Admin badge
+**Depends on:** —
+
+**Acceptance criteria**
+- [ ] `AdminHeader`'s ADMIN tag (26 tall, 12px / 800, 0.04em tracking) uses `bg-brand-soft` and `text-brand-text`.
+- [ ] `AdminBadge` (22 tall, 11px / 800) uses the same colours. It shows on the Settings profile card for an admin who doesn't play.
+- [ ] The `/components` gallery note for AdminBadge no longer says "hero gradient".
+- [ ] Both read clearly in light and dark (contrast at least 4.5:1).
+
+**Learning notes**
+- Why the colours live in tokens: a restyle is a class-name change, not new colours
+- Checking contrast with the browser's accessibility tools
+
+---
+
+### T-69 · Add groups and per-group roles to the database (#69)
+**Milestone:** RSVP loop · **Labels:** database, tests · **Size:** L
+
+**Summary:** A **group** (e.g. "Brampton Weekend Football") now owns seasons and admins. Admin, Plays, stars and position move from `profiles` to a new `group_members` table, so they're set per group: someone can be 5 stars in one group and 3 in another. Every existing policy, view and function is re-pointed at the group, with one group in the seed so the built screens keep working. Admins can make, remove and transfer admin in the database (the screen is T-23). A `profiles.is_dev` flag, set by hand, makes someone admin in every group.
+
+**Spec:** Data model (`groups`, `group_members`, `profiles.is_dev`, `seasons.group_id`); Access control (helpers, admins per group); Database functions (make / remove / transfer admin, `delete_my_account`)
+**Design:** No mockup (database). The rules come from `seasons-and-join-codes.md` › How it works 1, 11 and 13
+**Depends on:** T-02, T-12
+
+**Acceptance criteria**
+- [ ] One **new** migration (dev already runs the first two, so don't edit them):
+  - `groups (id, name, created_by, created_at)`
+  - `group_members (group_id, player_id, role, plays, stars, position, active, created_at)`, primary key (group_id, player_id); `role`, `plays`, `stars`, `position` and `active` leave `profiles`, and their values are copied into one group for existing dev data
+  - `profiles.is_dev boolean not null default false`
+  - `seasons.group_id not null` (existing seasons go into that group)
+- [ ] Helpers (security definer, `set search_path`): `is_dev()`, `is_group_admin(group_id)` (an active admin of the group, or a Dev) and `is_group_member(group_id)`. `is_admin()` stays, with no arguments, meaning "a Dev or an admin of any group", only so the app can decide whether to show the Admin tab. **Policies never use `is_admin()`.**
+- [ ] Every existing policy, view and function uses the group of the row it touches (season → group, run → season → group). `my_plays()` reads Plays from the run's group. `run_roster` shows stars and the Unpaid flag only to admins of that run's group. `player_directory` reads name from `profiles` and position and Plays from `group_members`.
+- [ ] A guard trigger on `group_members` lets only the group's admins change `role`, `plays`, `stars`, `position` or `active` (it replaces `guard_profile_columns`), and refuses any change that would leave a group with no active admin.
+- [ ] `make_admin(group_id, player_id)`, `remove_admin(group_id, player_id)` and `transfer_admin(group_id, to_player_id)` are admin-only. Transfer makes the other person admin and removes the caller in one transaction.
+- [ ] `delete_my_account()` refuses with "Transfer admin first: you're the only admin of {group}." when the caller is the only admin of a group that has other active members. Settings shows that message.
+- [ ] `seed.sql` puts everyone in one group, "Brampton Weekend Football", with John, Sim and Coach as its admins.
+- [ ] pgTAP: per-group stars and Plays; an admin of group A can't read or change group B; a Dev can; the last-admin rule; make / remove / transfer admin; the delete-account guard. Every existing test file is updated for groups and passes.
+- [ ] Home, Coach's Home, Run detail (player and admin) and Settings still work unchanged. `npm run db:types` is run and committed.
+
+**Learning notes**
+- Moving columns to a new table in a migration without losing data (`insert … select`, then `alter table … drop column`)
+- Why `is_group_admin(group_id)` is security definer, and why policies should never call a helper that ignores the row's group
+- Constraint triggers vs `before update` triggers for "at least one admin"
+
+---
+
+### T-84 · Scope runs and holidays to a group (#108)
+**Milestone:** RSVP loop · **Labels:** database, tests · **Size:** M
+
+**Summary:** Two groups can play on the same Saturday, and one group switching off a holiday mustn't cancel another group's run. Run dates become unique per season, seasons in one group can't overlap, there is one current season per group, and holidays are stored per group.
+
+**Spec:** Data model (`runs`, `seasons`, `holidays`); Key flows › Long-weekend Mondays
+**Design:** No mockup (database). `11-admin-holidays` shows the per-group switches
+**Depends on:** T-69
+
+**Acceptance criteria**
+- [ ] New migration:
+  - `runs.run_date` is unique per `(season_id, run_date)` instead of across the whole app
+  - seasons in the same group can't overlap: an exclusion constraint on `(group_id, daterange(starts_on, ends_on, '[]'))` (needs `btree_gist`), with `starts_on` and `ends_on` now required
+  - `one_current_season` becomes unique on `group_id where is_current`
+  - `holidays` gets `group_id`, primary key `(group_id, holiday_date)`
+- [ ] `fill_holidays(group_id, year)`, `generate_season_runs(season_id)` and `set_holiday_active(group_id, holiday_date, active)` work within one group, and `generate_season_runs` refuses an ended season (`ended_at` arrives in T-85; until then this check is skipped).
+- [ ] pgTAP: two groups each get a run on the same Saturday; overlapping seasons in one group are refused, while the same dates in two groups are fine; switching a holiday off in group A leaves group B's run; one current season per group. The T-12 season-run tests still pass after updating.
+- [ ] `npm run db:types` is run and committed.
+
+**Learning notes**
+- Exclusion constraints and `daterange` (`&&` means "overlaps")
+- Why a composite unique key replaces a single-column one
+
+---
+
+### T-85 · Add season membership, join codes and approval (#109)
+**Milestone:** RSVP loop · **Labels:** database, tests · **Size:** L
+
+**Summary:** This closes the open sign-up. A player only sees a season (its runs, RSVPs, teams and players) once they're an **active member**, which they become by entering the season's join code. Brand-new players wait for an admin's approval; returning players go straight in. Admins never need a code.
+
+**Spec:** Data model (`season_members`, the new `seasons` columns); Access control; Database functions (`join_season`, `my_season`, `mark_welcome_seen`); Key flows › Groups, seasons and join codes
+**Design:** No mockup (database). States used by `12-join-season`, `13-admin-seasons` and `02-home` (`welcome`)
+**Depends on:** T-84
+
+**Acceptance criteria**
+- [ ] New migration:
+  - `seasons` gets `join_code text not null unique` (default `new_join_code()`), `code_enabled` (default true), `requires_approval` (default true) and `ended_at`
+  - `member_status` enum (`waiting`, `active`, `removed`)
+  - `season_members (season_id, player_id, status, joined_via ('code' | 'admin'), joined_at, approved_by, approved_at, welcomed_at)`, primary key (season_id, player_id)
+- [ ] `new_join_code()` makes 6 characters from `ABCDEFGHJKLMNPQRSTUVWXYZ23456789` (no 0, O, 1 or I) and tries again if the code is taken.
+- [ ] `join_season(code)`:
+  - strips spaces and dashes and upper-cases the code
+  - finds a season with that code that has the code on and hasn't ended; otherwise it raises "That code doesn't match an open season."
+  - **waiting** if the season needs approval and the player was never an active member of this group, **and always waiting** if an admin removed them from the group (their `group_members.active` is false) or from this season; otherwise **active**
+  - joining twice keeps one row; returns the season's id, name and the status
+- [ ] A trigger runs when a member becomes active: it creates the unpaid `season_passes` row, and creates (or reactivates) their `group_members` row with 3 stars, Attack and Plays on for a first-timer.
+- [ ] A trigger after a season is inserted adds the group's admins who play as active members.
+- [ ] `is_season_member(season_id)` (active member, or an admin of the season's group). `seasons`, `runs`, `rsvps`, `team_assignments` and `run_roster` are readable only by active members of that season and the group's admins. Writing your own RSVP also needs it. `player_directory` shows players only the active members of their current and upcoming seasons. `season_members`: players read their own rows; the group's admins read and write their group's rows.
+- [ ] `my_season()` returns:
+  - the current and the upcoming season the caller is active or waiting in (id, name, dates, status, request time)
+  - the name of the last season they were active in
+  - whether they can still create a group (fewer than 3 created)
+- [ ] `mark_welcome_seen(season_id)` sets the caller's `welcomed_at`.
+- [ ] Existing dev members become active members of the current season, with `welcomed_at` set. `seed.sql` adds one waiting player, one player with no membership and one ended season.
+- [ ] pgTAP (`season_membership.test.sql`) checks that:
+  - a non-member and a waiting member can't read the season, its runs, RSVPs, teams or the two views, and can't RSVP
+  - a returning player joins as active, while a new player waits
+  - the code works with spaces, a dash or lower case; a wrong code, a code that's off and an ended season give the same error
+  - a removed player rejoins as waiting
+  - a pass appears only once the player is active
+  - playing admins are added to a new season
+  - each `my_season()` case
+- [ ] `npm run db:types` is run and committed.
+
+**Learning notes**
+- A membership table as the key to row-level security, and helper functions so policies don't check each other in a loop
+- Giving the same error for different failures, so a code can't be guessed by its error
+- Triggers that react to a status change (`old.status is distinct from new.status`)
+
+---
+
+### T-86 · Add the admin season functions (#110)
+**Milestone:** RSVP loop · **Labels:** database, tests · **Size:** M
+
+**Summary:** The database functions behind Start your own runs, Admin · Seasons and the player sheet: create a group or a season, make a new code, approve or decline new players, end a season, and remove a player from the group. Each runs as one transaction and checks the caller.
+
+**Spec:** Database functions; Key flows › Groups, seasons and join codes
+**Design:** No mockup (database). Used by `14-start-your-runs` (`form`, `error`), `13-admin-seasons` (`errors`, `overlay = new | end`) and `06-admin-players` (`overlay = remove`)
+**Depends on:** T-85
+
+**Acceptance criteria**
+- [ ] `create_group(name, season fields)` (any signed-in user):
+  - creates the group, makes the caller its admin, and creates its first season
+  - refuses a 4th group created by the same account with "You've created 3 groups, the most allowed. No more groups can be created."
+  - an empty name gives "Give your group a name"
+- [ ] `create_season(group_id, type, name, starts_on, ends_on, start time, address, price)` (group admins):
+  - end before start gives "End date must be after the start date"; overlapping dates give "These dates overlap {season}"
+  - the season is **current straight away** if it starts today or earlier (Toronto) and the group has no current season; otherwise it's upcoming
+- [ ] `regenerate_join_code(season_id)`: the old code stops working.
+- [ ] `approve_members(season_id, player_ids uuid[])` sets waiting members active and records who and when, returning how many. `decline_member(season_id, player_id)` sets them to removed.
+- [ ] `end_season(season_id)`:
+  - sets `ended_at`, `is_current = false`, `code_enabled = false` and `ends_on = least(ends_on, today)`
+  - deletes the season's runs after today and returns how many
+  - refuses a season that has already ended
+- [ ] `remove_from_group(group_id, player_id)`:
+  - sets `group_members.active = false` and marks their memberships in seasons that haven't ended as removed; RSVPs to runs after today are deleted, while history and passes are kept
+  - refuses your own row and the last admin
+- [ ] Turning `code_enabled` and `requires_approval` on or off stays a plain update by the group's admins.
+- [ ] pgTAP: each function works for the group's admin and is refused for a player and for another group's admin; plus the 3-group limit, the current-vs-upcoming rule, the overlap error and the `end_season` deletions.
+
+**Learning notes**
+- Array parameters and `= any(...)`
+- "Today in Toronto": `(now() at time zone 'America/Toronto')::date`
+- Returning row counts with `get diagnostics`
+
+---
+
+### T-81 · Build the Join a season screen and the season gate (#104)
+**Milestone:** RSVP loop · **Labels:** player UI · **Size:** M
+
+**Summary:** A signed-in person who isn't an active member of a current or upcoming season sees Join a season instead of the tabs. They type the code, or open an invite link that fills it in, and go **straight to Home**. A new player sees "Waiting for an admin" until approved. Players never pick a season: Home shows the runs of every season they're in.
+
+**Spec:** Key flows › Groups, seasons and join codes (player steps)
+**Design:** `12-join-season` (`state = enter | error | pending`, `returning`, `groupLimit`)
+**Depends on:** T-85, T-08
+
+**Acceptance criteria**
+- [ ] `src/app/(app)/_layout.tsx` calls `my_season()`. Admins always get the tabs. A player active in a current or upcoming season gets the tabs; anyone else gets the Join screen, with no bottom nav. `useMe` no longer fails for someone who isn't in any group yet.
+- [ ] **enter:**
+  - "Join a season" and its intro
+  - six 56-tall boxes in two groups of three with a dash between, the active box with a 2px `brand` border
+  - typing or pasting upper-cases letters and ignores spaces and dashes
+  - "Join season" looks disabled until there are 6 characters, and shows a spinner while joining
+- [ ] **returning:** when `my_season()` names a last season, the heading reads "{last season} has ended" with the returning intro.
+- [ ] **error:** red box borders and "That code doesn't match an open season." (`role="alert"`).
+- [ ] **pending:**
+  - the amber card, "Waiting for an admin", the season name and the request time
+  - until T-91 the line reads "Your request is in. An admin usually approves new players within a day. Check back here."
+  - the status refreshes when the app comes back to the front, and Home opens once approved
+- [ ] **Start your own runs:** the "OR" card opens 14 (T-87). With `groupLimit` (from `my_season()`) it's disabled with the 3-group line.
+- [ ] A successful join goes straight to Home; there is no joined screen.
+- [ ] `/join/[code]`:
+  - signed in, it joins
+  - signed out, it keeps the code through Google sign-in and then joins
+  - a wrong code shows the error state with the code filled in
+- [ ] Home and the pass chip use the player's seasons from `my_season()`: upcoming runs of the current and the upcoming season as one list in date order, and the pass chip for the season of the next run.
+- [ ] Header with logo + "FirstTouch" and "Sign out"; footer "Signed in as {email}". Matches the mockup in light and dark at 390 wide.
+
+**Learning notes**
+- Expo Router dynamic routes (`[code].tsx`) and `useLocalSearchParams` (SDK 58 docs)
+- A segmented code input built from one hidden `TextInput`
+- Keeping a value across an OAuth redirect on web (`sessionStorage`)
+- Refreshing on focus (`AppState` / TanStack Query `focusManager`)
+
+---
+
+### T-87 · Build Start your own runs (#111)
+**Milestone:** RSVP loop · **Labels:** player UI · **Size:** M
+
+**Summary:** From the Join screen, anyone can create a group and its first season, become its admin, and get the join code to share.
+
+**Spec:** Key flows › Groups, seasons and join codes (start your own runs)
+**Design:** `14-start-your-runs` (`step = form | error | done`)
+**Depends on:** T-86, T-81
+
+**Acceptance criteria**
+- [ ] **form:**
+  - "← Back" to Join and the intro
+  - one card with Group name, a "FIRST SEASON" label, Indoor/Outdoor, Season name (filled in from the type and start year, e.g. "Indoor 2026–27" or "Outdoor 2027", until edited), Start and End date pickers, Start time, Pass price ($120 default) and Address
+  - a full-width "Create group" button
+- [ ] **error:** the field errors from `create_group` show under their fields ("Give your group a name", "End date must be after the start date"), and the 3-group limit shows as an alert above the button. The form scrolls.
+- [ ] **done:**
+  - an "ADMIN" chip and "You're the admin of {group}"
+  - the join code card ("JOIN CODE · {season}", the code as `KX7 42P`, the link built from the app's own address)
+  - "Copy code" and "Share link"
+  - the line about approving new players, and "Go to Home →", which opens Home with the Admin tab and no welcome popup
+- [ ] Light and dark, 390 wide.
+
+**Learning notes**
+- Form state with derived defaults (the season name follows the type and date until you edit it)
+- Copying and sharing: `expo-clipboard` and `Share` / `navigator.share`, with copy as the fallback (SDK 58 docs)
+
+---
+
+### T-88 · Show the welcome popup on Home (#112)
+**Milestone:** RSVP loop · **Labels:** player UI · **Size:** S
+
+**Summary:** The first time a player opens Home after joining a season, or after being approved, a bottom sheet shows the season details. It never shows again once dismissed, on any device.
+
+**Spec:** Key flows › Groups, seasons and join codes (after joining)
+**Design:** `02-home` (`welcome = true`)
+**Depends on:** T-81
+
+**Acceptance criteria**
+- [ ] Shown when `my_season()` says the player is active and `welcomed_at` is empty. Not shown to the group's creator, or to admins added automatically.
+- [ ] The `BottomSheet` (T-20) contains:
+  - a drag handle and the ball watermark
+  - a "✓ You're in" chip, the season name (28px / 800) and dates
+  - a `surface-2` box with "Sat & Sun at {time}", the address on two lines and "Season pass ${price} · pay an admin"
+  - a full-width "Got it" button
+- [ ] "Got it" or tapping the scrim closes it and calls `mark_welcome_seen`. It stays closed after a reload and on another device.
+- [ ] Light and dark.
+
+**Learning notes**
+- Storing "seen once" on the server instead of the device, and why
+
+---
+
+### T-89 · Build the Admin · Seasons tab (#113)
+**Milestone:** RSVP loop · **Labels:** admin UI · **Size:** L
+
+**Summary:** A new Seasons sub-tab where admins see the group's current and upcoming seasons, share each season's join code, approve new players, and see past seasons.
+
+**Spec:** Key flows › Groups, seasons and join codes (admin steps)
+**Design:** `13-admin-seasons` (`state = active | both | upcoming | ended`, `overlay = none`)
+**Depends on:** T-86, T-81, T-83
+
+**Acceptance criteria**
+- [ ] The admin pills read Players · Runs · **Seasons** · Team builder · Passes and scroll sideways. The route is `src/app/(app)/admin/(sections)/seasons.tsx`; `nav.ts` and its tests are updated.
+- [ ] Top: the group name as a small kicker above "CURRENT SEASON", and a "+ New season" pill (it opens T-90's sheet; hidden until then).
+- [ ] **Season card:**
+  - a status chip: "Current · open to join" (`ok`), "Upcoming · starts {date}" (`amber`) or "Ended {date}" (`locked`)
+  - the name, dates, run count
+  - tiles for members · waiting (amber) · paid
+- [ ] **Join code card:**
+  - the code as `KX7 42P` (muted when off), with the link or "Code is off · nobody new can join"
+  - "New code" calls `regenerate_join_code` after asking "The old code will stop working."
+  - "Copy code" and "Share link"
+  - the "Code is on" and "Approve new players" switches
+- [ ] **Waiting for approval · {n}:**
+  - rows with avatar, name, "New" chip and "Joined with code · {when}"; with two open seasons each row also names its season
+  - × asks first, then calls `decline_member`; ✓ and "Approve all" call `approve_members`
+  - the tiles update straight away; the section is hidden when nobody is waiting
+- [ ] **both:** a NEXT SEASON section after the current season, with the upcoming season's card (amber bar) and its own code card.
+- [ ] **upcoming:** only the NEXT SEASON section, and no End button.
+- [ ] **ended:** "LAST SEASON", a grey bar and the dashed "No season is open" card; "Start the next season" opens the New season sheet.
+- [ ] Past seasons list (name, dates, member count), and the red-outline "End {season}" button (it opens T-90's dialog).
+- [ ] The Invite card stays hidden until T-91. Light and dark.
+
+**Learning notes**
+- Optimistic updates for a list in TanStack Query (approve and decline)
+- One screen, four states: deriving the state from data instead of storing it
+
+---
+
+### T-90 · Add the New season sheet and the End season dialog (#114)
+**Milestone:** RSVP loop · **Labels:** admin UI · **Size:** M
+
+**Summary:** Admins create the group's next season (current straight away if it has started, otherwise upcoming) and end the current one.
+
+**Spec:** Key flows › Groups, seasons and join codes (new season, end season)
+**Design:** `13-admin-seasons` (`overlay = new | end`, `errors`)
+**Depends on:** T-89
+
+**Acceptance criteria**
+- [ ] **New season sheet (`BottomSheet`):**
+  - Indoor/Outdoor; Name filled in from the type and start year until edited; Start and End date pickers; Start time, Address and Pass price, filled in from the last season of the same type
+  - the note "If it starts today or earlier, it becomes the current season straight away. Otherwise it opens as Upcoming…"
+  - "Create {name}" calls `create_season`; the "Invite {last season} players" checkbox stays hidden until T-91
+- [ ] With **`errors`**: "End date must be after the start date" and "These dates overlap {season}" show under the date fields.
+- [ ] After creating, the Seasons tab shows the new season (state `active` or `both`) with its code.
+- [ ] **End season dialog:**
+  - "End {season}?" with the three bullets; the first gives the real number of runs after today that will be deleted
+  - Cancel and a red "End season", which calls `end_season`; the tab then shows `ended`, or `upcoming` if one exists
+
+**Learning notes**
+- A centred confirm dialog (`ConfirmDialog` from T-20)
+- Date maths for the season name ("Indoor 2026–27" vs "Outdoor 2027")
+
+---
+
 ### T-21 · Build the Admin · Players list with search and filters (#21)
 **Milestone:** RSVP loop · **Labels:** admin UI, design · **Size:** M
 
-**Summary:** List everyone in the group for admins: admins first (Coach, John, Sim), then everyone else A to Z. It has a search field, the All / Flagged / ATT / DEF filters, and each card's name, Admin badge, flag badges and current stars and position. Editing comes in T-22.
+**Summary:** List the admin's group for admins: admins first (Coach, John, Sim), then everyone else A to Z. It has a search field, the All / Flagged / ATT / DEF filters, and each card's name, Admin badge, flag badges and current stars and position. Editing comes in T-22; the player sheet in T-23.
 
-**Spec:** Access control (profiles: admins read everything); Overview (flags)
-**Design:** `06-admin-players` with `filter = all | flagged | att | def`
-**Depends on:** T-09
+**Spec:** Access control (group admins read their group's members); Overview (flags)
+**Design:** `06-admin-players` with `filter = all | flagged | att | def`, `overlay = none`
+**Depends on:** T-09, T-69, T-83
 
 **Acceptance criteria**
-- [ ] Shows every active profile, admins first, then alphabetical. The search placeholder reads "Search {n} people", and search filters by name as you type.
+- [ ] Shows the active members of the admin's group only (people removed from the group, and other groups' players, never appear), admins first, then alphabetical. The search placeholder reads "Search {n} people", and search filters by name as you type.
 - [ ] Filter chips show counts ("All 41", "Flagged 9"). ATT and DEF filter by position.
 - [ ] *Flag meaning (the design shows flags per person, the spec stores them per RSVP):* Unpaid means no paid pass for the current season. Morning of means a morning-of yes for the next run. Flagged means either one.
 - [ ] Cards with Plays off read "Manages only · never placed in teams", with the rating and position dimmed.
+- [ ] Admins have the soft-green Admin badge (T-83).
 - [ ] The line above the list reads "{n} players · tap stars to rate".
 
 **Learning notes**
-- Reading `profiles` as an admin (RLS lets admins read it all)
+- Reading `group_members` joined to `profiles` as a group admin (RLS limits it to your group)
 - Filtering and sorting in the client with `useMemo` vs in the query
 - `FlatList` for long lists in React Native
 
@@ -566,66 +910,76 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-22 · Let admins set stars, position and Plays (#22)
 **Milestone:** RSVP loop · **Labels:** admin UI · **Size:** S
 
-**Summary:** Make the Players cards editable: tap a star to set the rating, tap Attack or Defend, flip Plays. Each change saves at once with optimistic UI.
+**Summary:** Make the Players cards editable: tap a star to set the rating, tap Attack or Defend, flip Plays. Each change saves at once with optimistic UI. All three are per group, so they only change this group's view of the player.
 
-**Spec:** Access control (`guard_profile_columns`; admins change stars, position, plays); Overview (new players start at 3 stars, Attack)
-**Design:** `06-admin-players` (star picker, Attack/Defend toggle, compact Plays switch)
+**Spec:** Access control (the `group_members` guard; group admins change stars, position, plays); Overview (new players start at 3 stars, Attack)
+**Design:** `06-admin-players` (star picker, Attack/Defend toggle, compact Plays switch; "Ratings are for {group} only." in the player sheet)
 **Depends on:** T-08, T-21
 
 **Acceptance criteria**
-- [ ] Tapping star N sets `stars = N`. Attack/Defend sets `position`. The Plays switch sets `plays`. Each saves without a Save button and rolls back with a message on error.
-- [ ] Turning Plays off dims the rating and position and shows the "Manages only" line. That person can no longer RSVP (the database refuses), and Home shows them Coach's view.
-- [ ] Changing stars never shows up anywhere a player can see.
-- [ ] A new sign-up appears with 3 stars and Attack.
+- [ ] Tapping star N sets `stars = N` on the player's `group_members` row. Attack/Defend sets `position`. The Plays switch sets `plays`. Each saves without a Save button and rolls back with a message on error.
+- [ ] Turning Plays off dims the rating and position and shows the "Manages only" line. That person can no longer RSVP to this group's runs (the database refuses), and Home shows them Coach's view.
+- [ ] Changing stars never shows up anywhere a player can see, and never changes the player's rating in another group.
+- [ ] A new member appears with 3 stars and Attack.
 
 **Learning notes**
-- `useMutation` per field vs one generic "update profile" mutation
+- `useMutation` per field vs one generic "update member" mutation
 - Why the guard trigger exists even though RLS already allows only admins
 
 ---
 
-### T-23 · Let admins make or remove other admins (#23)
-**Milestone:** RSVP loop · **Labels:** admin UI, design, database · **Size:** S
+### T-23 · Add the player sheet's admin controls: make, remove and transfer admin, and remove from the group (#23)
+**Milestone:** RSVP loop · **Labels:** admin UI · **Size:** M
 
-**Summary:** The spec says admins promote others from the Players screen, but the mockup has no control for it. Add one using existing patterns: tapping a player's name opens a small sheet with an "Admin" switch. An admin can't remove their own admin role, so the group never loses its last admin by accident.
+**Summary:** Tapping a player on Admin · Players opens their sheet. Besides the ratings (T-22), it lets admins make someone admin, remove an admin, transfer their own admin to someone else, and remove a player from the group. A group always keeps at least one admin, and the database enforces it.
 
-**Spec:** Access control › Admins ("admins promote others and switch plays on or off from the Players screen")
-**Design:** No mockup for this control. Use the bottom sheet (`07-admin-runs`, `overlay = sheet`; the `BottomSheet` component from T-20) plus the Switch from `05-settings`
-**Depends on:** T-22
+**Spec:** Access control › Admins; Database functions (`make_admin`, `remove_admin`, `transfer_admin`, `remove_from_group`)
+**Design:** `06-admin-players` (`overlay = player | transfer | remove`, `sheetFor = player | admin | self`, `onlyAdmin`)
+**Depends on:** T-22, T-69, T-86
 
 **Acceptance criteria**
-- [ ] Tapping a name opens a sheet showing the name, email (admins can see it) and an "Admin" switch.
-- [ ] Turning it on sets `role = 'admin'`. That person sees the Admin tab after their next load.
-- [ ] Your own Admin switch is disabled, with the line "You can't remove your own admin role". Enforce this in the database too (a check in the guard trigger), with a pgTAP test.
-- [ ] Admins move to the top of the list after promotion.
-- [ ] Decide whether `delete_my_account` should also refuse for the last remaining admin (see S13), and if so, enforce it in the database with a pgTAP test.
+- [ ] Tapping a row opens the `BottomSheet`:
+  - avatar, name, the Admin badge for admins, the subtitle ("Player", "Admin · plays", "You · admin · plays") and a close button
+  - the ratings box with "Ratings are for {group} only."
+  - the ADMIN section
+- [ ] **Player:** "Make admin" (brand outline) with "Admins can rate players, manage runs and seasons, and approve new players." It calls `make_admin`, and the badge appears at once.
+- [ ] **Another admin:** "Remove admin" (red outline) calls `remove_admin` after a confirmation.
+- [ ] **Your own row:**
+  - "Transfer admin" (brand outline) and "Remove admin" (red outline)
+  - with `onlyAdmin` both are disabled, with "You're the only admin of {group}." and the amber "A group needs at least one admin."
+  - you lose the Admin tab after removing your own admin
+- [ ] **Transfer (`overlay = transfer`):**
+  - a search field and a list of the group's members (avatar, name, radio button), with the picked row highlighted
+  - "Make {name} admin and remove your admin access?"
+  - "Transfer" is disabled until someone is picked and calls `transfer_admin`
+- [ ] **Remove from {group}** (not on your own row): the red text button and its note open the confirm dialog (`overlay = remove`), "Remove {name}?". Confirming calls `remove_from_group`, and the player leaves the list.
+- [ ] Database errors (last admin, not allowed) show in the sheet. Light and dark.
 
 **Learning notes**
-- Extending a trigger function in a new migration (before the first prod deploy you may still edit the original)
-- pgTAP `throws_ok` for the new rule
+- A list with single selection (radio group semantics: `role="radiogroup"` / `aria-checked`)
+- Showing a server rule's error in the UI instead of repeating the rule in the client
 
 ---
 
 ### T-24 · Build the season card on Admin · Runs (#24)
 **Milestone:** RSVP loop · **Labels:** admin UI, design · **Size:** M
 
-**Summary:** The Season section of Admin · Runs: pick Indoor or Outdoor, set the season's start and end dates, and tap "Create runs", which calls `generate_season_runs` and reports how many runs it added. It also has the Holidays link and a way to choose the current season.
+**Summary:** The Season section of Admin · Runs: pick the group's current or upcoming season, set its start and end dates, and tap "Create runs", which calls `generate_season_runs` and reports how many runs it added. It also has the Holidays link. New seasons are created on Admin · Seasons (T-90).
 
-**Spec:** Key flows › Season run list (admin) steps 1, 2 and 5; Data model (`seasons.is_current`)
-**Design:** `07-admin-runs` (Season section: title, Indoor/Outdoor segmented control, Start and End date, "Create runs", schedule note, "Holidays" link)
-**Depends on:** T-08, T-09
+**Spec:** Key flows › Season run list (admin) steps 1, 2 and 5
+**Design:** `07-admin-runs` (Season section: title, two-option switch, Start and End date, "Create runs", schedule note, "Holidays" link; 24 radius with `shadow`)
+**Depends on:** T-08, T-09, T-86
 
 **Acceptance criteria**
-- [ ] The Indoor/Outdoor control switches between the two seasons. The title shows the season name.
-- [ ] Start and End are real date pickers (the mockup shows text fields) and save to `starts_on` / `ends_on`. End before start shows an error.
+- [ ] *Design gap:* the mockup's Indoor / Outdoor switch picks between the group's current and upcoming seasons, labelled by name, and is hidden when only one is open. The title shows the season name. Ended seasons aren't shown.
+- [ ] Start and End are real date pickers (the mockup shows text fields) and save to `starts_on` / `ends_on`. "End date must be after the start date" and "These dates overlap {season}" come back from the database and show under the fields.
 - [ ] "Create runs" calls `generate_season_runs` and shows "Added {n} runs" (or "No new runs"). Running it again after extending the dates adds only the missing dates.
 - [ ] The note reads "Every Saturday and Sunday at {time}, {address}, plus holiday Mondays." Outdoor adds "Outdoor runs always have 2 teams."
-- [ ] *Design gap:* a "Current season" switch on the card sets `is_current` (only one can be current; the database enforces this). Home and the pass chips use the current season.
 - [ ] "Holidays" opens the Holidays screen (T-27).
 
 **Learning notes**
 - A date picker on React Native for web (`<input type="date">` via a web-only component, or a library)
-- Postgres partial unique index (`one_current_season`) and the error it raises
+- Showing a database constraint error (the overlap exclusion) as a friendly message
 - `rpc()` return values
 
 ---
@@ -872,7 +1226,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Acceptance criteria**
 - [ ] `save_teams` deletes the run's `team_assignments`, inserts the new ones (team and slot), then calls `publish_teams`, all in one transaction. It's executable by `service_role` only.
 - [ ] `publish_teams` sets `status = 'published'` and `published_at = now()`. The first time it sends "Teams for {Saturday} are up — you're on {Blue}." to each player going. After that it sends "Teams for {Saturday} were updated — you're now on {Yellow}." The push goes through pg_net to send-push.
-- [ ] `service_role` gets read access to `runs`, `seasons`, `rsvps` and `profiles` for generate-teams (it can't use `run_roster`, which hides stars from non-admins; see disagreement S1).
+- [ ] `service_role` gets read access to `runs`, `seasons`, `rsvps`, `profiles` and `group_members` (stars, position and Plays are per group) for generate-teams (it can't use `run_roster`, which hides stars from non-admins; see disagreement S1).
 - [ ] The send-push URL and service key come from Supabase Vault, not from the migration. Local setup is documented.
 - [ ] pgTAP: players and admins can't call `save_teams` directly. After `save_teams` a player can read the teams. A second call replaces, not appends.
 - [ ] `npm run db:types` is re-run and committed.
@@ -894,8 +1248,8 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Depends on:** T-30, T-35
 
 **Acceptance criteria**
-- [ ] `supabase/functions/generate-teams/index.ts` accepts `{ run_id, seed? }`. Only the service role or an admin can call it.
-- [ ] It includes every yes RSVP from a profile with Plays on (paid or not, morning-of or not). It uses the season type and `team_count_override`.
+- [ ] `supabase/functions/generate-teams/index.ts` accepts `{ run_id, seed? }`. Only the service role or an admin of the run's group can call it.
+- [ ] It uses each player's stars and position from the run's group (`group_members`). It includes every yes RSVP from a member with Plays on (paid or not, morning-of or not). It uses the season type and `team_count_override`.
 - [ ] It imports `balanceTeams` from `_shared/balance.ts` (the same file Vitest tests).
 - [ ] 4 or more players: it calls `save_teams` and returns teams with star totals, sizes and ATT/DEF counts.
 - [ ] Fewer than 4: no teams, the run stays locked, and admins get "Only {n} players for {Sunday}'s run; no teams made." Nothing is written to `team_assignments`.
@@ -1054,7 +1408,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** At the top of Admin · Runs, a card for the next run shows its status chip, stat tiles (going, ATT : DEF, flagged) and a line that changes with the state. A "View teams" button appears once teams are published.
 
 **Spec:** Key flows (open → locked → published, or cancelled); Lock and publish step 5 (fewer than 4)
-**Design:** `07-admin-runs` with `status = open | locked | published | cancelled | empty`
+**Design:** `07-admin-runs` with `status = open | locked | published | cancelled | empty` (curved `card-bar` left edge, `brand` wash, 26 radius, `shadow`)
 **Depends on:** T-25, T-37
 
 **Acceptance criteria**
@@ -1116,7 +1470,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-46 · Build the desktop Team builder with the admin sidebar (#46)
 **Milestone:** Teams · **Labels:** admin UI, design · **Size:** M
 
-**Summary:** On a wide screen, the admin area gets the pitch-green sidebar (logo, Players / Runs / Team builder / Passes, "Back to player view"). The Team builder uses the desktop layout: a top bar, a fairness strip, three team columns with full names, and a bottom bar with the note and warning.
+**Summary:** On a wide screen, the admin area gets the pitch-green sidebar (logo, Players / Runs / Seasons / Team builder / Passes, "Back to player view"). The Team builder uses the desktop layout: a top bar, a fairness strip, three team columns with full names, and a bottom bar with the note and warning.
 
 **Spec:** Same as T-44/T-45
 **Design:** `08b-admin-team-builder-desktop` (1280 wide); README › Navigation › Desktop sidebar
@@ -1176,23 +1530,66 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 ---
 
+### T-91 · Invite last season's players and push approvals (#115)
+**Milestone:** Teams · **Labels:** database, functions, admin UI · **Size:** M
+
+**Summary:** One tap sends last season's players the new season's code, and a waiting player gets a push when an admin approves them. Until this ticket, admins share the link themselves and the pending screen says "Check back here".
+
+**Spec:** Notifications › Messages (season open; approved)
+**Design:** `13-admin-seasons` (Invite last season's players card; the "Invite {last season} players" checkbox in `overlay = new`); `12-join-season` (`state = pending` copy)
+**Depends on:** T-34, T-90
+
+**Acceptance criteria**
+- [ ] `invite_last_season(season_id)` (group admins) pushes "{Season} is open. Tap to join." to active members of the group's previous season who aren't in this one. The push opens `/join/{code}`. It returns how many players it went to.
+- [ ] The Invite card shows "{n} players from {last season} haven't joined yet. Sends them the code." Send changes it to "Sent to {n}".
+- [ ] The New season sheet's checkbox (checked by default) sends the invites after the season is created.
+- [ ] `approve_members` pushes "You're in {season}." to each approved player. The pending screen goes back to the design's "You'll get a notification when an admin approves you, usually within a day."
+- [ ] Both messages respect the "Changes and cancellations" switch. Failures go to `job_errors`.
+
+**Learning notes**
+- Calling send-push from SQL with pg_net
+- Deep links in a push payload
+
+---
+
+---
+
 ### T-49 · Schedule the yearly holiday fill job (#49)
 **Milestone:** Teams · **Labels:** database · **Size:** S
 
-**Summary:** On December 1 at 6 AM Toronto time, call `fill_holidays(next year)` so the coming year's holiday Mondays show on the Holidays screen early.
+**Summary:** On December 1 at 6 AM Toronto time, call `fill_holidays(group, next year)` for every group, so the coming year's holiday Mondays show on each group's Holidays screen early.
 
 **Spec:** Scheduled jobs (fill-next-year-holidays); Long-weekend Mondays › How dates get in
 **Design:** `11-admin-holidays` (where the dates appear)
-**Depends on:** T-37
+**Depends on:** T-37, T-84
 
 **Acceptance criteria**
 - [ ] `cron.schedule('fill-next-year-holidays', '0 11 1 12 *', …)` (11:00 UTC is 06:00 EST, and Toronto is on EST in December).
-- [ ] Running the job body by hand adds next year's dates and leaves switched-off dates switched off.
+- [ ] Running the job body by hand adds next year's dates to every group and leaves switched-off dates switched off.
 - [ ] A failure writes to `job_errors`.
 
 **Learning notes**
 - Cron expression syntax
 - `on conflict do nothing` (why refilling never brings a switched-off date back)
+
+---
+
+### T-92 · Roll seasons over with a daily job (#116)
+**Milestone:** Teams · **Labels:** database, tests · **Size:** S
+
+**Summary:** Every morning a job ends a current season whose end date has passed and makes an upcoming season current on its start date, so admins never have to.
+
+**Spec:** Scheduled jobs (season-rollover); Key flows › Groups, seasons and join codes
+**Design:** `13-admin-seasons` (the New season sheet's note)
+**Depends on:** T-37, T-86
+
+**Acceptance criteria**
+- [ ] `season_rollover()`: for each group, if the current season's `ends_on` is before today (Toronto), call `end_season`; then make current the upcoming season whose `starts_on` is today or earlier. It does nothing on days with no change.
+- [ ] `cron.schedule('season-rollover', …)` at 03:00 Toronto (scheduled for both UTC offsets, or checked inside the function).
+- [ ] Failures go to `job_errors`. pgTAP covers `season_rollover()` with fixed dates.
+
+**Learning notes**
+- Writing the job as a plain function you can test, and having pg_cron only call it
 
 ---
 
@@ -1242,21 +1639,21 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-52 · Build the Admin · Season passes screen (#52)
 **Milestone:** Season passes and flags · **Labels:** admin UI · **Size:** M
 
-**Summary:** For the chosen season: a pitch-green card with the price, "{n} of {total} paid", the amount still owed and a progress bar; All / Not paid filters; and one row per player with a Paid switch. Unpaid rows are tinted red.
+**Summary:** For the chosen season: a pitch-green card with the price, "{n} of {total} paid", the amount still owed and a progress bar; All / Not paid filters; and one row per member with a Paid switch. Unpaid rows are tinted red.
 
-**Spec:** Overview (season passes marked paid by admins; unpaid players still play); Access control (admins all have the same permissions)
+**Spec:** Overview (season passes marked paid by admins; unpaid players still play); Access control (group admins)
 **Design:** `09-admin-season-passes`
-**Depends on:** T-08, T-09, T-51
+**Depends on:** T-08, T-09, T-51, T-85
 
 **Acceptance criteria**
-- [ ] Indoor/Outdoor switches the season. The title and price come from the season (`pass_price_cents`).
-- [ ] Lists active players with Plays on (Coach and other manage-only admins are left out, matching "40 of 41"). No pass row counts as Not paid.
-- [ ] The Paid switch upserts the `season_passes` row with optimistic UI. Paid rows show "Paid" and "Marked paid by {name} · {date}". Unpaid rows use `#FEF2F2` with a `#FCA5A5` border and "Not paid".
+- [ ] *Design gap:* the mockup's Indoor / Outdoor switch picks between the group's current and upcoming seasons, labelled by name, and is hidden when only one is open. The title and price come from the season (`pass_price_cents`).
+- [ ] Lists the season's active members who play (Coach and other manage-only admins are left out, matching "40 of 41"). Waiting and removed people aren't listed.
+- [ ] The Paid switch updates the member's `season_passes` row with optimistic UI. Paid rows show "Paid" and "Marked paid by {name} · {date}". Unpaid rows use `#FEF2F2` with a `#FCA5A5` border and "Not paid".
 - [ ] "{n} of {total} paid", "{u} unpaid · ${u × price} due" and the bar update at once.
 - [ ] "Not paid {u}" filter. Rows sorted A to Z.
 
 **Learning notes**
-- Left-joining "everyone" to "who has a row" (client merge or a view)
+- Joining members to their passes in one query
 - Formatting money from cents (`Intl.NumberFormat`)
 
 ---
@@ -1336,24 +1733,24 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 ---
 
-### T-56 · Add the real seasons to prod with a data migration (#56)
+### T-56 · Check holiday Mondays and create the first real season in prod (#56)
 **Milestone:** Web launch · **Labels:** database · **Size:** S
 
-**Summary:** Prod has no seed, so the two real seasons (with the real addresses, times and price) go in through a migration. Admins then set the dates and tap "Create runs" in the app. Also check the generated holiday Mondays against Ontario's official list once.
+**Summary:** Prod has no seed and needs none: the first admin creates the group and its first season in the app with Start your own runs (T-87). This ticket checks the generated holiday Mondays against Ontario's official list once, and covers the launch-day steps.
 
-**Spec:** Key decisions (Placeholders); Open items (real season dates); Long-weekend Mondays ("Check them once against Ontario's official holiday list before launch")
-**Design:** No mockup
-**Depends on:** T-54
+**Spec:** Key flows › Groups, seasons and join codes; Long-weekend Mondays ("Check them once against Ontario's official holiday list before launch")
+**Design:** `14-start-your-runs`
+**Depends on:** T-54, T-87
 
 **Acceptance criteria**
-- [ ] The migration inserts "Indoor 2026–27" (7855 Finch Ave W, Brampton, ON L6T 0B2, 6:30) and the outdoor season (32 Kennedy Rd N, Brampton, ON L6V 1X4, 7:00), with dates if known, otherwise null. It doesn't fail when re-run locally after seed (use `on conflict`, or check first).
-- [ ] Exactly one season is current.
 - [ ] The 2026–2028 holiday table from the spec is checked against ontario.ca, with any difference fixed in the function plus a test.
-- [ ] After merge: an admin sets the dates in prod and taps Create runs (in the app, not SQL).
+- [ ] After launch, these steps happen in the app, with no SQL:
+  - Simar signs in, taps Start your own runs and creates "Brampton Weekend Football" with "Indoor 2026–27" (7855 Finch Ave W, Brampton, ON L6T 0B2, 6:30, the real dates), then taps Create runs on Admin · Runs and shares the code
+  - John and Coach join with the code, are approved, and are made admin (Coach with Plays off)
+- [ ] The only hand step: Simar's `profiles.is_dev` is set to true in the Supabase dashboard, as `docs/environments.md` describes.
 
 **Learning notes**
-- Data migrations vs schema migrations
-- Idempotent SQL (`insert … where not exists`)
+- Why prod data comes from the app (or migrations), never from hand-written SQL
 
 ---
 
@@ -1516,6 +1913,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 **Acceptance criteria**
 - [ ] Test users sign in without Google (for example dev-only email test accounts created by a setup script, or a session injected from a service-role-created user). The approach is written in the PR.
+- [ ] The test users are active members of a test group's season (set up by the script, or by joining with its code), since only members can see runs.
 - [ ] The test creates a run starting about 61 minutes ahead on dev, RSVPs several players, waits for lock-and-publish, and sees the Teams screen.
 - [ ] As admin it moves a player, and the player's Teams screen shows it.
 - [ ] As a player, no star rating or Unpaid badge appears anywhere in the page text.
@@ -1585,11 +1983,6 @@ Buy a domain, verify it in Resend, set Resend as Supabase's custom SMTP, enable 
 A weekly pg_cron job pushes "Your Indoor season pass is still unpaid." to players without a paid pass for the current season. It needs its own category or switch.
 **Learning notes:** pg_cron weekly schedules; adding a notification category.
 
-### T-69 · Add season join codes (#69)
-**Labels:** later, database, player UI · **Size:** L · **Spec:** Later and open items (Season join code) · **Design:** No mockup
-Add `join_code` to seasons and a `season_members` table. A player enters the code once per season, and the RSVP policies also check membership.
-**Learning notes:** RLS with membership tables; migrating policies safely in prod.
-
 ### T-70 · Let admins add walk-ins to a locked or published run (#70)
 **Labels:** later, admin UI, database · **Size:** M · **Spec:** Later (Walk-ins) · **Design:** No mockup
 Add an existing player or a named guest to a locked or published run. They go on the smallest team, or the admin taps Reshuffle.
@@ -1617,9 +2010,13 @@ A new `matches` table (run, team A, team B, result, minute). 5-minute games, the
 EAS builds from the same code, an Expo Push path in send-push, Sign in with Apple, personal developer accounts, and Google's 14-day closed test.
 **Learning notes:** EAS Build and Submit; expo-notifications; Sign in with Apple requirements.
 
-### T-76 · Let admins deactivate players (#76)
-**Labels:** later, admin UI · **Size:** S · **Spec:** Data model (`profiles.active`; `player_directory` filters on it) · **Design:** No mockup
-`active` exists in the schema, but no screen sets it. Add a "Deactivate" option to the T-23 player sheet so people who leave the group drop off lists without deleting their history.
+### T-76 · Let admins deactivate players (#76) — closed, superseded
+Replaced by "Remove from {group}": `remove_from_group` (T-86) and the player sheet (T-23). `profiles.active` moved to `group_members.active`.
+
+### T-93 · Let a player be in more than one group (#117)
+**Labels:** later, player UI, design · **Size:** L · **Spec:** Later (more than one group per player) · **Design:** needs new mockups · **Depends on:** T-89
+The database already allows it (membership is per group). Needed: a way to join a second group's season while already in one, group labels on run cards and Teams, a group switcher in Admin for someone who admins two groups, and Home combining runs from both.
+**Learning notes:** designing for "usually one, sometimes many" without cluttering the common case.
 
 ---
 
@@ -1633,7 +2030,8 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | --- | --- | --- | --- |
 | D1 | Settings shows three notification switches (Night-before, Teams published, Changes and cancellations). The spec has only an "Enable notifications" button and nowhere to store per-type choices. | **Decided:** keep the switches (the design is clear, the privacy policy says "turn notifications off in Settings", and it's cheap). Store them on the `player_settings` table (own read/write), which T-20 creates for the Appearance setting. Show "Enable notifications" first, switches after. Update the spec. | T-32, T-34, T-47, T-48 |
 | D2 | The design shows a **Cancelled** run state (chip, "Cancelled by an admin" row, Next-run card variant) but no Cancel button anywhere. The spec has `cancelled` status and a "run cancelled" push, but its admin flow only describes Delete. | **Decided:** add "Cancel run" to the edit sheet. It keeps the run visible as Cancelled (useful for rain-outs, so players can see it's off), while Delete removes it entirely. | T-26, T-43, T-48 |
-| D3 | Seasons: the spec says an admin "creates or opens a season". The design only lets you pick Indoor/Outdoor and edit dates, with no create-season or "current season" control. Prod has no seed. | **Decided:** prod seasons come from a data migration (T-56). Add a small "Current season" switch to the season card (T-24). Creating next year's seasons stays a migration until a later ticket. | T-24, T-56 |
+| D3 | Seasons: the spec says an admin "creates or opens a season". The design only lets you pick Indoor/Outdoor and edit dates, with no create-season or "current season" control. Prod has no seed. | **Superseded by D5 (Nov 15, 2026).** Seasons are created in the app (Start your own runs, Admin · Seasons). | T-24, T-56 |
+| D5 | Sign-up is open, so anyone who signs in is in the season. | **Decided Nov 15, 2026:** <ul><li>**Groups** own seasons and admins; admin, Plays, stars and position are per group.</li><li>Players join a season with its 6-character **join code**, and brand-new players wait for **approval** (on by default). There's no limit on wrong codes.</li><li>Players never pick a season: Home shows every season they're in, and a **welcome popup** replaces a "You're in" screen.</li><li>A new season is **current straight away** if it has started, otherwise upcoming until a daily job flips it.</li><li>Admins can remove each other (a group always keeps one); an account can create **at most 3 groups**; admins see only their own group's players and can remove a player from the group.</li><li>Playing admins are added to each new season automatically; a hand-set **Dev** flag is admin everywhere.</li></ul> | T-69, T-81–T-93, T-21–T-24, T-35, T-36, T-49, T-52, T-56, T-64, T-76 |
 | D4 | V2 Home adds a **notification bell** with a green unread dot ("Notifications, 1 new"). The spec has push notifications only, with no in-app list of past messages to be "unread". | **Decided:** remove the bell. Notifications are push only (as the spec says), with no in-app list, so there's nothing for a bell to open. Turning notifications on and off stays in Settings. | T-14 |
 
 ### Spec vs design, resolved

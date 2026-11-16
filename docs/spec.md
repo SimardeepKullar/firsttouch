@@ -8,16 +8,16 @@ FirstTouch v1 is a mobile-first web app, hosted on Cloudflare Pages with Supabas
 
 **In scope for v1**
 
-- Open sign-up: anyone with the link signs in with Google. Email and password sign-in (with "Forgot password?") is designed but switched off until a domain and Resend are set up.
+- Sign-in is open to anyone with Google, but **seeing or joining runs is not**: a **group** (e.g. "Brampton Weekend Football") owns its seasons, and a player gets into a season only by entering that season's 6-character **join code**. Brand-new players wait for an admin's approval; returning players go straight in. Anyone can start their own group (at most 3 per account) and becomes its admin. Email and password sign-in (with "Forgot password?") is designed but switched off until a domain and Resend are set up.
 - Admins create all of a season's Saturday and Sunday runs, plus long-weekend holiday Mondays, at once, see the full list ahead of time, and can edit the time or address of any run or delete it; players toggle "I'm in".
 - RSVPs lock automatically 1 hour before the start time; teams are generated and published at that same moment.
 - "Morning of" flag for a yes made on the run's own date (Toronto time).
 - Season passes (indoor or outdoor), marked paid by admins; "Unpaid" flag visible to admins only; unpaid players still play.
-- Admin-set stars (1 to 5, visible to admins only) and position (attack or defend); new players start at 3 stars, attack. Three admins to start: John and Sim also play; Coach only manages.
+- Admin-set stars (1 to 5, visible to admins only) and position (attack or defend), set per group; new players start at 3 stars, attack. The first group has three admins: John and Sim also play; Coach only manages.
 - Balanced teams: Blue and Yellow, plus Red when the indoor head count is 19 or more; outdoor is always 2 teams. No player cap or waitlist.
 - Team table and field diagram; web push notifications.
 
-**Out of scope for v1:** season join codes, walk-ins and no-show handling, player cap or waitlist, in-app payment, match rotation and scores, App Store and Google Play builds.
+**Out of scope for v1:** being in more than one group at once, walk-ins and no-show handling, player cap or waitlist, in-app payment, match rotation and scores, App Store and Google Play builds.
 
 **Key decisions**
 
@@ -27,7 +27,8 @@ FirstTouch v1 is a mobile-first web app, hosted on Cloudflare Pages with Supabas
 | Hosting | Cloudflare Pages, free plan | Free for commercial use; no bandwidth metering |
 | Backend | Supabase: Postgres, Auth, Realtime, Edge Functions, pg\_cron | One managed service; permissions enforced in the database |
 | Time zone | All run dates in America/Toronto | Morning-of rule and cron jobs depend on local dates |
-| Placeholders | Season "Indoor 2026–27", pass $120 | Real season dates still to be supplied. Locations and start times are real: indoor 7855 Finch Ave W, Brampton at 6:30 AM; outdoor 32 Kennedy Rd N, Brampton at 7:00 AM |
+| Groups and join codes | A group owns seasons; players join a season with its code; admin and ratings are per group | Sign-in is open, so membership, not sign-in, decides who sees a season; scoped for more groups from the start |
+| Placeholders | Group "Brampton Weekend Football", season "Indoor 2026–27", pass $120 | Real season dates still to be supplied. Locations and start times are real: indoor 7855 Finch Ave W, Brampton at 6:30 AM; outdoor 32 Kennedy Rd N, Brampton at 7:00 AM |
 
 ## Architecture
 
@@ -51,13 +52,17 @@ Row-level security in Postgres decides what each signed-in user can see and chan
 
 ## Data model
 
-Seven core tables (plus small holidays and job\_errors tables) hang off two parents: a **season** owns its runs and passes, and a **profile** (one per signed-in user) owns RSVPs, passes, team slots and push subscriptions. Flags are computed in a view, never stored by hand.
+A **group** owns its seasons, holidays and members; a **season** owns its runs, members and passes; a **profile** (one per signed-in user) owns RSVPs, memberships, passes, team slots and push subscriptions. Admin, Plays, stars and position live on the group membership, so they're per group. Flags are computed in a view, never stored by hand.
 
 | Table | One row per | Belongs to |
 | --- | --- | --- |
-| profiles | player (linked to the Supabase auth user) | — |
-| seasons | indoor or outdoor season | — |
-| season\_passes | player per season | seasons, profiles |
+| profiles | person (linked to the Supabase auth user) | — |
+| groups | group of players, e.g. "Brampton Weekend Football" | — |
+| group\_members | person per group: role, Plays, stars, position | groups, profiles |
+| seasons | indoor or outdoor season of a group, with its join code | groups |
+| season\_members | person per season: waiting, active or removed | seasons, profiles |
+| season\_passes | player per season (created when they become an active member) | seasons, profiles |
+| holidays | holiday Monday per group | groups |
 | runs | Saturday or Sunday session | seasons |
 | rsvps | player per run | runs, profiles |
 | team\_assignments | player per run, once teams exist | runs, profiles |
@@ -66,45 +71,77 @@ Seven core tables (plus small holidays and job\_errors tables) hang off two pare
 ### Schema (Postgres, Supabase migration)
 
 ```sql
-create type user_role   as enum ('player', 'admin');
-create type position    as enum ('attack', 'defend');
-create type season_type as enum ('indoor', 'outdoor');
-create type run_status  as enum ('open', 'locked', 'published', 'cancelled');
-create type team_color  as enum ('blue', 'yellow', 'red');
+create type user_role     as enum ('player', 'admin');          -- per group
+create type position      as enum ('attack', 'defend');
+create type season_type   as enum ('indoor', 'outdoor');
+create type member_status as enum ('waiting', 'active', 'removed');
+create type run_status    as enum ('open', 'locked', 'published', 'cancelled');
+create type team_color    as enum ('blue', 'yellow', 'red');
 
 create table profiles (
   id          uuid primary key references auth.users on delete cascade,
   full_name   text not null,
   email       text not null unique,
+  is_dev      boolean not null default false,  -- set by hand in the dashboard; admin in every group
+  created_at  timestamptz not null default now()
+);
+
+create table groups (
+  id          uuid primary key default gen_random_uuid(),
+  name        text not null,                 -- e.g. 'Brampton Weekend Football'
+  created_by  uuid references profiles on delete set null,  -- at most 3 groups per account
+  created_at  timestamptz not null default now()
+);
+
+create table group_members (               -- carries over from season to season
+  group_id    uuid references groups on delete cascade,
+  player_id   uuid references profiles on delete cascade,
   role        user_role not null default 'player',
   plays       boolean not null default true,  -- false for an admin who only manages
   stars       smallint not null default 3 check (stars between 1 and 5),
   position    position not null default 'attack',
-  active      boolean not null default true,
-  created_at  timestamptz not null default now()
+  active      boolean not null default true,  -- false = removed from the group
+  created_at  timestamptz not null default now(),
+  primary key (group_id, player_id)
 );
 
 create table seasons (
   id          uuid primary key default gen_random_uuid(),
+  group_id    uuid not null references groups on delete cascade,
   name        text not null,                 -- e.g. 'Indoor 2026-27'
   type        season_type not null,
-  starts_on   date,                          -- real dates still to be supplied
-  ends_on     date,
+  starts_on   date not null,
+  ends_on     date not null check (ends_on >= starts_on),
   default_location   text not null,
   default_start_time time not null,
-  pass_price_cents   integer not null default 12000,  -- placeholder $120
-  is_current  boolean not null default false
+  pass_price_cents   integer not null default 12000,
+  is_current  boolean not null default false,  -- upcoming = not current and not ended
+  join_code   text not null unique default new_join_code(),  -- 6 chars, no 0/O/1/I
+  code_enabled      boolean not null default true,
+  requires_approval boolean not null default true,
+  ended_at    timestamptz,
+  exclude using gist (group_id with =, daterange(starts_on, ends_on, '[]') with &&)  -- no overlaps
 );
-create unique index one_current_season on seasons (is_current) where is_current;
+create unique index one_current_season on seasons (group_id) where is_current;
 
--- seed defaults
--- indoor:  '7855 Finch Ave W, Brampton, ON L6T 0B2', 06:30
--- outdoor: '32 Kennedy Rd N, Brampton, ON L6V 1X4',  07:00
+create table season_members (
+  season_id   uuid references seasons on delete cascade,
+  player_id   uuid references profiles on delete cascade,
+  status      member_status not null,
+  joined_via  text not null check (joined_via in ('code', 'admin')),
+  joined_at   timestamptz not null default now(),
+  approved_by uuid references profiles on delete set null,
+  approved_at timestamptz,
+  welcomed_at timestamptz,                   -- the Home welcome popup was dismissed
+  primary key (season_id, player_id)
+);
 
 create table holidays (                    -- long-weekend Mondays that become runs
-  holiday_date date primary key,             -- always a Monday
+  group_id     uuid references groups on delete cascade,
+  holiday_date date,                         -- always a Monday
   name        text not null,                 -- e.g. 'Family Day'
-  active       boolean not null default true -- false = an admin switched it off
+  active       boolean not null default true, -- false = an admin switched it off
+  primary key (group_id, holiday_date)
 );
 
 create table season_passes (
@@ -121,12 +158,13 @@ create table season_passes (
 create table runs (
   id          uuid primary key default gen_random_uuid(),
   season_id   uuid not null references seasons on delete cascade,
-  run_date    date not null unique,          -- Toronto local date
+  run_date    date not null,                 -- Toronto local date; unique per season (below)
   start_time  time not null,                 -- copied from the season, admin can edit
   location    text not null,                 -- copied from the season, admin can edit
   status      run_status not null default 'open',
   team_count_override smallint check (team_count_override in (2, 3)),
-  published_at timestamptz
+  published_at timestamptz,
+  unique (season_id, run_date)               -- with no overlapping seasons, unique per group
 );
 
 create table rsvps (
@@ -173,57 +211,67 @@ language sql stable as $$
 $$;
 
 -- Who is in the group: names and positions only, never stars.
--- Owner-rights view, so players can list others while the profiles table stays admin-only.
+-- Owner-rights views skip RLS, so each filters by the caller's own rights.
 create view player_directory as
-select id, full_name, position, plays, (id = auth.uid()) as is_me
-from profiles
-where active;
+select gm.group_id, p.id, p.full_name, gm.position, gm.plays, (p.id = auth.uid()) as is_me
+from group_members gm
+join profiles p on p.id = gm.player_id
+where gm.active and is_group_member(gm.group_id);
 
--- Who is going to a run, with flags. Stars and the unpaid flag are admin-only.
+-- Who is going to a run, with flags. Stars and the unpaid flag are for the group's admins.
 create view run_roster as
-select r.run_id, r.player_id, p.full_name, p.position,
-       case when is_admin() then p.stars end          as stars,
+select r.run_id, r.player_id, p.full_name, gm.position,
+       case when is_group_admin(s.group_id) then gm.stars end      as stars,
        r.responded_at,
-       r.morning_of                                   as flag_morning_of,
-       case when is_admin()
-            then not coalesce(sp.paid, false) end     as flag_unpaid
+       r.morning_of                                                as flag_morning_of,
+       case when is_group_admin(s.group_id)
+            then not coalesce(sp.paid, false) end                  as flag_unpaid
 from rsvps r
-join runs ru     on ru.id = r.run_id
-join profiles p  on p.id = r.player_id
+join runs ru           on ru.id = r.run_id
+join seasons s         on s.id = ru.season_id
+join profiles p        on p.id = r.player_id
+join group_members gm  on gm.group_id = s.group_id and gm.player_id = r.player_id
 left join season_passes sp
        on sp.season_id = ru.season_id and sp.player_id = r.player_id
-where r.going and p.plays;
+where r.going and gm.plays and is_season_member(ru.season_id);
 ```
 
 Field positions are not stored: the client draws them from team, position and slot, so a moved player re-lays out automatically.
 
 ## Access control
 
-Every table has row-level security switched on, so the browser can talk to Postgres directly and still only see or change what its role allows. Admin checks go through one helper function. The Supabase projects are created with "Automatically expose new tables" turned off and automatic RLS turned on, so the migration grants access explicitly: tables and views to the authenticated role only, nothing to anon. This keeps signed-out visitors away from player\_directory and run\_roster. Any signed-in user can read every rsvps row, including "no" answers, because Realtime only delivers changes on rows the reader can see; the table holds no stars or payment data. service\_role has no table grants yet; the Edge Functions milestone adds the ones generate-teams and send-push need. The column guard trigger lets calls with no signed-in user through (SQL editor, service role, seed), which is how the first admin is set by hand.
+Every table has row-level security switched on, so the browser can talk to Postgres directly and still only see or change what its role allows. Admin checks go through group-scoped helper functions: being an admin of one group gives no rights in another. The Supabase projects are created with "Automatically expose new tables" turned off and automatic RLS turned on, so the migration grants access explicitly: tables and views to the authenticated role only, nothing to anon. This keeps signed-out visitors away from player\_directory and run\_roster. An active member of a season can read every rsvps row of that season, including "no" answers, because Realtime only delivers changes on rows the reader can see; the table holds no stars or payment data. service\_role has no table grants yet; the Edge Functions milestone adds the ones generate-teams and send-push need. The guard trigger lets calls with no signed-in user through (SQL editor, service role, seed), which is how the Dev flag is set by hand.
 
-```sql
-create function is_admin() returns boolean
-language sql stable security definer set search_path = public as $$
-  select exists (select 1 from profiles where id = auth.uid() and role = 'admin');
-$$;
-```
+| Helper | True when the caller is… |
+| --- | --- |
+| is\_dev() | a Dev (profiles.is\_dev) |
+| is\_group\_admin(group\_id) | an active admin of that group, or a Dev |
+| is\_group\_member(group\_id) | an active member of the group's current or upcoming season, or the group's admin |
+| is\_season\_member(season\_id) | an active member of that season, or an admin of its group |
+| is\_admin() | a Dev or an admin of any group. Used only by the app to show the Admin tab; policies never use it |
 
-| Table or view | Player can read | Player can write | Admin |
+| Table or view | Player can read | Player can write | Group admin |
 | --- | --- | --- | --- |
-| profiles | Nothing directly | Own display name, through update\_my\_name() | Everything, incl. stars, position, role, plays |
-| player\_directory (view) | All active players: name, position, plays | — | Same |
-| seasons, holidays | All | Nothing | Everything |
-| season\_passes | Own pass | Nothing | Everything |
-| runs | All | Nothing | Everything |
-| rsvps / run\_roster | Everyone going to any run; stars and unpaid flag come back empty | Own row, only while the run is open, before run\_lock\_at (1 hour before start), and if plays = true | Everything, including after lock |
-| team\_assignments | Rows for published runs | Nothing | Everything, any status |
+| profiles | Own row (name, email) | Own display name, through update\_my\_name() | Rows of the group's members |
+| groups | Groups they're a member of | Create, through create\_group() (at most 3) | Own group |
+| group\_members | Nothing directly | Nothing | The group's rows, incl. stars, position, role, plays |
+| player\_directory (view) | Active members of their group: name, position, plays | — | Same |
+| seasons | Seasons they're an active member of | Join, through join\_season(code) | The group's seasons, incl. join codes |
+| season\_members | Own rows | Nothing directly; join\_season() and mark\_welcome\_seen() | The group's rows (approve, decline) |
+| holidays | Their group's | Nothing | The group's |
+| season\_passes | Own pass | Nothing | The group's |
+| runs | Runs of seasons they're an active member of | Nothing | The group's |
+| rsvps / run\_roster | Everyone going to those runs; stars and unpaid flag come back empty | Own row, only as an active member, while the run is open, before run\_lock\_at (1 hour before start), and if plays = true in that group | The group's, including after lock |
+| team\_assignments | Published runs of their seasons | Nothing | The group's, any status |
 | push\_subscriptions | Own | Own (insert, delete) | Read all (for sending) |
 
-**Star ratings are admin-only.** Players never read the profiles table; they see other players through player\_directory and run\_roster, which leave stars out (or return them empty) unless is\_admin() is true. This hides a player's own rating too. Star totals and the fairness bar on team screens show for admins only. Players change their display name through update\_my\_name(), which touches only full\_name, and guard\_profile\_columns() stays as a second check that only admins change role, plays, stars or position.
+A Dev can do everything a group admin can, in every group.
 
-**Admins.** Start with three admins: John and Sim with plays = true (they RSVP and are placed in teams like anyone else) and Coach with plays = false (manages only, cannot RSVP, never placed in teams). The first admin is set by hand in the Supabase dashboard; after that, admins promote others and switch plays on or off from the Players screen. The holidays table follows the same rule as seasons: everyone reads, only admins add dates or switch them off. John and Sim (Simar's own admin account) both mark season passes as paid; all admins have the same full permissions in the app.
+**Star ratings are admin-only.** Players never read group\_members; they see other players through player\_directory and run\_roster, which leave stars out (or return them empty) unless is\_group\_admin() is true for that group. This hides a player's own rating too. Star totals and the fairness bar on team screens show for admins only. Players change their display name through update\_my\_name(), which touches only full\_name, and a guard trigger on group\_members stays as a second check that only the group's admins change role, plays, stars, position or active.
 
-**Unpaid flag is admin-only.** run\_roster returns null for flag\_unpaid unless is\_admin() is true, and players can read only their own season\_passes row, so other players never see who has not paid.
+**Admins.** Whoever creates a group is its first admin. Admins make, remove and transfer admin from the Players screen; admins are equal and can remove each other, but a group always keeps at least one active admin (the database refuses the change that would leave none, and delete\_my\_account() refuses for a group's only admin while it has other members). The first group starts with three admins: John and Sim with plays = true (they RSVP and are placed in teams like anyone else) and Coach with plays = false (manages only, cannot RSVP, never placed in teams). Admins see and manage only their own group. The only hand-set flag is profiles.is\_dev (Simar), set in the Supabase dashboard; it gives admin rights in every group and has no screens.
+
+**Unpaid flag is admin-only.** run\_roster returns null for flag\_unpaid unless is\_group\_admin() is true, and players can read only their own season\_passes row, so other players never see who has not paid.
 
 ## Server functions and scheduled jobs
 
@@ -240,14 +288,27 @@ Two Edge Functions (TypeScript on Deno), seven database functions (plus the holi
 
 | Name | Fires on | Does |
 | --- | --- | --- |
-| generate\_season\_runs(season\_id) | Admin, "Create runs" on a season with dates | Inserts a run for every Saturday and Sunday, plus every active Monday in the holidays table (it first calls fill\_holidays() for each year the season covers), from starts\_on to ends\_on, copying the season's default location and start time; skips dates that already have a run |
+| generate\_season\_runs(season\_id) | Group admin, "Create runs" | Inserts a run for every Saturday and Sunday, plus every active Monday in the group's holidays (it first calls fill\_holidays(group, year) for each year the season covers), from starts\_on to ends\_on, copying the season's default location and start time; skips dates that already have a run; refuses an ended season |
+| create\_group(name, season fields) | Anyone signed in, Start your own runs | Creates the group, makes the caller its admin and creates its first season (via create\_season). Refuses a 4th group created by the same account |
+| create\_season(group\_id, …) | Group admin, New season | Creates a season with its join code. Current straight away if it starts today or earlier (Toronto) and the group has no current season; otherwise upcoming. Errors for end before start and for overlapping dates |
+| join\_season(code) | Anyone signed in, Join a season | Ignores spaces, dashes and case; finds a season with that code that has the code on and hasn't ended (otherwise one error for every failure). Waiting if the season needs approval and the player was never an active member of the group, or if an admin removed them; otherwise active |
+| my\_season() | The app, after sign-in | The caller's current and upcoming seasons with their status, the last season they were active in, and whether they can still create a group |
+| mark\_welcome\_seen(season\_id) | Player, Home welcome popup | Sets welcomed\_at |
+| approve\_members(season\_id, player\_ids) / decline\_member(season\_id, player\_id) | Group admin, Seasons | Waiting → active (recording who and when) / → removed |
+| regenerate\_join\_code(season\_id) | Group admin | New code; the old one stops working |
+| end\_season(season\_id) | Group admin; season-rollover job | Sets ended\_at, is\_current = false, code\_enabled = false and ends\_on = today if earlier; deletes the season's runs after today; returns how many |
+| make\_admin / remove\_admin / transfer\_admin(group\_id, player\_id) | Group admin, Players | Changes role; transfer makes the other person admin and removes the caller in one step. Never leaves a group without an admin |
+| remove\_from\_group(group\_id, player\_id) | Group admin, Players | group\_members.active = false; memberships in seasons that haven't ended become removed; future RSVPs are deleted; history and passes stay. Not for yourself or the last admin |
+| member activation trigger | season\_members becomes active | Creates the unpaid season pass, and the group\_members row (3 stars, attack, plays) for a first-timer |
+| season admins trigger | After insert on seasons | Adds the group's admins who play as active members |
 | run\_lock\_at(run) | Used by RLS, the lock job and the app | Returns start time minus 1 hour, Toronto time |
 | set\_morning\_of() | Before insert or update on rsvps | When going is true, sets morning\_of = (responded\_at in America/Toronto)::date = run\_date; a later "no" clears it |
 | publish\_teams(run\_id) | generate-teams | Sets status published and published\_at; sends "Teams are up" the first time, "Teams updated" after a reshuffle |
 | update\_my\_name(text) | Player, Settings | Changes the caller's full\_name only |
-| guard\_profile\_columns() | Before update on profiles | Blocks changes to role, plays, stars, position by non-admins |
-| handle\_new\_user() | After insert on auth.users | Creates the profile row (3 stars, attack, plays). The name comes from the Google profile, or from the full\_name typed on the sign-up form, falling back to the part of the email before the @ |
-| my\_plays() | RSVP policies | Returns the caller's plays flag; needed because players cannot read profiles directly |
+| delete\_my\_account() | Player, Settings | Deletes the caller's auth user (everything cascades). Refuses for a group's only admin while it has other members |
+| guard on group\_members | Before update on group\_members | Blocks changes to role, plays, stars, position, active by anyone but the group's admins, and any change that leaves the group without an admin |
+| handle\_new\_user() | After insert on auth.users | Creates the profile row. The name comes from the Google profile, or from the full\_name typed on the sign-up form, falling back to the part of the email before the @. Ratings come later, per group |
+| my\_plays(run) | RSVP policies | Returns the caller's plays flag in the run's group; needed because players cannot read group\_members directly |
 
 ### Scheduled jobs (pg\_cron)
 
@@ -257,7 +318,8 @@ pg\_cron runs in UTC, so each job is scheduled for both possible offsets or chec
 | --- | --- | --- |
 | lock-and-publish | Every 5 minutes | For open runs whose run\_lock\_at has passed: sets status locked, then calls generate-teams, which publishes. With fewer than 4 players the run stays locked with no teams and admins get a push |
 | evening-reminder | Daily 18:00 | For each run dated tomorrow (Friday for Saturday, Saturday for Sunday, Sunday for a holiday Monday), pushes to playing members with no RSVP for it |
-| fill-next-year-holidays | December 1, 06:00 | Calls fill\_holidays(next year) so the coming year's holiday Mondays are listed early |
+| fill-next-year-holidays | December 1, 06:00 | Calls fill\_holidays(group, next year) for every group so the coming year's holiday Mondays are listed early |
+| season-rollover | Daily 03:00 | Ends a current season whose ends\_on has passed, then makes current an upcoming season whose starts\_on has arrived |
 
 The database blocks RSVPs at the exact lock time, so the job running up to 5 minutes later never lets a late RSVP slip in.
 
@@ -271,9 +333,22 @@ A run moves open → locked → published (or to cancelled at any point). One ho
 
 Players can RSVP from the moment a run exists until 1 hour before it starts (5:30 AM for indoor, 6:00 AM for outdoor at the default times); a yes on the run's own date still counts but carries the morning-of flag. After publishing, admins can still drag players between teams or reshuffle, and players see the change at once.
 
+### Groups, seasons and join codes
+
+Screens: `docs/design/seasons-and-join-codes.md` (12 Join a season, 13 Admin · Seasons, 14 Start your own runs, the Home welcome popup, the Players admin controls).
+
+1. **Sign in.** Anyone can sign in with Google. Someone who isn't an active member of a current or upcoming season sees Join a season, with no tabs. Admins always get the tabs.
+2. **Start your own runs** (optional). Name a group and set up its first season; you become its admin and get the season's join code. At most 3 groups per account.
+3. **Share the code.** Each season has its own 6-character code (shown `KX7 42P`) and a link `/join/KX742P` that fills it in. Admins can copy it, share the link, make a new code (the old one stops working) or turn the code off.
+4. **Join.** The player enters the code. A returning player (active in an earlier season of the group) is in at once. A brand-new player waits for an admin when "Approve new players" is on (the default); so does anyone an admin removed. Admins approve or decline from Admin · Seasons.
+5. **Home.** Once active, the player lands on Home, where a one-time welcome popup shows the season's dates, days, time, address and pass price. Players never pick a season: Home lists the runs of every season they're in (current and upcoming) in date order.
+6. **Next season.** Admins create it from Admin · Seasons, prefilled from the last season of the same type. It's current straight away if it has started, otherwise upcoming (people can join early) until the daily season-rollover job makes it current on its start date. A group has at most one current season, and its seasons never overlap.
+7. **End a season.** Runs after today are deleted; past runs, teams and passes stay; the code stops working; members can't RSVP until they join the next season. Stars, position, Plays and admin roles carry over; season membership and passes don't.
+8. **Remove a player.** An admin can remove a player from the group: they lose access, their future RSVPs go, their history stays, and they can rejoin with a code only through approval.
+
 ### Season run list (admin)
 
-1. Admin creates or opens a season and enters its start and end dates.
+1. An admin picks the group's current or upcoming season and sets its start and end dates.
 2. "Create runs" calls generate\_season\_runs(); every Saturday, Sunday and holiday Monday in range appears with the season's default address and time (indoor 6:30 AM at 7855 Finch Ave W, outdoor 7:00 AM at 32 Kennedy Rd N).
 3. The season screen lists every run, past and upcoming, with date, time, address, status and number going.
 4. The admin can edit any run's time or address, or delete it. Deleting a run that already has RSVPs asks for confirmation and sends a "run cancelled" push to those players first; RSVPs and teams are removed with the run.
@@ -281,7 +356,7 @@ Players can RSVP from the moment a run exists until 1 hour before it starts (5:3
 
 ### Long-weekend Mondays
 
-A Monday holiday inside a season becomes a run with the season's usual address and start time; admins can change or delete it like any other run.
+A Monday holiday inside a season becomes a run with the season's usual address and start time; admins can change or delete it like any other run. Holidays are kept per group, so switching one off affects only that group.
 
 **Which Mondays count:** Ontario holidays that always fall on a Monday (Family Day, Victoria Day, Labour Day, Thanksgiving), the Civic Holiday (first Monday of August, a day off for most of Toronto though not a statutory holiday), and any holiday whose observed day moves to a Monday (for example Boxing Day when December 26 is a Saturday). Easter Monday is left out because most people work it.
 
@@ -456,6 +531,8 @@ v1 uses standard Web Push from the installed web app; Android browsers can subsc
 | Run cancelled or deleted | Everyone with a yes | "Sunday's run is cancelled." | Home |
 | Weekly, optional | Players without a paid season pass | "Your Indoor season pass is still unpaid." | Home |
 | Admin changes a run's time or address | Everyone with a yes for that run | "Saturday's run moved to 7:00 AM at 32 Kennedy Rd N." | Home |
+| Admin invites last season's players | Active members of the previous season who haven't joined | "Outdoor 2027 is open. Tap to join." | Join a season, code filled in |
+| Admin approves a waiting player | That player | "You're in Indoor 2026–27." | Home |
 
 When the store apps arrive later, send-push gains a second path through the Expo Push Service for native devices; the database side does not change.
 
@@ -482,7 +559,7 @@ firsttouch/
       _shared/         balance.ts (balanceTeams) + balance.test.ts
       generate-teams/
       send-push/
-    seed.sql           indoor and outdoor seasons with real addresses and times,
+    seed.sql           one group with indoor and outdoor seasons (real addresses and times),
                        3 admins (John and Sim playing, Coach managing only), 25 sample players
 ```
 
@@ -523,7 +600,7 @@ The load is tiny (about 27 users, two runs a week), so the design targets low co
 
 | Area | Requirement | How it is met |
 | --- | --- | --- |
-| Security | Players cannot see star ratings or unpaid flags, or change stars, roles, other players' RSVPs or unpublished teams | RLS on every table; column guard trigger; admin check inside generate-teams |
+| Security | Players cannot see star ratings or unpaid flags, or change stars, roles, other players' RSVPs or unpublished teams; nobody sees a season they aren't a member of; an admin of one group has no rights in another | RLS on every table; group\_members guard trigger; membership helpers; group admin check inside generate-teams |
 | Security | No secrets in the browser | Browser holds only the public anon key and VAPID public key; service-role key and VAPID private key live in Supabase secrets |
 | Privacy | Account deletion | Settings "Delete account" calls a function that deletes the auth user; profile rows cascade |
 | Performance | RSVP toggle feels instant | Optimistic UI update; Realtime pushes the new count to other viewers |
@@ -541,7 +618,7 @@ The balancing function and the permission rules carry the most risk, so they get
 | Layer | Tool | What is tested |
 | --- | --- | --- |
 | Balancing | Vitest | Team count for 4, 14, 18, 19, 24, 27 and 40 players indoors and outdoors; every player placed once; sizes differ by at most 1; star ranges small on random rosters; same seed gives same teams |
-| Database rules | pgTAP via supabase test db | A player cannot read profiles or any star rating (directly or through either view), cannot edit stars or role, cannot RSVP for someone else, cannot RSVP after the lock time, cannot read unpublished teams, cannot see anyone's unpaid flag; the admin-only account cannot RSVP; an admin can do all of these. generate\_season\_runs creates every Saturday, Sunday and holiday Monday in range with the season's default address and time, ignores a holiday row that is not a Monday, and skips existing dates |
+| Database rules | pgTAP via supabase test db | A player cannot read profiles or any star rating (directly or through either view), cannot edit stars or role, cannot RSVP for someone else, cannot RSVP after the lock time, cannot read unpublished teams, cannot see anyone's unpaid flag; the admin-only account cannot RSVP; an admin can do all of these. Someone who isn't an active member of a season (no membership, waiting, removed) sees none of its runs, RSVPs, teams or players and cannot RSVP; an admin of one group has no rights in another; join\_season, approval, the 3-group limit, the last-admin rule and end\_season behave as in Key flows. generate\_season\_runs creates every Saturday, Sunday and holiday Monday in range with the season's default address and time, ignores a holiday row that is not a Monday, and skips existing dates |
 | Lock time | pgTAP | run\_lock\_at for a 6:30 AM run is 5:30 AM Toronto time, including on the weekends the clocks change; an RSVP at 5:29 succeeds and at 5:31 is refused |
 | Triggers | pgTAP | A yes at 05:00 Toronto time on run day sets morning\_of; a yes the day before does not; a yes at 23:30 the night before does not |
 | Edge Functions | Deno tests against the dev project | generate-teams rejects anyone but the job or an admin, publishes and pushes; with 3 players it leaves the run locked and alerts admins; the evening reminder targets only runs dated tomorrow, including holiday Mondays; send-push removes expired subscriptions |
@@ -555,7 +632,7 @@ Each later feature fits the current design without reworking the schema.
 
 | Later feature | Change needed |
 | --- | --- |
-| Season join code | Add join\_code to seasons and a season\_members table; a player enters the code once per season, and RLS on rsvps also checks membership |
+| More than one group per player | The database already allows it (membership is per group). Needs designs: joining a second group, group labels on run cards and Teams, an admin group switcher |
 | Walk-ins | Admin adds an existing player or a named guest to a locked or published run; they go on the smallest team, or the admin taps Reshuffle |
 | No-shows | Admin marks a player as a no-show; option to rebalance the remaining players; no-show count kept per player |
 | Player cap and waitlist | max\_players on runs; yes RSVPs past the cap join a waitlist in order and move up when someone drops |
@@ -567,5 +644,5 @@ Each later feature fits the current design without reworking the schema.
 **Open items**
 
 - [ ] To switch on email sign-in (not needed for launch): a domain plus Resend as Supabase's custom email sender, then enable the Email provider and set EXPO\_PUBLIC\_EMAIL\_AUTH=true. Until then players sign in with Google only.
-- [ ] Real indoor and outdoor season start and end dates; generate\_season\_runs needs them before any runs exist (sample dates are fine for building and testing).
+- [ ] Real indoor and outdoor season start and end dates; the first admin enters them in the app when creating the group (Start your own runs), and later seasons on Admin · Seasons (sample dates are fine for building and testing).
 - [ ] Check firsttouch.pages.dev is free when creating the Cloudflare project.
