@@ -590,7 +590,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** The spec says admins promote others from the Players screen, but the mockup has no control for it. Add one using existing patterns: tapping a player's name opens a small sheet with an "Admin" switch. An admin can't remove their own admin role, so the group never loses its last admin by accident.
 
 **Spec:** Access control › Admins ("admins promote others and switch plays on or off from the Players screen")
-**Design:** No mockup for this control. Use the bottom sheet (`07-admin-runs`, `overlay = sheet`) plus the Switch from `05-settings`
+**Design:** No mockup for this control. Use the bottom sheet (`07-admin-runs`, `overlay = sheet`; the `BottomSheet` component from T-20) plus the Switch from `05-settings`
 **Depends on:** T-22
 
 **Acceptance criteria**
@@ -598,6 +598,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 - [ ] Turning it on sets `role = 'admin'`. That person sees the Admin tab after their next load.
 - [ ] Your own Admin switch is disabled, with the line "You can't remove your own admin role". Enforce this in the database too (a check in the guard trigger), with a pgTAP test.
 - [ ] Admins move to the top of the list after promotion.
+- [ ] Decide whether `delete_my_account` should also refuse for the last remaining admin (see S13), and if so, enforce it in the database with a pgTAP test.
 
 **Learning notes**
 - Extending a trigger function in a new migration (before the first prod deploy you may still edit the original)
@@ -656,7 +657,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** Tapping a run opens a bottom sheet to change its start time and address, or delete it. Deleting a run that has yes RSVPs asks for confirmation first. The sheet also has "Cancel run" (decision D2), which keeps the run but marks it cancelled. The pushes for these changes come in T-48.
 
 **Spec:** Key flows › Season run list (admin) step 4; Data model (`run_status` includes `cancelled`); Notifications › Messages (run moved; run cancelled or deleted)
-**Design:** `07-admin-runs` with `overlay = sheet` and `overlay = confirm` (`compact = true`)
+**Design:** `07-admin-runs` with `overlay = sheet` and `overlay = confirm` (`compact = true`). Use the `BottomSheet` and `ConfirmDialog` components built in T-20.
 **Depends on:** T-25
 
 **Acceptance criteria**
@@ -680,7 +681,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 **Spec:** Key flows › Long-weekend Mondays; Database functions (`set_holiday_active`)
 **Design:** `11-admin-holidays`
-**Depends on:** T-24, T-26 (reuses the confirm dialog)
+**Depends on:** T-24, T-26 (reuses the `ConfirmDialog` built in T-20)
 
 **Acceptance criteria**
 - [ ] A back link to Runs, the title, and the note "Holiday Mondays inside a season become runs automatically."
@@ -700,7 +701,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** The "Add date" button opens a sheet for a Monday and a name. A new database function inserts it and, as with switching a holiday on, adds its run straight away if it falls inside a season that already has runs.
 
 **Spec:** Key flows › Long-weekend Mondays ("Admins can add a one-off date"); Access control (holidays: admins write)
-**Design:** `11-admin-holidays` ("Add date" dashed button). The form has no mockup: reuse the bottom sheet from `07-admin-runs`
+**Design:** `11-admin-holidays` ("Add date" dashed button). The form has no mockup: reuse the `BottomSheet` from T-20 (`07-admin-runs`)
 **Depends on:** T-27
 
 **Acceptance criteria**
@@ -795,7 +796,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Summary:** Add the Notifications section to Settings. Until this browser is subscribed it shows an "Enable notifications" button (the permission prompt must come from a tap, which iOS requires). After that it shows the design's three switches. The subscription is saved to `push_subscriptions`, and the switches are saved per player (see decision D1).
 
 **Spec:** Notifications › Setup steps 3–4; Access control (push_subscriptions: own insert/delete)
-**Design:** `05-settings` (Notifications: "Night-before reminder", "Teams published", "Changes and cancellations"). The "Enable notifications" button has no mockup: use the primary button style inside the same card
+**Design:** `05-settings` (Notifications: "Night-before reminder", "Teams published", "Changes and cancellations"). The "Enable notifications" button has no mockup: use the primary button style inside the same card. Reuse `SectionHeading`, `SettingsCard` and `SettingsRow` from T-20, and extend `useMySettings` and `useSaveTheme` (in `src/lib/useSettings.ts`) with the three switches.
 **Depends on:** T-20, T-31
 
 **Acceptance criteria**
