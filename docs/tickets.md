@@ -509,7 +509,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 ### T-20 · Build the Settings screen: profile, name, appearance, privacy, sign out, delete account (#20)
 **Milestone:** RSVP loop · **Labels:** player UI, database, design · **Size:** L
 
-**Summary:** Build Settings without the Notifications section (T-32): profile card with avatar, name, pass chip and email; a pencil button to change your display name; the Appearance control (Light, Dark or System); the privacy link; Sign out; and Delete account with a confirmation. The Appearance choice is saved per player in a new `player_settings` table, which T-32 later adds the notification switches to.
+**Summary:** Build Settings without the Notifications section (T-32): profile card with avatar, name, pass chip and email; a pencil button to change your display name; the Appearance control (Light, Dark or System); the privacy link; Sign out; and Delete account with a confirmation. The Appearance choice is saved per player in a new `player_settings` table, which T-32 later adds the notification switches to. The edit-name sheet and the delete confirmation are built as reusable `BottomSheet` and `ConfirmDialog` components, so later admin tickets (T-23, T-26, T-27) reuse them.
 
 **Spec:** Database functions (`update_my_name`); Non-functional requirements › Privacy (Delete account); Access control (players change only their name; own-row pattern like `push_subscriptions`). Appearance isn't in the spec (new in the V2 design)
 **Design:** `05-settings` with `emailAuth = off` and `theme = light | dark` (profile card, Appearance between Notifications and Privacy, Privacy, Account); README › Global rules › Light and dark. The edit-name sheet and delete confirmation have no mockup: reuse the bottom sheet and confirm dialog from `07-admin-runs` (`overlay = sheet | confirm`)
@@ -518,18 +518,19 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 **Acceptance criteria**
 
 *Profile and account*
-- [ ] The profile card shows avatar, name, email, and a "Paid" or "Not paid" chip for the current season. *Design gap:* for an admin with Plays off, show the Admin badge instead of a pass chip.
+- [ ] The profile card shows avatar, name, email, and a "Paid" or "Not paid" chip for the current season. *Design gap:* for an admin with Plays off, show the Admin badge instead of a pass chip. With no current season, no chip is shown.
 - [ ] The pencil opens a sheet with a Name field. Saving calls `update_my_name`, and an empty name shows an error. The new name shows on Home and in lists.
 - [ ] "Privacy policy" opens `/privacy`.
 - [ ] Sign out returns to sign-in.
-- [ ] "Delete account" (red) asks "Delete your account?" with what gets deleted. Confirming calls `delete_my_account`, signs out, and shows sign-in. Your RSVPs disappear from other screens.
+- [ ] "Delete account" (red) asks "Delete your account?" with what gets deleted. Confirming calls `delete_my_account`, then clears this browser's session (`signOut({ scope: 'local' })`, because the account is already gone on the server) and shows sign-in. Your RSVPs disappear from other screens.
 - [ ] Your email isn't editable here (it comes from Google).
+- [ ] The edit-name sheet and the delete confirmation use two reusable components, `BottomSheet` and `ConfirmDialog` (React Native `Modal`, 50% scrim, closing with the X button, the scrim or Escape), built from the `07-admin-runs` mockup.
 
 *Appearance*
-- [ ] New migration: `player_settings` (one row per player, `theme` = `light` | `dark` | `system`, default `light`). RLS: players read and write only their own row; no access for `anon`. pgTAP tests prove a player can't read or change anyone else's row. `npm run db:types` is re-run and committed.
+- [ ] New migration: `player_settings` (one row per player, `theme` is a `theme_mode` enum of `light` | `dark` | `system`, default `light`). RLS: players read and write only their own row; no access for `anon`. pgTAP tests prove a player can't read or change anyone else's row. `npm run db:types` is re-run and committed.
 - [ ] The three-option control (a radio group built on the T-08 segmented control) shows the saved choice. Picking one switches the theme at once (using the T-05 theme module) and saves it.
 - [ ] The hint changes with the choice: "Light is the default. Dark mode is optional." or, for System, "Follows your phone's light or dark setting."
-- [ ] Signing in on a new browser applies the saved theme. Before sign-in (sign-in and /privacy), the device's last choice is used, or Light.
+- [ ] Signing in on a new browser applies the saved theme: once you're signed in, the saved choice wins over the device's (a pure, tested function, `themeAfterSignIn`). With nothing saved, the device's choice stays and no row is written until you pick one. Before sign-in (sign-in and /privacy), the device's last choice is used, or Light.
 
 **Learning notes**
 - supabase-js `rpc()` for database functions, and `upsert` for a one-row-per-player table
