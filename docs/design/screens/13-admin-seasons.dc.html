@@ -26,80 +26,86 @@ a{color:inherit}
       </sc-for>
     </nav>
 
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2px">
-      <h2 style="margin: 0 4px; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: {{t.muted}}">{{currentHeading}}</h2>
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-top: 2px">
+      <div style="margin: 0 4px">
+        <div style="font-size: 15px; font-weight: 800; color: {{t.ink}}">Brampton Weekend Football</div>
+      </div>
       <button type="button" onClick="{{ openNew }}" style="height: 40px; padding: 0 14px 0 12px; border: none; border-radius: 999px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New season
       </button>
     </div>
 
-    <section aria-label="{{season.name}}" style="position: relative; border: 0; border-left: 6px solid transparent; border-radius: 26px; background: {{season.frame}}; box-shadow: {{t.shadow}}; padding: 18px 16px 16px 18px; overflow: hidden">
-      <svg width="190" height="190" viewBox="0 0 64 64" style="position: absolute; right: -60px; top: -34px" aria-hidden="true">
-        <circle cx="32" cy="32" r="30" fill="{{t.ballFill}}" stroke="{{t.ballLine}}" stroke-width="0.8"></circle>
-        <g fill="{{t.ballPatch}}" stroke="{{t.ballLine}}" stroke-width="0.8" stroke-linejoin="round">
-          <path d="M32 21l10.5 7.6-4 12.4h-13l-4-12.4z"></path>
-          <path d="M32 2.2l6.3 4.4-1.6 6.6h-9.4l-1.6-6.6z"></path>
-          <path d="M60.3 24.6l-1.7 7.6-6.2 2.6-5.2-6.2 3.3-7.7z"></path>
-          <path d="M50.6 55.5l-6.9 3.2-5.1-4.6 2.6-7.4h8.1z"></path>
-          <path d="M13.4 55.5l3.4-8.8h8.1l2.6 7.4-5.1 4.6z"></path>
-          <path d="M3.7 24.6l7.8-3.7 3.3 7.7-5.2 6.2-6.2-2.6z"></path>
-        </g>
-        <g stroke="{{t.ballLine}}" stroke-width="0.8" fill="none">
-          <path d="M32 21v-7.8M42.5 28.6l7.4-2.5M38.5 41l5.6 5.7M25.5 41l-5.6 5.7M21.5 28.6l-7.4-2.5"></path>
-        </g>
-      </svg>
-      <div style="position: relative">
-        <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{season.chipBg}}; color: {{season.chipFg}}; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px">
-          <span style="width: 7px; height: 7px; border-radius: 50%; background: {{season.chipFg}}"></span>{{season.status}}
-        </span>
-        <div style="font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-top: 10px">{{season.name}}</div>
-        <div style="font-size: 15px; color: {{t.ink2}}; margin-top: 6px">{{season.dates}}</div>
-        <div style="margin-top: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-          <sc-for list="{{ season.stats }}" as="s" hint-placeholder-count="3">
-            <div style="border-radius: 16px; background: {{tileBg}}; border: 1px solid {{t.line}}; padding: 10px 12px">
-              <div style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: {{s.color}}">{{s.n}}</div>
-              <div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">{{s.label}}</div>
-            </div>
-          </sc-for>
-        </div>
-      </div>
-    </section>
-
-    <sc-if value="{{ isActive }}" hint-placeholder-val="{{ true }}">
-      <section aria-label="Join code" style="border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; padding: 16px; display: flex; flex-direction: column; gap: 14px">
-        <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
-          <div>
-            <div style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: {{t.muted}}">JOIN CODE</div>
-            <div style="font-size: 34px; font-weight: 800; letter-spacing: 0.14em; margin-top: 4px; color: {{codeColor}}; font-variant-numeric: tabular-nums">{{code}}</div>
-            <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px">{{codeNote}}</div>
-          </div>
-          <button type="button" onClick="{{ newCode }}" style="height: 36px; flex-shrink: 0; padding: 0 12px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.surface2}}; color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4"></path></svg>New code
-          </button>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
-          <button type="button" style="height: 46px; border-radius: 14px; border: 1.5px solid {{t.brandLine}}; background: transparent; color: {{t.brandText}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>Copy code
-          </button>
-          <button type="button" style="height: 46px; border: none; border-radius: 14px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg>Share link
-          </button>
-        </div>
-        <div style="border-top: 1px solid {{t.line}}; display: flex; flex-direction: column">
-          <sc-for list="{{ switches }}" as="sw" hint-placeholder-count="2">
-            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0 0">
-              <div style="flex-grow: 1; min-width: 0">
-                <div style="font-size: 15px; font-weight: 700">{{sw.label}}</div>
-                <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px; line-height: 1.35">{{sw.note}}</div>
+    <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="1">
+      <h2 style="margin: {{b.headMargin}} 4px 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: {{t.muted}}">{{b.heading}}</h2>
+      <section aria-label="{{b.name}}" style="position: relative; border: 0; border-left: 6px solid transparent; border-radius: 26px; background: {{b.frame}}; box-shadow: {{t.shadow}}; padding: 18px 16px 16px 18px; overflow: hidden">
+        <svg width="190" height="190" viewBox="0 0 64 64" style="position: absolute; right: -60px; top: -34px" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="{{t.ballFill}}" stroke="{{t.ballLine}}" stroke-width="0.8"></circle>
+          <g fill="{{t.ballPatch}}" stroke="{{t.ballLine}}" stroke-width="0.8" stroke-linejoin="round">
+            <path d="M32 21l10.5 7.6-4 12.4h-13l-4-12.4z"></path>
+            <path d="M32 2.2l6.3 4.4-1.6 6.6h-9.4l-1.6-6.6z"></path>
+            <path d="M60.3 24.6l-1.7 7.6-6.2 2.6-5.2-6.2 3.3-7.7z"></path>
+            <path d="M50.6 55.5l-6.9 3.2-5.1-4.6 2.6-7.4h8.1z"></path>
+            <path d="M13.4 55.5l3.4-8.8h8.1l2.6 7.4-5.1 4.6z"></path>
+            <path d="M3.7 24.6l7.8-3.7 3.3 7.7-5.2 6.2-6.2-2.6z"></path>
+          </g>
+          <g stroke="{{t.ballLine}}" stroke-width="0.8" fill="none">
+            <path d="M32 21v-7.8M42.5 28.6l7.4-2.5M38.5 41l5.6 5.7M25.5 41l-5.6 5.7M21.5 28.6l-7.4-2.5"></path>
+          </g>
+        </svg>
+        <div style="position: relative">
+          <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{b.chipBg}}; color: {{b.chipFg}}; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: {{b.chipFg}}"></span>{{b.status}}
+          </span>
+          <div style="font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-top: 10px">{{b.name}}</div>
+          <div style="font-size: 15px; color: {{t.ink2}}; margin-top: 6px">{{b.dates}}</div>
+          <div style="margin-top: 16px; display: grid; grid-template-columns: {{b.statCols}}; gap: 8px">
+            <sc-for list="{{ b.stats }}" as="s" hint-placeholder-count="3">
+              <div style="border-radius: 16px; background: {{tileBg}}; border: 1px solid {{t.line}}; padding: 10px 12px">
+                <div style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: {{s.color}}">{{s.n}}</div>
+                <div style="font-size: 12px; color: {{t.muted}}; font-weight: 600">{{s.label}}</div>
               </div>
-              <button type="button" role="switch" aria-checked="{{sw.on}}" aria-label="{{sw.label}}" onClick="{{ sw.toggle }}" style="width: 46px; height: 28px; flex-shrink: 0; border: none; border-radius: 999px; padding: 3px; box-sizing: border-box; background: {{sw.track}}; display: flex; justify-content: {{sw.side}}; cursor: pointer">
-                <span style="width: 22px; height: 22px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span>
-              </button>
-            </div>
-          </sc-for>
+            </sc-for>
+          </div>
         </div>
       </section>
+      <sc-if value="{{ b.hasCode }}" hint-placeholder-val="{{ true }}">
+        <section aria-label="Join code for {{b.name}}" style="border-radius: 24px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 10px">
+            <div>
+              <div style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: {{t.muted}}">JOIN CODE</div>
+              <div style="font-size: 34px; font-weight: 800; letter-spacing: 0.14em; margin-top: 4px; color: {{b.codeColor}}; font-variant-numeric: tabular-nums">{{b.code}}</div>
+              <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px">{{b.codeNote}}</div>
+            </div>
+            <button type="button" onClick="{{ newCode }}" style="height: 36px; flex-shrink: 0; padding: 0 12px; border-radius: 999px; border: 1px solid {{t.line}}; background: {{t.surface2}}; color: {{t.ink}}; font-family: inherit; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4"></path></svg>New code
+            </button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+            <button type="button" style="height: 46px; border-radius: 14px; border: 1.5px solid {{t.brandLine}}; background: transparent; color: {{t.brandText}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>Copy code
+            </button>
+            <button type="button" style="height: 46px; border: none; border-radius: 14px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg>Share link
+            </button>
+          </div>
+          <div style="border-top: 1px solid {{t.line}}; display: flex; flex-direction: column">
+            <sc-for list="{{ b.switches }}" as="sw" hint-placeholder-count="2">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0 0">
+                <div style="flex-grow: 1; min-width: 0">
+                  <div style="font-size: 15px; font-weight: 700">{{sw.label}}</div>
+                  <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px; line-height: 1.35">{{sw.note}}</div>
+                </div>
+                <button type="button" role="switch" aria-checked="{{sw.on}}" aria-label="{{sw.label}}" onClick="{{ sw.toggle }}" style="width: 46px; height: 28px; flex-shrink: 0; border: none; border-radius: 999px; padding: 3px; box-sizing: border-box; background: {{sw.track}}; display: flex; justify-content: {{sw.side}}; cursor: pointer">
+                  <span style="width: 22px; height: 22px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span>
+                </button>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+      </sc-if>
+    </sc-for>
 
+    <sc-if value="{{ isActive }}" hint-placeholder-val="{{ true }}">
       <div style="display: flex; align-items: baseline; justify-content: space-between; margin: 4px 4px 0">
         <h2 style="margin: 0; font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: {{t.muted}}">WAITING FOR APPROVAL · {{reqCount}}</h2>
         <button type="button" onClick="{{ approveAll }}" style="min-height: 44px; border: none; background: transparent; padding: 0; color: {{t.brandText}}; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Approve all</button>
@@ -161,7 +167,7 @@ a{color:inherit}
       </sc-for>
     </ul>
 
-    <sc-if value="{{ isActive }}" hint-placeholder-val="{{ true }}">
+    <sc-if value="{{ hasCurrent }}" hint-placeholder-val="{{ true }}">
       <button type="button" onClick="{{ openEnd }}" style="height: 48px; border-radius: 14px; border: 1.5px solid {{t.redRowBorder}}; background: transparent; color: {{t.redFg}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">End {{season.name}}</button>
     </sc-if>
   </div>
@@ -204,13 +210,21 @@ a{color:inherit}
         </sc-for>
       </div>
       <sc-for list="{{ fields }}" as="fd" hint-placeholder-count="3">
+        <div style="display: flex; flex-direction: column; gap: 6px">
         <div style="display: grid; grid-template-columns: {{fd.cols}}; gap: 10px">
           <sc-for list="{{ fd.items }}" as="it" hint-placeholder-count="2">
             <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">
               <label style="font-size: 13px; font-weight: 700">{{it.label}}</label>
-              <input type="text" value="{{it.value}}" style="height: 48px; width: 100%; box-sizing: border-box; border-radius: 14px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 12px; font-family: inherit; font-size: 15px; color: {{t.ink}}">
+              <input type="text" value="{{it.value}}" style="height: 48px; width: 100%; box-sizing: border-box; border-radius: 14px; border: {{it.border}}; background: {{t.surface}}; padding: 0 12px; font-family: inherit; font-size: 15px; color: {{t.ink}}">
+              <sc-if value="{{ it.hasErr }}" hint-placeholder-val="{{ false }}">
+                <div role="alert" style="font-size: 13px; font-weight: 600; color: {{t.redFg}}">{{it.err}}</div>
+              </sc-if>
             </div>
           </sc-for>
+        </div>
+        <sc-if value="{{ fd.hasErr }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: {{t.redFg}}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5v.01"></path></svg>{{fd.err}}</div>
+        </sc-if>
         </div>
       </sc-for>
       <label style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; border-radius: 16px; background: {{t.brandSoft}}; cursor: pointer">
@@ -222,7 +236,7 @@ a{color:inherit}
           <span style="display: block; font-size: 13px; color: {{t.muted}}; margin-top: 2px; line-height: 1.35">38 players get a notification with the new code. They still tap Join, so you know who's coming back.</span>
         </span>
       </label>
-      <div style="font-size: 13px; color: {{t.muted}}; line-height: 1.45">The season gets its own join code and opens as <b style="color: {{t.ink}}">Upcoming</b>, so players can join before it starts. It becomes the current season on its start date. Create its runs from the Runs tab.</div>
+      <div style="font-size: 13px; color: {{t.muted}}; line-height: 1.45">If it starts today or earlier, it becomes the current season straight away. Otherwise it opens as <b style="color: {{t.ink}}">Upcoming</b>, so players can join early, and becomes current on its start date. Create its runs from the Runs tab.</div>
       <button type="button" style="height: 52px; border: none; border-radius: 16px; background: {{t.btn}}; color: {{t.onBrand}}; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Create {{newName}}</button>
     </section>
   </sc-if>
@@ -243,7 +257,7 @@ a{color:inherit}
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"state":{"editor":"enum","options":["active","ended"],"default":"active"},"overlay":{"editor":"enum","options":["none","new","end"],"default":"none"},"$preview":{"width":390,"height":1600}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"state":{"editor":"enum","options":["active","both","upcoming","ended"],"default":"active"},"errors":{"editor":"boolean","default":false},"overlay":{"editor":"enum","options":["none","new","end"],"default":"none"},"$preview":{"width":390,"height":1600}}'>
 class Component extends DCLogic {
   tok() {
     const light = this.props.theme !== 'dark';
@@ -278,7 +292,6 @@ class Component extends DCLogic {
   renderVals() {
     const t = this.tok();
     const dark = this.props.theme === 'dark';
-    const ended = this.props.state === 'ended';
     const overlay = this.state.overlay ?? (this.props.overlay || 'none');
     const codeOn = this.state.codeOn ?? true;
     const approve = this.state.approve ?? true;
@@ -291,7 +304,49 @@ class Component extends DCLogic {
       track: on ? t.brand : t.switchOff, side: on ? 'flex-end' : 'flex-start',
       toggle: () => this.setState({ [key]: !on })
     });
-    const reqs = [['Arjun Malhotra', 'New', '2h ago'], ['Chloe Martin', 'New', 'Yesterday'], ['Ravi Singh', 'New', '2 days ago']];
+    const st = this.props.state || 'active';
+    const hasCurrent = st === 'active' || st === 'both';
+    const hasNext = st === 'both' || st === 'upcoming';
+    const both = st === 'both';
+    const errs = !!this.props.errors;
+    const reqs = both
+      ? [['Arjun Malhotra', 'New', '2h ago', 'Indoor 2026–27'], ['Chloe Martin', 'New', 'Yesterday', 'Outdoor 2027'], ['Ravi Singh', 'New', '2 days ago', 'Outdoor 2027']]
+      : [['Arjun Malhotra', 'New', '2h ago', ''], ['Chloe Martin', 'New', 'Yesterday', ''], ['Ravi Singh', 'New', '2 days ago', '']];
+    const codeOn2 = this.state.codeOn2 ?? true;
+    const approve2 = this.state.approve2 ?? true;
+    const curFrame = wash + ' padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + t.barGrad + ' border-box';
+    const upBar = 'linear-gradient(180deg, #F59E0B 0%, #F59E0B 60%, rgba(245,158,11,0.5) 100%)';
+    const curBlock = {
+      heading: 'CURRENT SEASON', headMargin: '0', hasCode: true,
+      name: 'Indoor 2026–27', status: 'Current · open to join', chipBg: t.okBg, chipFg: t.okFg, dates: 'Nov 7, 2026 – Apr 25, 2027 · 52 runs', frame: curFrame,
+      statCols: 'repeat(3, minmax(0, 1fr))',
+      stats: [{ n: '38', label: 'members', color: t.ink }, { n: both ? '1' : '3', label: 'waiting', color: t.amberFg }, { n: '24', label: 'paid', color: t.ink }],
+      code: 'KX7 42P', codeColor: codeOn ? t.ink : t.muted2, codeNote: codeOn ? 'firsttouch.app/join/KX742P' : 'Code is off · nobody new can join',
+      switches: [
+        sw('Code is on', 'Turn off to stop new people joining. Members stay in.', codeOn, 'codeOn'),
+        sw('Approve new players', 'People who weren\u2019t in a past season wait for an admin to approve them.', approve, 'approve')
+      ]
+    };
+    const nextBlock = {
+      heading: 'NEXT SEASON', headMargin: both ? '10px' : '0', hasCode: true,
+      name: 'Outdoor 2027', status: 'Upcoming · starts May 1', chipBg: t.amberBg, chipFg: t.amberFg, dates: 'Starts May 1, 2027 · May 1 – Oct 31, 2027',
+      frame: 'linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + upBar + ' border-box',
+      statCols: 'repeat(2, minmax(0, 1fr))',
+      stats: [{ n: '14', label: 'members', color: t.ink }, { n: '2', label: 'waiting', color: t.amberFg }],
+      code: 'M4Q 9TD', codeColor: codeOn2 ? t.ink : t.muted2, codeNote: codeOn2 ? 'firsttouch.app/join/M4Q9TD' : 'Code is off · nobody new can join',
+      switches: [
+        sw('Code is on', 'Turn off to stop new people joining. Members stay in.', codeOn2, 'codeOn2'),
+        sw('Approve new players', 'People who weren\u2019t in a past season wait for an admin to approve them.', approve2, 'approve2')
+      ]
+    };
+    const endedBlock = {
+      heading: 'LAST SEASON', headMargin: '0', hasCode: false,
+      name: 'Indoor 2026–27', status: 'Ended Apr 25', chipBg: t.lockedBg, chipFg: t.muted, dates: 'Nov 7, 2026 – Apr 25, 2027',
+      frame: 'linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + closedBar + ' border-box',
+      statCols: 'repeat(3, minmax(0, 1fr))',
+      stats: [{ n: '38', label: 'members', color: t.ink }, { n: '52', label: 'runs played', color: t.ink }, { n: '36', label: 'paid', color: t.ink }], switches: []
+    };
+    const blocks = st === 'ended' ? [endedBlock] : st === 'upcoming' ? [nextBlock] : both ? [curBlock, nextBlock] : [curBlock];
     const newName = newType === 'indoor' ? 'Indoor 2027–28' : 'Outdoor 2027';
     return {
       t,
@@ -299,32 +354,19 @@ class Component extends DCLogic {
         const on = label === 'Seasons';
         return { label, href, current: on ? 'page' : 'false', bg: on ? t.ink : t.surface, fg: on ? t.bg : t.ink, border: on ? t.ink : t.line, weight: on ? 800 : 700 };
       }),
-      currentHeading: ended ? 'LAST SEASON' : 'CURRENT SEASON',
-      isActive: !ended, isEnded: ended,
-      season: ended
-        ? { name: 'Indoor 2026–27', status: 'Ended Apr 25', chipBg: t.lockedBg, chipFg: t.muted, dates: 'Nov 7, 2026 – Apr 25, 2027',
-            frame: 'linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + closedBar + ' border-box',
-            stats: [{ n: '38', label: 'members', color: t.ink }, { n: '52', label: 'runs played', color: t.ink }, { n: '36', label: 'paid', color: t.ink }] }
-        : { name: 'Indoor 2026–27', status: 'Current · open to join', chipBg: t.okBg, chipFg: t.okFg, dates: 'Nov 7, 2026 – Apr 25, 2027 · 52 runs',
-            frame: wash + ' padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + t.barGrad + ' border-box',
-            stats: [{ n: '38', label: 'members', color: t.ink }, { n: '3', label: 'waiting', color: t.amberFg }, { n: '24', label: 'paid', color: t.ink }] },
+      blocks, hasCurrent, isActive: st !== 'ended', isEnded: st === 'ended',
+      season: { name: 'Indoor 2026–27' },
       tileBg: dark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.7)',
-      code: 'KX7 42P', codeColor: codeOn ? t.ink : t.muted2,
-      codeNote: codeOn ? 'firsttouch.app/join/KX742P' : 'Code is off · nobody new can join',
       newCode: () => {},
-      switches: [
-        sw('Code is on', 'Turn off to stop new people joining. Members stay in.', codeOn, 'codeOn'),
-        sw('Approve new players', 'People who weren’t in a past season wait for an admin to approve them.', approve, 'approve')
-      ],
       reqCount: String(reqs.length),
-      requests: reqs.map(([name, tag, when], i) => ({
-        name, tag, when: 'Joined with code · ' + when,
+      requests: reqs.map(([name, tag, when, r4], i) => ({
+        name, tag, when: 'Joined with code · ' + when + (r4 ? ' · for ' + r4 : ''),
         ini: name.split(' ').map((w) => w[0]).join(''),
         tagBg: tag === 'New' ? t.amberBg : t.surface2, tagFg: tag === 'New' ? t.amberFg : t.muted,
         divider: i === 0 ? 'none' : '1px solid ' + t.line
       })),
       approveAll: () => {},
-      inviteNote: '9 players from Outdoor 2026 haven’t joined yet. Sends them the code.',
+      inviteNote: (st === 'upcoming' ? '24 players from Indoor 2026–27' : '9 players from Outdoor 2026') + ' haven’t joined yet. Sends them ' + (hasNext ? 'the Outdoor 2027 code.' : 'the code.'),
       past: [['Outdoor 2026', 'May 2 – Oct 25, 2026 · 41 members'], ['Indoor 2025–26', 'Nov 8, 2025 – Apr 26, 2026 · 35 members']].map(([name, meta], i) => ({ name, meta, divider: i === 0 ? 'none' : '1px solid ' + t.line })),
       showScrim: overlay !== 'none', showNew: overlay === 'new', showEnd: overlay === 'end',
       openNew: () => this.setState({ overlay: 'new' }),
@@ -336,12 +378,12 @@ class Component extends DCLogic {
       }),
       newName,
       fields: [
-        { cols: '1fr', items: [{ label: 'Name', value: newName }] },
-        { cols: 'repeat(2, minmax(0, 1fr))', items: [{ label: 'Start date', value: newType === 'indoor' ? 'Nov 6, 2027' : 'May 1, 2027' }, { label: 'End date', value: newType === 'indoor' ? 'Apr 23, 2028' : 'Oct 31, 2027' }] },
-        { cols: '96px minmax(0, 1fr)', items: [{ label: 'Start time', value: newType === 'indoor' ? '6:30 AM' : '7:00 AM' }, { label: 'Address', value: newType === 'indoor' ? '7855 Finch Ave W, Brampton' : '32 Kennedy Rd N, Brampton' }] },
-        { cols: '120px minmax(0, 1fr)', items: [{ label: 'Pass price', value: '$120' }] }
+        { cols: '1fr', items: [{ label: 'Name', value: newName, border: '1.5px solid ' + t.inputBorder, hasErr: false }] },
+        { cols: 'repeat(2, minmax(0, 1fr))', hasErr: errs, err: 'These dates overlap Indoor 2026–27', items: [{ label: 'Start date', value: errs ? 'Mar 1, 2027' : (newType === 'indoor' ? 'Nov 6, 2027' : 'May 1, 2027'), border: (errs ? '1.5px solid ' + t.redRowBorder : '1.5px solid ' + t.inputBorder), hasErr: false }, { label: 'End date', value: errs ? 'Feb 20, 2027' : (newType === 'indoor' ? 'Apr 23, 2028' : 'Oct 31, 2027'), border: (errs ? '1.5px solid ' + t.redRowBorder : '1.5px solid ' + t.inputBorder), hasErr: errs, err: 'End date must be after the start date' }] },
+        { cols: '96px minmax(0, 1fr)', items: [{ label: 'Start time', value: newType === 'indoor' ? '6:30 AM' : '7:00 AM', border: '1.5px solid ' + t.inputBorder, hasErr: false }, { label: 'Address', value: newType === 'indoor' ? '7855 Finch Ave W, Brampton' : '32 Kennedy Rd N, Brampton', border: '1.5px solid ' + t.inputBorder, hasErr: false }] },
+        { cols: '120px minmax(0, 1fr)', items: [{ label: 'Pass price', value: '$120', border: '1.5px solid ' + t.inputBorder, hasErr: false }] }
       ],
-      rootH: ended ? '1000px' : '1600px'
+      rootH: ({ active: '1530px', both: '2170px', upcoming: '1470px', ended: '1000px' })[st]
     };
   }
 }

@@ -57,6 +57,14 @@ The `deploy-prod` job is skipped until that variable exists. The first merge to 
 
 Every ticket branch then gets its own preview URL running against dev, and only `main` runs against prod.
 
+## 5. The first admin in prod (after launch)
+
+Prod has no seed, and no SQL is ever run against it from a terminal. Admins come from the app:
+
+1. Simar signs in with Google, taps **Start your own runs** on the Join screen, and creates the group and its first season. Whoever creates a group is its admin.
+2. John and Coach sign in and join with the season's code; Simar approves them on Admin · Seasons and makes them admin on Admin · Players (Coach with Plays off).
+3. The one hand step: in the Supabase dashboard (prod project › Table Editor › `profiles`), set `is_dev = true` on Simar's row. A Dev is admin in every group. Nobody else gets it.
+
 ## Day to day
 
 ```bash

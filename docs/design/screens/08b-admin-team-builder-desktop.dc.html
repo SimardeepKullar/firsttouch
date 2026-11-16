@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FirstTouch V2 · Team builder desktop</title>
+<title>FirstTouch V3 · Team builder desktop</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -17,19 +17,20 @@ a{color:inherit}
 <div style="min-height: 800px; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-wrap: wrap">
   <aside style="flex: 1 1 220px; max-width: 100%; box-sizing: border-box; padding: 24px 16px; background: {{t.hero}}; color: #FFFFFF; display: flex; flex-direction: column; gap: 24px">
     <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
-      <img src="/_blob/3dfcf1bac4cf45bac56a39dd2306c225" alt="FirstTouch logo" width="40" height="40" style="width: 40px; height: 40px; display: block">
+      <img src="../assets/firsttouch-icon.png" alt="FirstTouch logo" width="40" height="40" style="width: 40px; height: 40px; display: block">
       <div>
         <div style="font-size: 18px; font-weight: 800">First<span style="color: #62CC7E">Touch</span></div>
         <div style="font-size: 12px; font-weight: 700; color: #B9DCC8; letter-spacing: 0.06em">ADMIN</div>
       </div>
     </div>
     <nav aria-label="Admin sections" style="display: flex; flex-direction: column; gap: 4px">
-      <a href="V2AdminPlayers.dc.html" style="height: 44px; padding: 0 12px; border-radius: 12px; color: #DDEDE3; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">Players</a>
-      <a href="V2RunManager.dc.html" style="height: 44px; padding: 0 12px; border-radius: 12px; color: #DDEDE3; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">Runs</a>
-      <a href="V2TeamBuilderDesktop.dc.html" aria-current="page" style="height: 44px; padding: 0 12px; border-radius: 12px; background: rgba(255,255,255,0.14); color: #FFFFFF; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Team builder</a>
-      <a href="V2SeasonPasses.dc.html" style="height: 44px; padding: 0 12px; border-radius: 12px; color: #DDEDE3; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">Passes</a>
+      <a href="06-admin-players.dc.html" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 12px; border-radius: 12px; color: #DDEDE3; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">Players</a>
+      <a href="07-admin-runs.dc.html" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 12px; border-radius: 12px; color: #DDEDE3; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">Runs</a>
+      <a href="13-admin-seasons.dc.html" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Seasons</a>
+      <a href="08b-admin-team-builder-desktop.dc.html" aria-current="page" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 12px; border-radius: 12px; background: rgba(255,255,255,0.14); color: #FFFFFF; font-size: 15px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Team builder</a>
+      <a href="09-admin-season-passes.dc.html" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 12px; border-radius: 12px; color: #DDEDE3; font-size: 15px; font-weight: 600; text-decoration: none; display: flex; align-items: center">Passes</a>
     </nav>
-    <a href="V2Home.dc.html" style="margin-top: auto; height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Back to player view</a>
+    <a href="02-home.dc.html" style="margin-top: auto; height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3); color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Back to player view</a>
   </aside>
 
   <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px">
@@ -167,24 +168,25 @@ class Component extends DCLogic {
       nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
       okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
       redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
-      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)', barGrad: 'linear-gradient(180deg, #16A866 0%, #0B7A45 55%, rgba(11,122,69,0.5) 100%)', ballFill: 'rgba(13,26,20,0.025)', ballPatch: 'rgba(13,26,20,0.06)', ballLine: 'rgba(13,26,20,0.09)',
       blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
       grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
     } : {
-      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
-      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
-      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      page: 'radial-gradient(120% 45% at 100% 0%, #0F2A1D 0%, #0D1110 55%, #0B0E0D 100%)',
+      bg: '#0D1110', surface: '#171B1B', surface2: '#202525', line: '#2A3030', inputBorder: '#343B3A',
+      ink: '#F2F4F3', ink2: '#CBD1CE', muted: '#9BA39F', muted2: '#737B78',
       brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
       btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
       hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
-      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      nav: 'rgba(20,24,24,0.96)', switchOff: '#3A4140',
       okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
-      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
-      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#262B2B', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F2F4F3', starOff: '#3A4140', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)', barGrad: 'linear-gradient(180deg, #4BE89A 0%, #2FCB7D 55%, rgba(47,203,125,0.5) 100%)', ballFill: 'rgba(255,255,255,0.035)', ballPatch: 'rgba(0,0,0,0.35)', ballLine: 'rgba(255,255,255,0.08)',
       blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
       grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
     };
   }
+
   renderVals() {
     const v = this.renderVals0();
     v.t = this.tok();

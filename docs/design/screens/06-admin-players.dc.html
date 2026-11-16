@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FirstTouch V2 · Admin players</title>
+<title>FirstTouch V3 · Admin players</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -14,17 +14,18 @@ body{margin:0}
 a{color:inherit}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
   <div style="flex-grow: 1; min-height: 0; padding: 16px 16px 0; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
     <div style="display: flex; align-items: center; justify-content: space-between">
       <h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Admin</h1>
-      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{t.hero}}; color: #FFFFFF; font-size: 12px; font-weight: 800; display: flex; align-items: center; letter-spacing: 0.04em">ADMIN</span>
+      <span style="height: 26px; padding: 0 10px; border-radius: 999px; background: {{t.brandSoft}}; color: {{t.brandText}}; font-size: 12px; font-weight: 800; display: flex; align-items: center; letter-spacing: 0.04em">ADMIN</span>
     </div>
-    <nav aria-label="Admin sections" style="display: flex; gap: 6px">
-      <a href="V2AdminPlayers.dc.html" aria-current="page" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.ink}}; color: {{t.onBrand}}; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Players</a>
-      <a href="V2RunManager.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Runs</a>
-      <a href="V2TeamBuilder.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Team builder</a>
-      <a href="V2SeasonPasses.dc.html" style="height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Passes</a>
+    <nav aria-label="Admin sections" style="flex-shrink: 0; display: flex; gap: 6px; margin: 0 -16px; padding: 0 16px; overflow: hidden">
+      <a href="06-admin-players.dc.html" aria-current="page" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.ink}}; color: {{t.onBrand}}; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Players</a>
+      <a href="07-admin-runs.dc.html" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Runs</a>
+      <a href="13-admin-seasons.dc.html" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Seasons</a>
+      <a href="08-admin-team-builder.dc.html" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Team builder</a>
+      <a href="09-admin-season-passes.dc.html" style="flex-shrink: 0; white-space: nowrap; height: 44px; padding: 0 14px; border-radius: 999px; background: {{t.surface}}; border: 1px solid {{t.line}}; box-sizing: border-box; color: {{t.ink}}; font-size: 14px; font-weight: 700; text-decoration: none; display: flex; align-items: center">Passes</a>
     </nav>
     <div style="position: relative">
       <label for="player-search" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search players</label>
@@ -45,7 +46,7 @@ a{color:inherit}
             <div style="flex-grow: 1; min-width: 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap">
               <span id="{{p.id}}" style="font-size: 16px; font-weight: 800">{{p.name}}</span>
               <sc-if value="{{ p.isAdmin }}" hint-placeholder-val="{{ false }}">
-                <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{t.hero}}; color: #FFFFFF; font-size: 11px; font-weight: 800; display: flex; align-items: center">Admin</span>
+                <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{t.brandSoft}}; color: {{t.brandText}}; font-size: 11px; font-weight: 800; display: flex; align-items: center">Admin</span>
               </sc-if>
               <sc-for list="{{ p.flags }}" as="f" hint-placeholder-count="0">
                 <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{f.bg}}; color: {{f.fg}}; font-size: 11px; font-weight: 800; display: flex; align-items: center">{{f.label}}</span>
@@ -78,23 +79,119 @@ a{color:inherit}
       </sc-for>
     </ul>
   </div>
-  <nav aria-label="Main" style="flex-shrink: 0; height: 84px; box-sizing: border-box; padding: 8px 8px 20px; background: {{t.surface}}; border-top: 1px solid {{t.line}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
-    <a href="V2Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+  <nav aria-label="Main" style="flex-shrink: 0; margin: 0 12px 14px; height: 76px; box-sizing: border-box; padding: 6px 8px; border-radius: 26px; background: {{t.nav}}; border: 1px solid {{t.line}}; box-shadow: {{t.shadow}}; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="02-home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
     </a>
-    <a href="V2Teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+    <a href="04-teams.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 3 6l2 5 3-1v11h8V10l3 1 2-5-5-3c-.5 1.5-2 2.5-4 2.5S8.5 4.5 8 3z"></path></svg>Teams
     </a>
-    <a href="V2AdminPlayers.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 800">
+    <a href="06-admin-players.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.brandText}}; font-size: 12px; font-weight: 800">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>Admin
     </a>
-    <a href="V2Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
+    <a href="05-settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: {{t.muted}}; font-size: 12px; font-weight: 600">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"></path><circle cx="15" cy="6" r="2"></circle><circle cx="9" cy="12" r="2"></circle><circle cx="17" cy="18" r="2"></circle></svg>Settings
     </a>
   </nav>
+  <sc-if value="{{ sh.open }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ sh.close }}" style="position: absolute; inset: 0; background: rgba(0,0,0,0.45)"></div>
+    <section role="dialog" aria-label="{{sh.name}}" style="position: absolute; left: 0; right: 0; bottom: 0; border-radius: 28px 28px 0 0; background: {{t.surface}}; padding: 10px 16px 24px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 -10px 40px rgba(0,0,0,0.25)">
+      <span style="align-self: center; width: 40px; height: 5px; border-radius: 3px; background: {{t.line}}"></span>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <span style="width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; background: {{t.surface2}}; border: 1px solid {{t.line}}; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{sh.ini}}</span>
+        <div style="flex-grow: 1; min-width: 0">
+          <div style="display: flex; align-items: center; gap: 6px">
+            <h2 style="margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.02em">{{sh.name}}</h2>
+            <sc-if value="{{ sh.isAdmin }}" hint-placeholder-val="{{ false }}">
+              <span style="height: 22px; padding: 0 8px; border-radius: 999px; background: {{t.brandSoft}}; color: {{t.brandText}}; font-size: 11px; font-weight: 800; display: flex; align-items: center">Admin</span>
+            </sc-if>
+          </div>
+          <div style="font-size: 13px; color: {{t.muted}}; margin-top: 2px">{{sh.sub}}</div>
+        </div>
+        <button type="button" aria-label="Close" onClick="{{ sh.close }}" style="width: 44px; height: 44px; flex-shrink: 0; border: none; border-radius: 12px; background: {{t.surface2}}; color: {{t.ink}}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+      <div style="border-radius: 18px; background: {{t.surface2}}; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+          <div role="group" aria-label="Rating" style="display: flex">
+            <sc-for list="{{ sh.stars }}" as="st" hint-placeholder-count="5">
+              <span style="width: 36px; height: 44px; display: flex; align-items: center; justify-content: center"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="{{st.fill}}" stroke="{{st.stroke}}" stroke-width="1.5" stroke-linejoin="round"></path></svg></span>
+            </sc-for>
+          </div>
+          <div role="group" aria-label="Position" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; padding: 3px; border-radius: 12px; background: {{t.surface}}; width: 124px; box-sizing: border-box">
+            <span style="height: 38px; border-radius: 9px; background: {{sh.attBg}}; color: {{sh.attFg}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center">Attack</span>
+            <span style="height: 38px; border-radius: 9px; background: {{sh.defBg}}; color: {{sh.defFg}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center">Defend</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid {{t.line}}; padding-top: 10px">
+          <div>
+            <div style="font-size: 15px; font-weight: 700">Plays</div>
+            <div style="font-size: 12px; color: {{t.muted}}">Off means they're never placed in teams</div>
+          </div>
+          <span role="switch" aria-checked="true" style="width: 46px; height: 28px; border-radius: 999px; padding: 3px; box-sizing: border-box; background: {{t.brand}}; display: flex; justify-content: flex-end"><span style="width: 22px; height: 22px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></span>
+        </div>
+      </div>
+      <div style="font-size: 13px; color: {{t.muted}}; margin-top: -6px; padding: 0 4px">Ratings are for Brampton Weekend Football only.</div>
+      <div style="border-top: 1px solid {{t.line}}; padding-top: 14px; display: flex; flex-direction: column; gap: 10px">
+        <div style="font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: {{t.muted}}">ADMIN</div>
+        <div style="font-size: 14px; color: {{t.ink2}}; line-height: 1.4">{{sh.adminNote}}</div>
+        <sc-for list="{{ sh.actions }}" as="ac" hint-placeholder-count="1">
+          <button type="button" aria-disabled="{{ac.disabled}}" onClick="{{ ac.go }}" style="height: 48px; border-radius: 14px; border: 1.5px solid {{ac.border}}; background: {{ac.bg}}; color: {{ac.fg}}; font-family: inherit; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: {{ac.cursor}}">{{ac.label}}</button>
+        </sc-for>
+        <sc-if value="{{ sh.lastAdmin }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: {{t.amberFg}}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5v.01"></path></svg>
+            A group needs at least one admin.
+          </div>
+        </sc-if>
+        <sc-if value="{{ sh.canRemove }}" hint-placeholder-val="{{ true }}">
+          <div style="border-top: 1px solid {{t.line}}; margin-top: 2px; padding-top: 8px; display: flex; flex-direction: column; gap: 2px">
+            <button type="button" onClick="{{ sh.openRemove }}" style="align-self: flex-start; min-height: 44px; border: none; background: transparent; padding: 0; color: {{t.redFg}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">Remove from Brampton Weekend Football</button>
+            <div style="font-size: 13px; color: {{t.muted}}; line-height: 1.4; margin-top: -6px">They leave the current season and can't RSVP. Their history stays.</div>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+  </sc-if>
+  <sc-if value="{{ sh.confirm }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3)"></div>
+    <section role="alertdialog" aria-label="Transfer admin" style="position: absolute; left: 20px; right: 20px; top: 150px; border-radius: 24px; background: {{t.surface}}; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.3)">
+      <h2 style="margin: 0; font-size: 21px; font-weight: 800">Transfer admin</h2>
+      <div style="position: relative">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2.2" stroke-linecap="round" style="position: absolute; left: 12px; top: 13px" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input type="search" aria-label="Search players" placeholder="Search players" style="width: 100%; height: 44px; box-sizing: border-box; border-radius: 12px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 12px 0 38px; font-family: inherit; font-size: 15px; color: {{t.ink}}">
+      </div>
+      <div role="radiogroup" aria-label="New admin" style="border-radius: 16px; border: 1px solid {{t.line}}; overflow: hidden; display: flex; flex-direction: column">
+        <sc-for list="{{ sh.pick }}" as="pk" hint-placeholder-count="4">
+          <div role="radio" aria-checked="{{pk.checked}}" onClick="{{ pk.choose }}" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; min-height: 48px; box-sizing: border-box; border-top: {{pk.divider}}; background: {{pk.bg}}; cursor: pointer">
+            <span style="width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: {{t.surface2}}; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{pk.ini}}</span>
+            <span style="flex-grow: 1; font-size: 15px; font-weight: 600">{{pk.name}}</span>
+            <span style="width: 22px; height: 22px; flex-shrink: 0; box-sizing: border-box; border-radius: 50%; border: {{pk.ring}}; display: flex; align-items: center; justify-content: center"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{pk.dot}}"></span></span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size: 15px; color: {{t.ink2}}; line-height: 1.45">{{sh.transferQ}}</div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 4px">
+        <button type="button" onClick="{{ sh.cancelConfirm }}" style="height: 48px; border-radius: 14px; border: 1px solid {{t.line}}; background: {{t.surface2}}; color: {{t.ink}}; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Cancel</button>
+        <button type="button" aria-disabled="{{sh.tDisabled}}" style="height: 48px; border: none; border-radius: 14px; background: {{sh.tBg}}; color: {{sh.tFg}}; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">Transfer</button>
+      </div>
+    </section>
+  </sc-if>
+  <sc-if value="{{ sh.remove }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3)"></div>
+    <section role="alertdialog" aria-label="Remove {{sh.name}}" style="position: absolute; left: 20px; right: 20px; top: 300px; border-radius: 24px; background: {{t.surface}}; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.3)">
+      <h2 style="margin: 0; font-size: 21px; font-weight: 800">Remove {{sh.name}}?</h2>
+      <div style="font-size: 15px; color: {{t.ink2}}; line-height: 1.45">They'll lose access to Brampton Weekend Football's runs. They can rejoin with a code if an admin approves them.</div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 4px">
+        <button type="button" onClick="{{ sh.cancelRemove }}" style="height: 48px; border-radius: 14px; border: 1px solid {{t.line}}; background: {{t.surface2}}; color: {{t.ink}}; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Cancel</button>
+        <button type="button" style="height: 48px; border: none; border-radius: 14px; background: #DC2626; color: #FFFFFF; font-family: inherit; font-size: 15px; font-weight: 800; cursor: pointer">Remove</button>
+      </div>
+    </section>
+  </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"filter":{"editor":"enum","options":["all","flagged","att","def"],"default":"all"},"$preview":{"width":390,"height":844}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"filter":{"editor":"enum","options":["all","flagged","att","def"],"default":"all"},"overlay":{"editor":"enum","options":["none","player","transfer","remove"],"default":"none"},"sheetFor":{"editor":"enum","options":["player","admin","self"],"default":"player"},"onlyAdmin":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
@@ -190,27 +287,64 @@ class Component extends DCLogic {
       nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
       okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
       redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
-      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)', barGrad: 'linear-gradient(180deg, #16A866 0%, #0B7A45 55%, rgba(11,122,69,0.5) 100%)', ballFill: 'rgba(13,26,20,0.025)', ballPatch: 'rgba(13,26,20,0.06)', ballLine: 'rgba(13,26,20,0.09)',
       blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
       grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
     } : {
-      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
-      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
-      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      page: 'radial-gradient(120% 45% at 100% 0%, #0F2A1D 0%, #0D1110 55%, #0B0E0D 100%)',
+      bg: '#0D1110', surface: '#171B1B', surface2: '#202525', line: '#2A3030', inputBorder: '#343B3A',
+      ink: '#F2F4F3', ink2: '#CBD1CE', muted: '#9BA39F', muted2: '#737B78',
       brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
       btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
       hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
-      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      nav: 'rgba(20,24,24,0.96)', switchOff: '#3A4140',
       okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
-      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
-      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#262B2B', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F2F4F3', starOff: '#3A4140', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)', barGrad: 'linear-gradient(180deg, #4BE89A 0%, #2FCB7D 55%, rgba(47,203,125,0.5) 100%)', ballFill: 'rgba(255,255,255,0.035)', ballPatch: 'rgba(0,0,0,0.35)', ballLine: 'rgba(255,255,255,0.08)',
       blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
       grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
     };
   }
+
   renderVals() {
     const v = this.renderVals0();
     v.t = this.tok();
+    const ov = this.state.ov ?? (this.props.overlay || 'none');
+    const who = this.props.sheetFor || 'player';
+    const only = !!this.props.onlyAdmin;
+    const picked = this.state.picked ?? 'Aisha Bello';
+    const tt = v.t;
+    const P = { player: ['Aisha Bello', 'AB', 4, 'att', false, 'Player'], admin: ['John', 'J', 3, 'def', true, 'Admin · plays'], self: ['Sim', 'S', 4, 'def', true, 'You · admin · plays'] }[who];
+    const btn = (label, kind, disabled, go) => ({
+      label, disabled: disabled ? 'true' : 'false', go: go || (() => {}), cursor: disabled ? 'not-allowed' : 'pointer',
+      border: disabled ? tt.line : (kind === 'red' ? tt.redRowBorder : tt.brandLine),
+      bg: disabled ? tt.surface2 : 'transparent',
+      fg: disabled ? tt.muted2 : (kind === 'red' ? tt.redFg : tt.brandText)
+    });
+    const openConfirm = () => this.setState({ ov: 'transfer' });
+    v.sh = {
+      open: ov === 'player' || ov === 'transfer' || ov === 'remove', confirm: ov === 'transfer', remove: ov === 'remove',
+      canRemove: who !== 'self', openRemove: () => this.setState({ ov: 'remove' }), cancelRemove: () => this.setState({ ov: 'player' }),
+      close: () => this.setState({ ov: 'none' }), cancelConfirm: () => this.setState({ ov: 'player' }),
+      name: P[0], ini: P[1], isAdmin: P[4], sub: P[5],
+      stars: [1, 2, 3, 4, 5].map((n) => ({ fill: n <= P[2] ? tt.starOn : 'transparent', stroke: n <= P[2] ? tt.starOn : tt.starOff })),
+      attBg: P[3] === 'att' ? tt.ink : 'transparent', attFg: P[3] === 'att' ? tt.bg : tt.muted,
+      defBg: P[3] === 'def' ? tt.ink : 'transparent', defFg: P[3] === 'def' ? tt.bg : tt.muted,
+      adminNote: who === 'player' ? 'Admins can rate players, manage runs and seasons, and approve new players.'
+        : who === 'admin' ? 'John can manage runs, seasons and players.'
+        : (only ? 'You’re the only admin of Brampton Weekend Football.' : 'Hand your admin role to another player, or step down.'),
+      actions: who === 'player' ? [btn('Make admin', 'brand', false)]
+        : who === 'admin' ? [btn('Remove admin', 'red', false)]
+        : [btn('Transfer admin', 'brand', only, only ? null : openConfirm), btn('Remove admin', 'red', only)],
+      lastAdmin: who === 'self' && only,
+      pick: ['Aisha Bello', 'Daniel Mensah', 'Hassan Karimi', 'Priya Nair'].map((n, i) => {
+        const on = n === picked;
+        return { name: n, ini: n.split(' ').map((w) => w[0]).join(''), checked: on ? 'true' : 'false', divider: i ? '1px solid ' + tt.line : 'none',
+          bg: on ? tt.brandSoft : 'transparent', ring: '2px solid ' + (on ? tt.brand : tt.inputBorder), dot: on ? tt.brand : 'transparent', choose: () => this.setState({ picked: n }) };
+      }),
+      transferQ: picked ? 'Make ' + picked + ' admin and remove your admin access?' : 'Pick who becomes admin.',
+      tDisabled: picked ? 'false' : 'true', tBg: picked ? tt.btn : tt.surface2, tFg: picked ? tt.onBrand : tt.muted2
+    };
     return v;
   }
 }
