@@ -1,18 +1,17 @@
 # FirstTouch — design handoff (Version 3)
 
-Mobile-first web app for a recreational soccer group that plays pickup runs on Saturday and Sunday mornings, plus holiday Mondays. Players RSVP. RSVPs lock automatically 1 hour before the start, and teams are generated and published at that moment. Admins rate players, manage the season's runs and track season passes. This folder is the design reference for building it.
+Mobile-first web app for recreational soccer groups that play pickup runs on Saturday and Sunday mornings, plus holiday Mondays. A **group** runs **seasons**; players join a season with its **join code**. Players RSVP. RSVPs lock automatically 1 hour before the start, and teams are generated and published at that moment. Admins rate players, manage the group's seasons and runs, approve new players and track season passes. This folder is the design reference for building it.
 
-**Version 3** is the current design. It keeps everything from Version 2 (Inter, green gradients, the floating bottom nav, **light mode as the default** and an **optional dark mode** chosen in Settings › Appearance) and changes three things: the Home run cards, the Teams cards, and the dark-mode background. The product rules are the same as Versions 1 and 2.
+This is **Version 3**, the only design. Every screen in `screens/` is Version 3; ignore anything you remember from earlier versions.
 
-## What changed in Version 3
+## The Version 3 look
 
-Only **02 Home** and **04 Teams** have new mockups. Every other screen keeps its Version 2 mockup, but takes the new dark colours from the tokens.
-
-1. **Dark mode is grey-black, not green-black.** `bg` `#0D1110`, `surface` `#171B1B`, `surface-2` `#202525`, `line` `#2A3030`, plus new `input-border`, `ink`, `ink-2`, `muted`, `muted-2`, `nav`, `switch-off`, `star-on`, `star-off`, `locked-bg` and a fainter green glow in `page`. Light mode is unchanged. This applies to **every** screen, because it's just token values.
-2. **Curved left bars.** Run cards and team cards no longer have a straight 4px bar. Each card has a 6px left edge that follows the card's rounded corners (a crescent), filled with a top-to-bottom gradient that fades in the bottom 40%. See "Curved left bar" below for the CSS.
-3. **Run cards (Home)** are rebuilt; see Shared components › Run card and 02 Home.
-4. **Team cards (Teams)** get a colour wash across the card, a crescent bar, a "Your team" card at the top for players, and the "{n} players" chip in the team colour; see Shared components › Team card and 04 Teams.
-5. **New tokens:** `card-bar`, `card-bar-closed`, `button-in` (+ `button-in-shadow`), `ball-fill` / `ball-patch` / `ball-line`, `team-{blue|yellow|red}-wash`, `-bar`, `-border`, `-chip-bg`, `-chip-fg`. All are in `tokens/`.
+- **Inter** everywhere, green gradients, **light mode by default** and an optional **dark mode** (Settings › Appearance). Dark mode is grey-black (`bg` `#0D1110`, `surface` `#171B1B`, `surface-2` `#202525`, `line` `#2A3030`) with a faint green glow in `page`.
+- **Floating bottom nav**, rounder cards (24–26 radius) with a soft `shadow`.
+- **Curved left bars:** run cards, team cards, season cards and the join code card have a 6px left edge that follows the card's rounded corners (a crescent), filled with a top-to-bottom gradient that fades in the bottom 40%. See "Curved left bar" below.
+- **Green wash and ball watermark:** feature cards (Run detail, the Next run card, season and join code cards, the welcome popup) have a `brand` wash and a faint soccer ball peeking in from the right (`ball-fill`, `ball-patch`, `ball-line`).
+- **Soft-green ADMIN tag and Admin badge** (`brand-soft` with `brand-text`).
+- **Tokens:** all colours, including `card-bar`, `card-bar-closed`, `button-in` (+ `button-in-shadow`), the ball tokens and `team-{blue|yellow|red}-wash`, `-bar`, `-border`, `-chip-bg`, `-chip-fg`, are in `tokens/`.
 
 ### Curved left bar
 
@@ -37,6 +36,7 @@ Team washes are the same in both themes: Blue 26%, Yellow 20%, Red 20% at the to
 | Path | What it is |
 |---|---|
 | `README.md` | This spec: product rules, components and every screen |
+| `seasons-and-join-codes.md` | Groups, seasons and join codes in detail: how it works, and every state of screens 12, 13 and 14, the Home welcome popup and the Players admin controls |
 | `tokens/tokens.json` | All colours, type sizes, radii and sizes as data |
 | `tokens/theme.css` | The same values as CSS variables (light by default; dark under `:root.dark`; System follows the phone) |
 | `tokens/tailwind.theme.js` | Tailwind / NativeWind theme extension that points at those variables |
@@ -52,8 +52,8 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Data and states:** each file's `<script>` block holds the placeholder data and the state logic in `renderVals()`.
 - **Template syntax:** `{{name}}` is a value from `renderVals()`, `<sc-for>` is a loop and `<sc-if>` is a conditional.
 - **Props:** a screen's props are listed in `data-props` at the top of its script block (see "Screen props" below). They switch between variants and states.
-- **Images:** `/_blob/3dfcf1bac4cf45bac56a39dd2306c225` is the logo; use `assets/firsttouch-icon.png` instead.
-- **Links:** `href="X.dc.html"` links point to the canvas names. In `02-home` and `04-teams` the links already use the file names. In the other files the mapping is: `V2Main` = 01-sign-in, `V2CreateAccount` = 01b, `V2ForgotPassword` = 01c, `V2NewPassword` = 01d, `V2Home` = 02, `V2RunDetail` = 03, `V2Teams` = 04, `V2Settings` = 05, `V2AdminPlayers` = 06, `V2RunManager` = 07-admin-runs, `V2TeamBuilder` = 08, `V2TeamBuilderDesktop` = 08b, `V2SeasonPasses` = 09, `V2Holidays` = 11.
+- **Images:** most files use `../assets/firsttouch-icon.png`. Where a file still has `/_blob/3dfcf1bac4cf45bac56a39dd2306c225` (05, 10), that is the same logo.
+- **Links:** `href="X.dc.html"` links use the file names in this folder.
 - **Colours in the files:** values appear as `{{t.name}}`; `name` is a key of the active theme in `tokens/tokens.json` (`theme.light` or `theme.dark`), and each file's `tok()` method lists them too.
 
 ### Screen props
@@ -66,6 +66,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 | 01c Forgot password | `step` | `form`, `sent` | `sent` shows "If that email has an account, we've sent a link" |
 | 02 Home | `plays` | `on` (default), `off` | `off` = non-playing admin (Coach): no "I'm in" toggle, Admin tab shown |
 | 02 Home | `pass` | `paid`, `unpaid` | Season pass chip |
+| 02 Home | `welcome` | boolean | The one-time "You're in" bottom sheet with the season details (artboard cropped to 844) |
 | 03 Run detail | `role` | `player` (default), `admin` | Admin adds stars and the Unpaid badge |
 | 03 Run detail | `locked` | boolean | The chip reads "Teams published", the bar turns grey, and the RSVP row shows the team panel (going) or a disabled "Locked" pill (not going) |
 | 03 Run detail | `going` | `true` (default), `false` | The viewer's own RSVP: a filled "You're in" pill or an outlined "I'm in" pill. When not going, you're missing from the list |
@@ -74,9 +75,19 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 | 04 Teams | `teams` | `3`, `2` | 3 = indoor run; 2 = outdoor run |
 | 05 Settings | `emailAuth` | `off`, `on` | `on` adds the "Change password" row |
 | 06 Admin · Players | `filter` | `all`, `flagged`, `att`, `def` | Starting filter |
+| 06 Admin · Players | `overlay` | `none`, `player`, `transfer`, `remove` | The player sheet; the Transfer admin dialog (searchable list with radio buttons); the "Remove {name}?" confirm |
+| 06 Admin · Players | `sheetFor` | `player`, `admin`, `self` | Whose sheet is open: a player (Make admin), another admin (Remove admin), or your own row (Transfer admin, Remove admin; no "Remove from {group}") |
+| 06 Admin · Players | `onlyAdmin` | boolean | On your own sheet: you're the group's only admin, so Transfer and Remove admin are disabled with "A group needs at least one admin." |
 | 07 Admin · Runs | `status` | `open`, `locked`, `published`, `cancelled`, `empty` | Next-run card state (`empty` = fewer than 4 players) |
 | 07 Admin · Runs | `overlay` | `none`, `sheet`, `confirm` | Edit-run bottom sheet, or the delete confirmation |
 | 07 Admin · Runs | `compact` | boolean | Clips the screen to phone height (used for the overlay states) |
+| 12 Join a season | `state` | `enter` (default), `error`, `pending` | Code entry; wrong code; "Waiting for an admin". There is no joined state: a successful join goes straight to Home |
+| 12 Join a season | `returning` | boolean | Heading "{last season} has ended" with the returning intro |
+| 12 Join a season | `groupLimit` | boolean | "Start your own runs" is disabled with "You've created 3 groups, the most allowed. No more groups can be created." |
+| 13 Admin · Seasons | `state` | `active` (default), `both`, `upcoming`, `ended` | Current season only; current plus a NEXT SEASON section (its own card and code card, waiting rows say which season); only an upcoming season; nothing open ("No season is open") |
+| 13 Admin · Seasons | `overlay` | `none`, `new`, `end` | New season bottom sheet; End season dialog |
+| 13 Admin · Seasons | `errors` | boolean | New season sheet field errors: end before start, and "These dates overlap {season}" |
+| 14 Start your own runs | `step` | `form` (default), `error`, `done` | The form; the form with errors ("Give your group a name", the end-date error and the 3-group alert; drawn 930 tall because it scrolls); "You're the admin of {group}" with the join code |
 
 ## Product rules shown in the designs
 
@@ -87,8 +98,9 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Team count:** outdoor runs always have 2 teams. Indoor runs have 3 teams only when **19 or more** players are going; otherwise 2.
 - **Too few players:** with fewer than 4 players going, no teams are made, and the admin sees "Not enough players — no teams made".
 - **Admin-only information:** star ratings, star totals and the Unpaid flag are shown only to admins. Players see only the Morning-of flag.
-- **New players:** start at 3 stars and Attack.
-- **Admins:** there are three. **John** and **Sim** are admins who also play; **Coach** only manages and never plays (Plays off).
+- **New players:** start at 3 stars and Attack in each group they join.
+- **Groups and seasons:** a group owns its seasons and its admins. Stars, position, Plays and admin are **per group**. Players join a season with its code and never pick a group or season: once in, the app opens straight to Home. Brand-new players wait for an admin to approve them; returning players go straight in. An account can create at most 3 groups. One current season per group, plus at most one upcoming. Full rules: `seasons-and-join-codes.md`.
+- **Admins:** whoever creates a group is its first admin. Admins make, remove and transfer admin from the player sheet; a group always keeps at least one admin. In the mockups the group is "Brampton Weekend Football" with three admins: **John** and **Sim** also play; **Coach** only manages and never plays (Plays off).
 - **Playing admins are normal players:** they RSVP like everyone else and appear in Run detail, Teams and Team builder only when they've said yes, with no badge or special treatment there. In the mockups, Sim is going on the example run and John isn't.
 - **Admin screens never assume the admin is going:** Runs, Team builder and Passes look the same whether the admin viewing them is going, not going or doesn't play.
 - **Non-playing admins:** an admin with **Plays** switched off is never put in teams and gets no "I'm in" toggle (see the Home `plays = off` variant), but still has the Admin tab.
@@ -128,16 +140,17 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 
 ## Navigation
 
+- **Not in a season yet:** 12 Join a season (and 14 Start your own runs), with no bottom nav.
 - **Players:** bottom tabs for Home, Teams and Settings.
-- **Admins:** bottom tabs for Home, Teams, Admin and Settings. Inside the Admin tab, a row of pill sub-tabs switches between **Players, Runs, Team builder, Passes**. Holidays opens from the Runs screen.
-- **Desktop sidebar:** the same sections (Players, Runs, Team builder, Passes), plus "Back to player view".
+- **Admins:** bottom tabs for Home, Teams, Admin and Settings. Inside the Admin tab, a row of pill sub-tabs switches between **Players, Runs, Seasons, Team builder, Passes**; the row scrolls sideways. Holidays opens from the Runs screen.
+- **Desktop sidebar:** the same sections (Players, Runs, Seasons, Team builder, Passes), plus "Back to player view".
 - **Bottom nav:** a floating bar, 76 tall with a 26 radius, inset 12px from the screen edges and 14px from the bottom, in the `nav` colour with a `line` border and `shadow`. Each tab is a 24px icon over a 12px label; the active tab is `brand-text` with a 22 × 3 `brand` underline. Icons: house (Home), trophy (Teams), shield (Admin), gear (Settings).
 
 ## Shared components
 
 - **Status chip:** a 28–32px pill with a dot and a label. Pass: Paid / Not paid. Runs: Open, Locked, Teams published, Cancelled. Teams uses a "Published" pill with a filled check circle and a `brand-line` border.
 - **Flag badge:** 20–22px tall, 11px weight-700 label, using the status tokens (`amber-*` for Morning of, `red-*` for Unpaid).
-- **Admin badge:** the same size as a flag badge, on the `hero` gradient with white text.
+- **Admin badge:** the same size as a flag badge, `brand-soft` background with `brand-text`. The ADMIN tag in the Admin header (26 tall, 12px/800, 0.04em tracking) uses the same colours.
 - **Position tag:** 40 × 24, radius 8. **ATT** is filled `ink` with `bg`-coloured text; **DEF** is an outline in `input-border` with `ink-2` text.
 - **Star rating (admin only):** five 12–13px stars in `star-on` / `star-off`. The editable version has tappable 40 × 44 buttons with 26px stars.
 - **Segmented control:** a pill track in `surface` with a `line` border; the selected segment is the `button` gradient with `on-brand` text.
@@ -168,16 +181,16 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Contents:** New password (show/hide, "At least 8 characters" hint), Confirm password, and a "Save password" button. Reached from the reset link, and from Settings › Change password.
 
 ### 02 Home (`02-home.dc.html`)
-- **V3:** the run cards follow Shared components › Run card (V3). The header, greeting, banner and Auto team creation card are unchanged from V2.
-- **V2 header:** the app icon (44px) on the left; on the right the pass chip and a 44px bell button with a green unread dot. The greeting has a 40 × 3 `brand` underline beneath it, then the banner (green-tinted with a `brand-line` border), then an "Upcoming runs" heading with a "View all" link.
+- **Header:** the app icon (44px) on the left and the season pass chip ("Indoor pass: Paid" or "Indoor pass: Not paid") on the right. No bell. Greeting "Morning, {first name}" (32px/800) with the subtitle "Indoor 2026–27 · …" and a 40 × 3 `brand` underline, then the banner (green-tinted with a `brand-line` border), then an "Upcoming runs" heading with a "View all" link.
+- **Run cards** follow Shared components › Run card.
 - **Auto team creation card:** after the run cards, a hero-gradient card with a players icon, "Auto team creation" and "Teams are made automatically when RSVPs close, 1 hour before kickoff.", with a faint goal drawing on the right.
-- **Top:** a season pass chip ("Indoor pass: Paid" or "Indoor pass: Not paid") and the user's avatar. Greeting "Morning, {first name}" with the subtitle "Indoor 2026–27 · …".
 - **Banner:** "Add FirstTouch to your Home Screen for notifications", dismissible with an X button.
 - **Run cards:** one per upcoming run. Each card shows the day, the date (with the holiday name if any), "6:30 AM start", the address, a lock-icon line "RSVPs close 5:30 AM", stacked avatars, "{n} going" and the large "I'm in" toggle.
 - **Closed card (V3):** once RSVPs close, the line reads "RSVPs closed 5:30 AM", the bar turns grey (`card-bar-closed`) and the "I'm in" button is replaced by a team panel: radius 18, the team's `wash` over `surface-2`, a 16px team dot with a soft ring, "You're on {team}" (16px/800) over "{n} players · ATT/DEF {a}:{d}" (13px, `muted`), and a "View teams" button on the right. Coach's panel reads "Teams are up" over "3 teams · published 5:30 AM" with a `brand` dot.
 - **Holiday card:** a holiday Monday shows the kicker "Holiday Monday" and the title "Mon Feb 15 · Family Day".
 - **Mockup examples:** Sat Feb 13 (closed, on Blue), Sun Feb 14 (open, you're in), and Mon Feb 15 · Family Day (open, not replied).
 - **Non-playing admin (`plays = off`, shown as Coach):** the cards keep the date, time, address, "{n} going" and the "Details" link, but the "I'm in" toggle is replaced by a muted line, "You're managing this run". The top chip reads "Admin · manages runs" instead of the pass chip. A closed card's panel reads "Teams are up" with "View teams" (no team of their own). The bottom nav includes the Admin tab.
+- **Welcome popup (`welcome = true`):** shown once, the first time a player opens Home after joining a season or after being approved; never again once dismissed. A bottom sheet over a scrim: drag handle, ball watermark, a "✓ You're in" chip (`ok-bg` / `ok-fg`), the season name (28px/800) and dates, a `surface-2` box with "Sat & Sun at {time}", the address on two lines and "Season pass ${price} · pay an admin", and a full-width "Got it" button. Tapping the scrim also dismisses it.
 
 ### 03 Run detail (`03-run-detail.dc.html`)
 - **V3:** no hero header and no page title. The top row has a "← Home" text link on the left that goes back to Home, styled like Home's "View all →" link: `brand-text`, 14px / 700, a 16px left-arrow icon with a 4px gap, no box or background, and a tap area at least 44 tall. On the right is a status chip: "Open" (`ok-bg` / `ok-fg`) or, once locked, "Teams published" (`brand-soft` / `brand-text`). The chip is 30 tall with a 7px dot.
@@ -197,8 +210,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Who's coming, admin view:** the note reads "In order of RSVP · admin view", each row shows a 12px star row under the name and the Unpaid badge (the " · You" suffix stays on your own row; the mockup drops it, see disagreement 29 in `docs/tickets.md`), and the bottom nav includes the Admin tab. Drawn as John, not going; Sim is listed like any player.
 
 ### 04 Teams (`04-teams.dc.html`)
-- **V3:** players see the Your team card under the "Published" line, in both Table and Field views. Team cards follow Shared components › Team card (V3).
-- **V2 look:** see Team card and Pitch under Shared components. The Table / Field control is a pill with the selected side in the button gradient.
+- **Cards:** players see the Your team card under the "Published" line, in both Table and Field views. Team cards follow Shared components › Team card; the field follows Pitch. The Table / Field control is a pill with the selected side in the button gradient.
 - **Top:** the run summary, a Table / Field segmented control, and a small "Published 5:30 AM" label under it (6:00 AM for a 7:00 AM outdoor run).
 - **Table view, player:** one card per team. The header strip is filled in the team colour. Rows show avatar, name, the "Morning of" badge and the position tag. The footer shows **player count and ATT:DEF ratio** only.
 - **Table view, admin:** rows also show stars and the Unpaid badge, and the footer adds **total stars**.
@@ -207,7 +219,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Field flags:** players see only amber Morning-of dots, and the legend lists Morning of only. Admins also see red Unpaid dots and a matching legend entry.
 
 ### 05 Settings (`05-settings.dc.html`)
-- **Appearance (new in V2):** a three-option control, **Light / Dark / System**, between Notifications and Privacy. Light is selected by default. Choosing Dark switches the app to dark mode; System follows the phone and shows "Follows your phone's light or dark setting." Store the choice per user (and on the device for a fast first paint). After sign-in, the saved choice wins over the device's.
+- **Appearance:** a three-option control, **Light / Dark / System**, between Notifications and Privacy. Light is selected by default. Choosing Dark switches the app to dark mode; System follows the phone and shows "Follows your phone's light or dark setting." Store the choice per user (and on the device for a fast first paint). After sign-in, the saved choice wins over the device's.
 - **Profile card:** avatar, name, a Paid / Not paid chip (an Admin badge instead for an admin who doesn't play, and no chip when there is no current season), email, and a pencil button to edit the display name.
 - **Notifications:** three switches, in this order: "Night-before reminder", "Teams published", "Changes and cancellations".
 - **Privacy:** a privacy policy link.
@@ -220,12 +232,20 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Player cards:** each card has the name, an **Admin** badge for admins, any flag badges, and a **Plays** switch on the right. Below that are a tappable 1–5 star control and an Attack / Defend toggle.
 - **Plays off:** the card shows "Manages only · never placed in teams", and the rating and position controls are dimmed. The mockup example is "Coach".
 - **New players:** start at 3 stars and Attack.
+- **Who's listed:** only the members of this admin's group.
+- **Player sheet (`overlay = player`):** tapping a row opens a bottom sheet: avatar, name, the Admin badge for admins, a subtitle ("Player", "Admin · plays", "You · admin · plays") and a close button. A `surface-2` box holds the 5 stars, the Attack/Defend control and the Plays switch ("Off means they're never placed in teams"), with "Ratings are for {group} only." under it. Then an **ADMIN** section:
+  - a player (`sheetFor = player`): "Make admin" (brand outline), with the note "Admins can rate players, manage runs and seasons, and approve new players."
+  - another admin (`sheetFor = admin`): "Remove admin" (red outline).
+  - your own row (`sheetFor = self`): "Transfer admin" (brand outline) and "Remove admin" (red outline). With `onlyAdmin`, both are disabled (`surface-2`, `muted-2` text) with "You're the only admin of {group}." and the amber line "A group needs at least one admin."
+  - not on your own row: after a divider, a red text button "Remove from {group}" with "They leave the current season and can't RSVP. Their history stays."
+- **Transfer (`overlay = transfer`):** a dialog over the sheet: "Transfer admin", a search field, and a list of the group's players (32px avatar, name, radio button; the selected row has a `brand-soft` background and a filled `brand` radio). Below: "Make {name} admin and remove your admin access?", Cancel and "Transfer" (disabled until someone is picked).
+- **Remove (`overlay = remove`):** a centred dialog: "Remove {name}?", "They'll lose access to {group}'s runs. They can rejoin with a code if an admin approves them.", Cancel and a red "Remove".
 
 ### 07 Admin · Runs (`07-admin-runs.dc.html`)
-- **Next run card:** a status chip (Open, Locked, Teams published or Cancelled), stat tiles (going, ATT:DEF, flagged), and a line that changes with the state, for example "RSVPs close 5:30 AM · teams publish automatically". When published, a "View teams" button appears.
+- **Next run card:** a curved `card-bar` left edge with the `brand` wash (26 radius, `shadow`), a status chip (Open, Locked, Teams published or Cancelled), stat tiles (going, ATT:DEF, flagged), and a line that changes with the state, for example "RSVPs close 5:30 AM · teams publish automatically". When published, a "View teams" button appears.
 - **Empty state (`status = empty`):** fewer than 4 players; the card shows an amber "Not enough players — no teams made" notice.
 - **Flagged · {run}:** the list of flagged players with the reason ("Said yes 4:58 AM", "No indoor pass") and their badge. Unchanged.
-- **Season section:** a "Holidays" link in the section header; a card with the season title and an Indoor / Outdoor switch, Start date and End date fields, a "Create runs" button and a one-line description of the schedule.
+- **Season section:** a "Holidays" link in the section header; a card (24 radius, `shadow`) with the season title and a two-option switch, Start date and End date fields, a "Create runs" button and a one-line description of the schedule. The mockup labels the switch Indoor / Outdoor; in the app it switches between the group's current and upcoming seasons (by name) and is hidden when only one is open. New seasons are created on 13 Admin · Seasons.
 - **All runs this season:** every run, past and upcoming. Each row shows the day and date, the holiday name if any, the start time and address, "{n} going" (or a reason), and a status chip. A "Show all {n} runs" link sits at the end.
 - **Edit sheet (`overlay = sheet`):** tapping a run opens a bottom sheet with the run's title and status, a Start time field (hint: "RSVPs close and teams publish 1 hour before"), an Address field, "Save changes", and "Delete run" in red.
 - **Delete confirmation (`overlay = confirm`):** for a run with RSVPs, a dialog reads "Delete {run}?" and "12 players said yes. They'll be told this run is cancelled.", with Cancel and a red Delete button.
@@ -239,13 +259,14 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Fairness warning:** an amber line when a move widens the star spread, for example "Moving Lena widens the star spread from 1 to 6".
 
 ### 08b Admin · Team builder, desktop (`08b-admin-team-builder-desktop.dc.html`)
-- **Layout:** a pitch-green sidebar (logo, Players / Runs / Team builder / Passes, "Back to player view") next to the main area. On narrow screens the sidebar stacks above the main area.
+- **Layout:** a pitch-green sidebar (logo, Players / Runs / Seasons / Team builder / Passes, "Back to player view") next to the main area. On narrow screens the sidebar stacks above the main area.
 - **Top bar:** the run summary with a "Published 5:30 AM" chip, the season label, the team count picker and Reshuffle.
 - **Body:** a fairness strip with one bar per team, then three team columns with full-name rows, flag badges, team footers and the same drag state as mobile.
 - **Bottom bar:** the note "Changes save instantly. Players are notified when you reshuffle." and the fairness warning. There's no "Unpublished changes" bar and no Publish button.
 
 ### 09 Admin · Season passes (`09-admin-season-passes.dc.html`)
-- **Season card:** pitch-green, with an Indoor / Outdoor switch, the season title and price ("Indoor 2026–27", "$120"), "{n} of {total} paid", the amount still owed, and a progress bar. The outdoor price is a placeholder.
+- **Season card:** pitch-green, with a two-option switch, the season title and price ("Indoor 2026–27", "$120"), "{n} of {total} paid", the amount still owed, and a progress bar. As on Runs, the mockup's Indoor / Outdoor switch becomes the group's current and upcoming seasons in the app.
+- **Who's listed:** the season's active members who play.
 - **Filter chips:** All / Not paid.
 - **Player rows:** each row has a Paid switch. Paid rows show "Paid" and, beneath it, "Marked paid by John · {date}". Unpaid rows are tinted red (`#FEF2F2` with a `#FCA5A5` border) and labelled "Not paid".
 
@@ -256,6 +277,34 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Top:** a back link to Runs, the title, and the note "Holiday Mondays inside a season become runs automatically."
 - **List:** one row per holiday Monday, showing "{date} · {name}" (for example "Mon Oct 12, 2026 · Thanksgiving"), the season it falls in, and an on/off switch. Switched-off rows are greyed and read "Off · no run". The mockup example switched off is "Mon Dec 25, 2028 · Christmas Day".
 - **Add date:** a dashed "Add date" button at the end of the list.
+- **Per group:** switching a holiday off affects only this group's runs.
+
+### 12 Join a season (`12-join-season.dc.html`)
+Shown after sign-in to anyone who isn't an active member of their group's current or upcoming season. No bottom nav. Logo + "FirstTouch" and "Sign out" at the top, "Hi {first name}", a heading and intro, then a card; footer "Signed in as {email}".
+- **enter:** "Join a season" / "Runs are for season members. Enter the 6-character code an admin gave you." Six 56-tall boxes in two groups of three with a dash between; the active box has a 2px `brand` border. "Join season" (disabled look until 6 characters). Under the card: "Got an invite link? Opening it fills in the code for you."
+- **Start your own runs:** under an "OR" divider (with enter, error and returning), a dashed card with a `brand-soft` plus icon, "Start your own runs", "Organise your own games and invite players" and a chevron. Opens 14. With `groupLimit` it's disabled (`surface-2`, solid border, `muted-2`, no chevron) with "You've created 3 groups, the most allowed. No more groups can be created."
+- **error:** the boxes get a `red-row-border` border and "That code doesn't match an open season." (`red-fg`, role=alert). Intro: "Check the code with an admin. Codes change each season."
+- **pending:** "Almost there", a card with an amber curved bar, the chip "Waiting for an admin", the season name, "Your request is in. You'll get a notification when an admin approves you, usually within a day." and the request time. No Start your own runs here.
+- **returning:** as enter, with the heading "{last season} has ended" and "Thanks for playing. Enter the code for the next season to keep RSVPing. Your stars and position carry over."
+
+### 13 Admin · Seasons (`13-admin-seasons.dc.html`)
+- **Top:** the group name as a small kicker (15px/800) above "CURRENT SEASON", with a "+ New season" pill.
+- **Season card** (curved bar, wash, ball): a status chip ("Current · open to join" in `ok` colours, "Upcoming · starts {date}" in `amber`, "Ended {date}" in `locked`), the name at 30px/800, dates and run count, and tiles: members · waiting (amber) · paid.
+- **Join code card:** "JOIN CODE", the code at 34px/800 shown as `KX7 42P` (muted when off), the link or "Code is off · nobody new can join", a "New code" pill, "Copy code" and "Share link", and two switches: "Code is on" and "Approve new players".
+- **Waiting for approval · {n}** with "Approve all": rows with avatar, name, a "New" chip, "Joined with code · {when}" (plus the season name when two seasons are open), decline (×) and approve (✓).
+- **Invite last season's players:** a card with a "Send" pill.
+- **Past seasons** list, then a red-outline "End {season}" button.
+- **state = both:** after the current season, a NEXT SEASON heading with the upcoming season's card (amber curved bar, "Upcoming · starts {date}") and its own join code card.
+- **state = upcoming:** no current season; only the NEXT SEASON section. No End button.
+- **state = ended:** "LAST SEASON", a grey bar, and a dashed "No season is open" card with "Start the next season".
+- **overlay = new:** the New season sheet: Indoor/Outdoor, Name (auto), Start/End date, Start time + Address, Pass price, an "Invite {last season} players" checkbox, the note "If it starts today or earlier, it becomes the current season straight away. Otherwise it opens as Upcoming…", and "Create {name}". With `errors`: "End date must be after the start date" and "These dates overlap {season}".
+- **overlay = end:** "End {season}?" with three bullets (runs after today are deleted; the join code stops working; members can't RSVP until they join the next season), Cancel and a red "End season".
+
+### 14 Start your own runs (`14-start-your-runs.dc.html`)
+No bottom nav.
+- **form:** "← Back" (to 12), "Start your own runs", "Create a group and its first season. You'll be its admin and get a code to share." One card: Group name; "FIRST SEASON"; Indoor/Outdoor; Season name (auto); Start + End date; Start time + Pass price; Address. A full-width "Create group" button.
+- **error:** the same form with "Give your group a name", "End date must be after the start date", and an alert above the button: "You've created 3 groups, the most allowed. No more groups can be created." Drawn 930 tall because it scrolls.
+- **done:** an "ADMIN" chip, "You're the admin of {group}", the join code card ("JOIN CODE · {season}", the code at 38px/800, the link, "Copy code" and "Share link"), "Players who enter this code join {season}. You approve anyone new." and "Go to Home →".
 
 ## Placeholder data used in the mockups
 
@@ -263,5 +312,6 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Flags:** two players flagged Morning of and three flagged Unpaid (the Unpaid flags are visible in admin views only).
 - **Season passes:** 40 players (including John and Sim), 31 of them paid. The admin player list has 41 people, because it adds Coach, who doesn't play and needs no pass.
 - **Signed-in player:** the player screens are drawn as Daniel Mensah, a regular (non-admin) player.
+- **Group and code:** the group is "Brampton Weekend Football"; the join code is `KX7 42P`. The mockups' link domain (`firsttouch.app`) is a placeholder: the app builds the link from its own address.
 - **Dates:** runs are shown around the weekend of Sat Feb 13 – Mon Feb 15, 2027.
 - **Placeholders:** names, emails and dates are placeholders. The addresses and times are the real run details.

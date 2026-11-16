@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FirstTouch V2 · Sign in</title>
+<title>FirstTouch V3 · Sign in</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -17,7 +17,7 @@ a{color:inherit}
 </helmet>
 <div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.page}}; font-family: 'Inter', system-ui, sans-serif; color: {{t.ink}}; display: flex; flex-direction: column; padding: {{pad}}; overflow: hidden">
   <div style="display: flex; flex-direction: column; align-items: center; gap: 14px">
-    <img src="/_blob/3dfcf1bac4cf45bac56a39dd2306c225" alt="FirstTouch logo" width="96" height="96" style="width: {{logo}}; height: {{logo}}; display: block; filter: drop-shadow(0 6px 14px rgba(4,21,15,0.25))">
+    <img src="../assets/firsttouch-icon.png" alt="FirstTouch logo" width="96" height="96" style="width: {{logo}}; height: {{logo}}; display: block; filter: drop-shadow(0 6px 14px rgba(4,21,15,0.25))">
     <h1 style="margin: 6px 0 0; font-size: 34px; font-weight: 800; letter-spacing: -0.02em">First<span style="color: {{t.brandText}}">Touch</span></h1>
     <p style="margin: 0; font-size: 16px; line-height: 1.45; color: {{t.muted}}; text-align: center; max-width: 280px">Weekend morning soccer. Sign in to RSVP and see your team.</p>
   </div>
@@ -37,7 +37,7 @@ a{color:inherit}
       <div style="display: flex; flex-direction: column; gap: 8px">
         <div style="display: flex; align-items: baseline; justify-content: space-between">
           <label for="si-pass" style="font-size: 14px; font-weight: 700">Password</label>
-          <a href="V2ForgotPassword.dc.html" style="color: {{t.brandText}}; font-size: 14px; font-weight: 700; text-decoration: none; min-height: 24px">Forgot password?</a>
+          <a href="01c-forgot-password.dc.html" style="color: {{t.brandText}}; font-size: 14px; font-weight: 700; text-decoration: none; min-height: 24px">Forgot password?</a>
         </div>
         <div style="position: relative">
           <input id="si-pass" type="{{passType}}" autocomplete="current-password" value="footy2027" style="width: 100%; height: 56px; border-radius: 16px; border: 1.5px solid {{t.inputBorder}}; background: {{t.surface}}; padding: 0 56px 0 16px; font-family: inherit; font-size: 17px; color: {{t.ink}}; box-sizing: border-box">
@@ -51,7 +51,7 @@ a{color:inherit}
   </div>
   <div style="margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 12px">
     <sc-if value="{{ emailOn }}" hint-placeholder-val="{{ false }}">
-      <p style="margin: 0; font-size: 15px; color: {{t.muted}}">New here? <a href="V2CreateAccount.dc.html" style="color: {{t.brandText}}; font-weight: 700; text-decoration: none">Create an account</a></p>
+      <p style="margin: 0; font-size: 15px; color: {{t.muted}}">New here? <a href="01b-create-account.dc.html" style="color: {{t.brandText}}; font-weight: 700; text-decoration: none">Create an account</a></p>
     </sc-if>
     <p style="margin: 0; font-size: 13px; color: {{t.muted}}; text-align: center; line-height: 1.5">By continuing you agree to our <a href="#">Privacy policy</a>.</p>
   </div>
@@ -89,24 +89,25 @@ class Component extends DCLogic {
       nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
       okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
       redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
-      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)', barGrad: 'linear-gradient(180deg, #16A866 0%, #0B7A45 55%, rgba(11,122,69,0.5) 100%)', ballFill: 'rgba(13,26,20,0.025)', ballPatch: 'rgba(13,26,20,0.06)', ballLine: 'rgba(13,26,20,0.09)',
       blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
       grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
     } : {
-      page: 'radial-gradient(130% 50% at 100% 0%, #123C2A 0%, #08130E 58%, #060E0A 100%)',
-      bg: '#08130E', surface: '#0F1C16', surface2: '#172720', line: '#20332A', inputBorder: '#2A3E35',
-      ink: '#F1F5F2', ink2: '#C9D3CD', muted: '#93A39A', muted2: '#6E7F76',
+      page: 'radial-gradient(120% 45% at 100% 0%, #0F2A1D 0%, #0D1110 55%, #0B0E0D 100%)',
+      bg: '#0D1110', surface: '#171B1B', surface2: '#202525', line: '#2A3030', inputBorder: '#343B3A',
+      ink: '#F2F4F3', ink2: '#CBD1CE', muted: '#9BA39F', muted2: '#737B78',
       brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
       btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
       hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
-      nav: 'rgba(11,21,16,0.96)', switchOff: '#33443B',
+      nav: 'rgba(20,24,24,0.96)', switchOff: '#3A4140',
       okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
-      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#24342C', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
-      starOn: '#F1F5F2', starOff: '#33443B', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#262B2B', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F2F4F3', starOff: '#3A4140', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)', barGrad: 'linear-gradient(180deg, #4BE89A 0%, #2FCB7D 55%, rgba(47,203,125,0.5) 100%)', ballFill: 'rgba(255,255,255,0.035)', ballPatch: 'rgba(0,0,0,0.35)', ballLine: 'rgba(255,255,255,0.08)',
       blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
       grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
     };
   }
+
   renderVals() {
     const v = this.renderVals0();
     v.t = this.tok();
