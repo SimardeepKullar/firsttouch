@@ -7,8 +7,8 @@ export function AdminHeader() {
       <Text role="heading" aria-level={1} className="font-inter-extrabold text-[30px] tracking-[-0.02em] text-ink">
         Admin
       </Text>
-      <View className="h-[26px] items-center justify-center rounded-full bg-hero px-[10px]">
-        <Text className="font-inter-extrabold text-[12px] tracking-[0.04em] text-white">ADMIN</Text>
+      <View className="h-[26px] items-center justify-center rounded-full bg-brand-soft px-[10px]">
+        <Text className="font-inter-extrabold text-[12px] tracking-[0.04em] text-brand-text">ADMIN</Text>
       </View>
     </View>
   );
