@@ -201,7 +201,7 @@ export default function Components() {
         </Row>
       </Section>
 
-      <Section title="FlagBadge / AdminBadge" note="Morning of (amber), Unpaid (red), Admin (hero gradient, white text). Sizes: sm 20, md 22.">
+      <Section title="FlagBadge / AdminBadge" note="Morning of (amber), Unpaid (red), Admin (soft green: brand-soft with brand-text). Sizes: sm 20, md 22.">
         <Row label="sm (20)">
           <FlagBadge kind="morningOf" />
           <FlagBadge kind="unpaid" />
