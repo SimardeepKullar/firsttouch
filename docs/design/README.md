@@ -207,8 +207,8 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 - **Field flags:** players see only amber Morning-of dots, and the legend lists Morning of only. Admins also see red Unpaid dots and a matching legend entry.
 
 ### 05 Settings (`05-settings.dc.html`)
-- **Appearance (new in V2):** a three-option control, **Light / Dark / System**, between Notifications and Privacy. Light is selected by default. Choosing Dark switches the app to dark mode; System follows the phone and shows "Follows your phone's light or dark setting." Store the choice per user (and on the device for a fast first paint).
-- **Profile card:** avatar, name, a Paid chip, email, and a pencil button to edit the display name.
+- **Appearance (new in V2):** a three-option control, **Light / Dark / System**, between Notifications and Privacy. Light is selected by default. Choosing Dark switches the app to dark mode; System follows the phone and shows "Follows your phone's light or dark setting." Store the choice per user (and on the device for a fast first paint). After sign-in, the saved choice wins over the device's.
+- **Profile card:** avatar, name, a Paid / Not paid chip (an Admin badge instead for an admin who doesn't play, and no chip when there is no current season), email, and a pencil button to edit the display name.
 - **Notifications:** three switches, in this order: "Night-before reminder", "Teams published", "Changes and cancellations".
 - **Privacy:** a privacy policy link.
 - **Account:** "Change password" (shown only when `emailAuth = on`; it opens 01d), Sign out, and "Delete account" in red (`#B91C1C`).

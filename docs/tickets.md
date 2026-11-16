@@ -1668,6 +1668,8 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 27 | `tokens.json` vs README | `size.button` is 48, but the README and the mockups' primary buttons are 56 tall. | Primary buttons are 56 (README and mockups). Smaller buttons follow each mockup. (T-08) |
 | 28 | `05-settings` | Appearance (Light / Dark / System) is new in V2 and not in the spec. | Built as designed, in the Settings ticket (T-20). |
 | 29 | `03-run-detail` admin view | The mockup and README drop the " · You" suffix for admins. | Decided: an admin who is going keeps " · You" on their own row, like any player (friendlier). (T-19) |
+| 30 | `05-settings` Appearance | Nothing says which choice wins after sign-in when this device's saved theme and the one saved in the database differ. | Decided: once signed in, the database wins. With nothing saved, the device's choice stays and no row is written until the player picks one. It's a pure, tested function, `themeAfterSignIn`. (T-20) |
+| 31 | `05-settings` profile card | The Paid / Not paid chip has no state for "no current season". Home shows "Not paid" in that case. | Decided: no chip on Settings, because "Not paid" would be misleading. Admins who don't play still get the Admin badge. (T-20) |
 
 ### Spec internal gaps and spec vs repo
 
@@ -1685,3 +1687,4 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | S10 | spec Access control › Admins | Nothing stops the last admin from demoting themselves. | Block demoting yourself, in the UI and the guard trigger. (T-23) |
 | S11 | privacy.md | "Effective date: [date]" is a placeholder. | Filled in at launch. (T-66) |
 | S12 | seed.sql | No runs, RSVPs, passes or teams, so screens would be empty locally. | T-13. |
+| S13 | spec Privacy › Account deletion | `delete_my_account` lets any admin delete their own account, including the last admin (S10 only covers demoting yourself). | Not built in T-20. Decide in T-23 whether the function should refuse for the last admin. |
