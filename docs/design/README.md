@@ -10,7 +10,7 @@ This is **Version 3**, the only design. Every screen in `screens/` is Version 3;
 - **Floating bottom nav**, rounder cards (24–26 radius) with a soft `shadow`.
 - **Curved left bars:** run cards, team cards, season cards and the join code card have a 6px left edge that follows the card's rounded corners (a crescent), filled with a top-to-bottom gradient that fades in the bottom 40%. See "Curved left bar" below.
 - **Green wash and ball watermark:** feature cards (Run detail, the Next run card, season and join code cards, the welcome popup) have a `brand` wash and a faint soccer ball peeking in from the right (`ball-fill`, `ball-patch`, `ball-line`).
-- **Soft-green ADMIN tag and Admin badge** (`brand-soft` with `brand-text`).
+- **Soft-green Admin badge** (`brand-soft` with `brand-text`). The mockups also draw an ADMIN tag in the Admin header; the build drops it because the title already says "Admin".
 - **Tokens:** all colours, including `card-bar`, `card-bar-closed`, `button-in` (+ `button-in-shadow`), the ball tokens and `team-{blue|yellow|red}-wash`, `-bar`, `-border`, `-chip-bg`, `-chip-fg`, are in `tokens/`.
 
 ### Curved left bar
@@ -150,7 +150,7 @@ The `.dc.html` files are mockups from a design canvas, not production code. They
 
 - **Status chip:** a 28–32px pill with a dot and a label. Pass: Paid / Not paid. Runs: Open, Locked, Teams published, Cancelled. Teams uses a "Published" pill with a filled check circle and a `brand-line` border.
 - **Flag badge:** 20–22px tall, 11px weight-700 label, using the status tokens (`amber-*` for Morning of, `red-*` for Unpaid).
-- **Admin badge:** the same size as a flag badge, `brand-soft` background with `brand-text`. The ADMIN tag in the Admin header (26 tall, 12px/800, 0.04em tracking) uses the same colours.
+- **Admin badge:** the same size as a flag badge, `brand-soft` background with `brand-text`. The mockups also show an ADMIN tag in the Admin header (26 tall, 12px/800, 0.04em tracking, same colours); the build leaves it out because the page title already says "Admin".
 - **Position tag:** 40 × 24, radius 8. **ATT** is filled `ink` with `bg`-coloured text; **DEF** is an outline in `input-border` with `ink-2` text.
 - **Star rating (admin only):** five 12–13px stars in `star-on` / `star-off`. The editable version has tappable 40 × 44 buttons with 26px stars.
 - **Segmented control:** a pill track in `surface` with a `line` border; the selected segment is the `button` gradient with `on-brand` text.

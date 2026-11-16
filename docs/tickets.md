@@ -41,7 +41,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 17. T-19 · Add the admin view of Run detail (#19)
 18. T-20 · Build the Settings screen: profile, name, appearance, privacy, sign out, delete account (#20)
 19. T-82 · Write the groups, seasons and join codes plan into the docs (#106)
-20. T-83 · Restyle the ADMIN tag and Admin badge to soft green (#107)
+20. T-83 · Restyle the Admin badge to soft green and drop the ADMIN tag (#107)
 21. T-69 · Add groups and per-group roles to the database (#69)
 22. T-84 · Scope runs and holidays to a group (#108)
 23. T-85 · Add season membership, join codes and approval (#109)
@@ -265,7 +265,7 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 - [ ] Screen content scrolls underneath the floating bar without the last item being hidden behind it.
 - [ ] Admin opens on Players. The sub-tab row (Players, Runs, Team builder, Passes) highlights the current page. Holidays is a route under Runs, with a back link.
 - [ ] A player who types an admin URL lands on Home. (RLS already blocks the data. This is the UI guard.)
-- [ ] The admin header shows "Admin" plus the ADMIN tag, as in the mockups.
+- [ ] The admin header shows the "Admin" title only. The mockups' ADMIN tag is not built (T-83, disagreement 32).
 - [ ] On a wide browser the content stays in a phone-width column. The desktop admin sidebar comes in T-46.
 
 **Learning notes**
@@ -570,24 +570,24 @@ Created on GitHub Nov 9, 2026: labels, milestones, issues #1–#76 (except #3, t
 
 ---
 
-### T-83 · Restyle the ADMIN tag and Admin badge to soft green (#107)
+### T-83 · Restyle the Admin badge to soft green and drop the ADMIN tag (#107)
 **Milestone:** RSVP loop · **Labels:** player UI, admin UI · **Size:** S
 
-**Summary:** Version 3 changed the ADMIN tag in the Admin header and the small Admin badge from the green `hero` gradient with white text to soft green: `brand-soft` background with `brand-text`. Everything else on the built screens (sign in, Home, Run detail, Settings, the tab bar at 76 tall) already matches Version 3.
+**Summary:** Version 3 changed the small Admin badge from the green `hero` gradient with white text to soft green: `brand-soft` background with `brand-text`. The ADMIN tag in the Admin header is **dropped**: the page title already says "Admin", so the tag only repeated it (see disagreement 32). Everything else on the built screens (sign in, Home, Run detail, Settings, the tab bar at 76 tall) already matches Version 3.
 
 **Spec:** —
-**Design:** `06-admin-players` and `07-admin-runs` (ADMIN tag in the header; Admin badge on player rows); README › Shared components › Admin badge
+**Design:** `06-admin-players` (Admin badge on player rows; the ADMIN tag in the header of 06 and 07 is not built); README › Shared components › Admin badge
 **Depends on:** —
 
 **Acceptance criteria**
-- [ ] `AdminHeader`'s ADMIN tag (26 tall, 12px / 800, 0.04em tracking) uses `bg-brand-soft` and `text-brand-text`.
-- [ ] `AdminBadge` (22 tall, 11px / 800) uses the same colours. It shows on the Settings profile card for an admin who doesn't play.
+- [ ] `AdminHeader` shows only the "Admin" title; the ADMIN tag is removed (it duplicated the title).
+- [ ] `AdminBadge` (22 tall, 11px / 800) uses `bg-brand-soft` and `text-brand-text`. It shows on the Settings profile card for an admin who doesn't play.
 - [ ] The `/components` gallery note for AdminBadge no longer says "hero gradient".
-- [ ] Both read clearly in light and dark (contrast at least 4.5:1).
+- [ ] The badge reads clearly in light and dark (contrast at least 4.5:1). Measured in Chrome DevTools: 4.67 in light, 8.34 in dark and System-dark.
 
 **Learning notes**
 - Why the colours live in tokens: a restyle is a class-name change, not new colours
-- Checking contrast with the browser's accessibility tools
+- Checking contrast with the browser's accessibility tools (and the eyedropper when the background is see-through)
 
 ---
 
@@ -2069,6 +2069,7 @@ Rule used: **the spec wins on behaviour and permissions, the design wins on visu
 | 29 | `03-run-detail` admin view | The mockup and README drop the " · You" suffix for admins. | Decided: an admin who is going keeps " · You" on their own row, like any player (friendlier). (T-19) |
 | 30 | `05-settings` Appearance | Nothing says which choice wins after sign-in when this device's saved theme and the one saved in the database differ. | Decided: once signed in, the database wins. With nothing saved, the device's choice stays and no row is written until the player picks one. It's a pure, tested function, `themeAfterSignIn`. (T-20) |
 | 31 | `05-settings` profile card | The Paid / Not paid chip has no state for "no current season". Home shows "Not paid" in that case. | Decided: no chip on Settings, because "Not paid" would be misleading. Admins who don't play still get the Admin badge. (T-20) |
+| 32 | `06-admin-players`, `07-admin-runs` header | The mockups and README draw an ADMIN tag beside the "Admin" title. | Decided: no tag, because the title already says "Admin". The Admin badge on player rows and Settings stays, in soft green. README lines fixed. (T-83, T-09) |
 
 ### Spec internal gaps and spec vs repo
 
