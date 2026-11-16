@@ -19,11 +19,11 @@ export function FlagBadge({ kind, size = 'sm' }: { kind: FlagKind; size?: FlagBa
   );
 }
 
-/** Same size as a 'md' flag badge, on the `hero` gradient with white text (06 Admin players). */
+/** Same size as a 'md' flag badge, in the soft green: `brand-soft` with `brand-text` (06 Admin players). */
 export function AdminBadge() {
   return (
-    <View className="h-[22px] items-center justify-center self-start rounded-full bg-hero px-2">
-      <Text className="font-inter-extrabold text-[11px] text-white">Admin</Text>
+    <View className="h-[22px] items-center justify-center self-start rounded-full bg-brand-soft px-2">
+      <Text className="font-inter-extrabold text-[11px] text-brand-text">Admin</Text>
     </View>
   );
 }
