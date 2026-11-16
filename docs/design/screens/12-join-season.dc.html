@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FirstTouch V3 · Join a season</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.page}}; color: {{t.ink}}; font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex-grow: 1; min-height: 0; padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <img src="../assets/firsttouch-icon.png" alt="" width="36" height="36" style="border-radius: 10px">
+        <span style="font-size: 18px; font-weight: 800; letter-spacing: -0.01em">FirstTouch</span>
+      </div>
+      <a href="05-settings.dc.html" style="min-height: 44px; display: flex; align-items: center; color: {{t.muted}}; font-size: 14px; font-weight: 600; text-decoration: none">Sign out</a>
+    </div>
+
+    <div style="margin-top: 6px">
+      <div style="font-size: 15px; color: {{t.muted}}; font-weight: 600">Hi Daniel</div>
+      <h1 style="margin: 4px 0 0; font-size: 30px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.15">{{heading}}</h1>
+      <div style="font-size: 15px; color: {{t.ink2}}; margin-top: 8px; line-height: 1.45">{{intro}}</div>
+    </div>
+
+    <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+      <section aria-label="Join code" style="position: relative; border: 0; border-left: 6px solid transparent; border-radius: 26px; background: {{frame}}; box-shadow: {{t.shadow}}; padding: 18px 16px 18px 18px; overflow: hidden; display: flex; flex-direction: column; gap: 14px">
+        <svg width="190" height="190" viewBox="0 0 64 64" style="position: absolute; right: -64px; top: -40px" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="{{t.ballFill}}" stroke="{{t.ballLine}}" stroke-width="0.8"></circle>
+          <g fill="{{t.ballPatch}}" stroke="{{t.ballLine}}" stroke-width="0.8" stroke-linejoin="round">
+            <path d="M32 21l10.5 7.6-4 12.4h-13l-4-12.4z"></path>
+            <path d="M32 2.2l6.3 4.4-1.6 6.6h-9.4l-1.6-6.6z"></path>
+            <path d="M60.3 24.6l-1.7 7.6-6.2 2.6-5.2-6.2 3.3-7.7z"></path>
+            <path d="M50.6 55.5l-6.9 3.2-5.1-4.6 2.6-7.4h8.1z"></path>
+            <path d="M13.4 55.5l3.4-8.8h8.1l2.6 7.4-5.1 4.6z"></path>
+            <path d="M3.7 24.6l7.8-3.7 3.3 7.7-5.2 6.2-6.2-2.6z"></path>
+          </g>
+        </svg>
+        <label for="code-0" style="position: relative; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; color: {{t.muted}}">SEASON CODE</label>
+        <div role="group" aria-label="Season code, 6 characters" style="position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) 10px repeat(3, minmax(0, 1fr)); gap: 6px; align-items: center">
+          <sc-for list="{{ boxes }}" as="b" hint-placeholder-count="7">
+            <sc-if value="{{ b.isDash }}" hint-placeholder-val="{{ false }}">
+              <span style="height: 2px; border-radius: 1px; background: {{t.muted2}}"></span>
+            </sc-if>
+            <sc-if value="{{ b.isBox }}" hint-placeholder-val="{{ true }}">
+              <span style="height: 56px; box-sizing: border-box; border-radius: 14px; border: {{b.border}}; background: {{t.surface}}; color: {{t.ink}}; font-size: 24px; font-weight: 800; display: flex; align-items: center; justify-content: center">{{b.ch}}</span>
+            </sc-if>
+          </sc-for>
+        </div>
+        <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+          <div role="alert" style="position: relative; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: {{t.redFg}}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7.5v5.5M12 16.5v.01"></path></svg>
+            That code doesn't match an open season.
+          </div>
+        </sc-if>
+        <button type="button" style="position: relative; height: 52px; border: none; border-radius: 16px; background: {{joinBg}}; color: {{joinFg}}; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Join season</button>
+      </section>
+      <div style="display: flex; gap: 12px; padding: 0 4px; font-size: 14px; color: {{t.muted}}; line-height: 1.45">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"></path></svg>
+        <span>Got an invite link? Opening it fills in the code for you.</span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPending }}" hint-placeholder-val="{{ false }}">
+      <section aria-label="Request sent" style="position: relative; border: 0; border-left: 6px solid transparent; border-radius: 26px; background: {{pendingFrame}}; box-shadow: {{t.shadow}}; padding: 18px 16px 18px 18px; display: flex; flex-direction: column; gap: 12px">
+        <span style="align-self: flex-start; height: 26px; padding: 0 10px; border-radius: 999px; background: {{t.amberBg}}; color: {{t.amberFg}}; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 6px">
+          <span style="width: 7px; height: 7px; border-radius: 50%; background: {{t.amberFg}}"></span>Waiting for an admin
+        </span>
+        <div style="font-size: 24px; font-weight: 800; letter-spacing: -0.02em">Indoor 2026–27</div>
+        <div style="font-size: 15px; color: {{t.ink2}}; line-height: 1.45">Your request is in. You'll get a notification when an admin approves you, usually within a day.</div>
+        <div style="font-size: 13px; color: {{t.muted}}">Requested today at 9:14 PM</div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isJoined }}" hint-placeholder-val="{{ false }}">
+      <section aria-label="Indoor 2026–27" style="position: relative; border: 0; border-left: 6px solid transparent; border-radius: 26px; background: {{frame}}; box-shadow: {{t.shadow}}; padding: 18px 16px 18px 18px; overflow: hidden; display: flex; flex-direction: column; gap: 14px">
+        <span style="align-self: flex-start; height: 26px; padding: 0 10px; border-radius: 999px; background: {{t.okBg}}; color: {{t.okFg}}; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 6px">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>You're a member
+        </span>
+        <div>
+          <div style="font-size: 26px; font-weight: 800; letter-spacing: -0.02em">Indoor 2026–27</div>
+          <div style="font-size: 15px; color: {{t.ink2}}; margin-top: 4px">Nov 7, 2026 – Apr 25, 2027</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 9px; font-size: 15px; color: {{t.ink2}}">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+            Sat &amp; Sun at 6:30 AM
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 10px; line-height: 1.3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="{{t.muted}}" style="flex-shrink: 0; margin-top: 1px" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"></path></svg>
+            <span>7855 Finch Ave W,<br>Brampton</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{t.muted}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"></rect><path d="M3 10h18"></path></svg>
+            Season pass $120 · pay an admin
+          </div>
+        </div>
+        <a href="02-home.dc.html" style="height: 52px; border-radius: 16px; background: {{t.btn}}; color: {{t.onBrand}}; font-size: 16px; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px">See this weekend's runs
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+      </section>
+    </sc-if>
+
+    <div style="margin-top: auto; padding: 0 4px; font-size: 13px; color: {{t.muted}}; text-align: center; line-height: 1.45">{{footer}}</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"state":{"editor":"enum","options":["enter","error","pending","joined"],"default":"enter"},"returning":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  tok() {
+    const light = this.props.theme !== 'dark';
+    return light ? {
+      page: 'radial-gradient(130% 50% at 100% 0%, #D6F0E1 0%, #F2F6F3 60%, #F2F6F3 100%)',
+      bg: '#F2F6F3', surface: '#FFFFFF', surface2: '#EDF2EF', line: '#E0E7E3', inputBorder: '#CFD9D3',
+      ink: '#0D1A14', ink2: '#33433A', muted: '#56665D', muted2: '#8A9A91',
+      brand: '#0B7A45', brandText: '#0B7A45', onBrand: '#FFFFFF', brandSoft: '#DDF4E7', brandLine: '#A8DEC1',
+      btn: 'linear-gradient(90deg, #13965B 0%, #0B7A45 100%)',
+      hero: 'linear-gradient(160deg, #0F5C38 0%, #0A3F27 100%)',
+      nav: 'rgba(255,255,255,0.96)', switchOff: '#C5CFC9',
+      okBg: '#DCFCE7', okFg: '#166534', amberBg: '#FEF3C7', amberFg: '#92400E', redBg: '#FEE2E2', redFg: '#B91C1C',
+      redRowBg: '#FEF2F2', redRowBorder: '#FCA5A5', lockedBg: '#E7E9E6', lockedFg: '#3D4640', dropBg: '#FFF8D6',
+      starOn: '#0D1A14', starOff: '#D3DAD6', shadow: '0 8px 24px rgba(13,26,20,0.08)', watermark: 'rgba(13,26,20,0.05)', barGrad: 'linear-gradient(180deg, #16A866 0%, #0B7A45 55%, rgba(11,122,69,0.5) 100%)', ballFill: 'rgba(13,26,20,0.025)', ballPatch: 'rgba(13,26,20,0.06)', ballLine: 'rgba(13,26,20,0.09)',
+      blueTx: '#1D4ED8', yellowTx: '#7A5B00', redTx: '#B91C1C', blueSoft: '#DBE6FF', yellowSoft: '#FFF3C4', redSoft: '#FEE2E2',
+      grass: 'linear-gradient(180deg, #2B8A55 0%, #1F7346 100%)', stripe: 'rgba(255,255,255,0.06)', pitchLine: 'rgba(255,255,255,0.75)'
+    } : {
+      page: 'radial-gradient(120% 45% at 100% 0%, #0F2A1D 0%, #0D1110 55%, #0B0E0D 100%)',
+      bg: '#0D1110', surface: '#171B1B', surface2: '#202525', line: '#2A3030', inputBorder: '#343B3A',
+      ink: '#F2F4F3', ink2: '#CBD1CE', muted: '#9BA39F', muted2: '#737B78',
+      brand: '#3EE08F', brandText: '#4BE59A', onBrand: '#04150F', brandSoft: 'rgba(62,224,143,0.12)', brandLine: 'rgba(62,224,143,0.38)',
+      btn: 'linear-gradient(90deg, #4BE89A 0%, #2FCB7D 100%)',
+      hero: 'linear-gradient(160deg, #134A31 0%, #0B2A1D 100%)',
+      nav: 'rgba(20,24,24,0.96)', switchOff: '#3A4140',
+      okBg: 'rgba(62,224,143,0.14)', okFg: '#5BE8A3', amberBg: 'rgba(245,158,11,0.18)', amberFg: '#FCC85A', redBg: 'rgba(239,68,68,0.18)', redFg: '#FF8A8A',
+      redRowBg: 'rgba(239,68,68,0.08)', redRowBorder: 'rgba(239,68,68,0.45)', lockedBg: '#262B2B', lockedFg: '#C9D3CD', dropBg: 'rgba(245,197,24,0.12)',
+      starOn: '#F2F4F3', starOff: '#3A4140', shadow: '0 12px 30px rgba(0,0,0,0.35)', watermark: 'rgba(255,255,255,0.05)', barGrad: 'linear-gradient(180deg, #4BE89A 0%, #2FCB7D 55%, rgba(47,203,125,0.5) 100%)', ballFill: 'rgba(255,255,255,0.035)', ballPatch: 'rgba(0,0,0,0.35)', ballLine: 'rgba(255,255,255,0.08)',
+      blueTx: '#93B4FF', yellowTx: '#F5C518', redTx: '#FF8A8A', blueSoft: 'rgba(37,99,235,0.22)', yellowSoft: 'rgba(245,197,24,0.18)', redSoft: 'rgba(220,38,38,0.22)',
+      grass: 'linear-gradient(180deg, #1E7A46 0%, #145834 100%)', stripe: 'rgba(255,255,255,0.05)', pitchLine: 'rgba(255,255,255,0.6)'
+    };
+  }
+  renderVals() {
+    const t = this.tok();
+    const dark = this.props.theme === 'dark';
+    const st = this.props.state || 'enter';
+    const returning = !!this.props.returning;
+    const isError = st === 'error';
+    const chars = isError ? ['K', 'X', '7', '4', '2', 'B'] : (st === 'enter' ? ['K', 'X', '7', '4', '', ''] : ['K', 'X', '7', '4', '2', 'P']);
+    const boxes = [];
+    chars.forEach((ch, i) => {
+      if (i === 3) boxes.push({ isDash: true, isBox: false });
+      const active = st === 'enter' && i === 4;
+      boxes.push({ isDash: false, isBox: true, ch: ch || (active ? '|' : ''),
+        border: isError ? '1.5px solid ' + t.redRowBorder : (active ? '2px solid ' + t.brand : '1.5px solid ' + t.inputBorder) });
+    });
+    const wash = 'linear-gradient(160deg, rgba(' + (dark ? '62,224,143' : '11,122,69') + ',' + (dark ? 0.14 : 0.12) + ') 0%, rgba(' + (dark ? '62,224,143' : '11,122,69') + ',' + (dark ? 0.028 : 0.024) + ') 70%)';
+    const amberBar = 'linear-gradient(180deg, #F59E0B 0%, #F59E0B 60%, rgba(245,158,11,0.5) 100%)';
+    const full = st !== 'enter';
+    const headings = {
+      enter: returning ? 'Indoor 2026–27 has ended' : 'Join a season',
+      error: 'Join a season',
+      pending: 'Almost there',
+      joined: 'You’re in'
+    };
+    const intros = {
+      enter: returning ? 'Thanks for playing. Enter the code for the next season to keep RSVPing. Your stars and position carry over.' : 'Runs are for season members. Enter the 6-character code an admin gave you.',
+      error: 'Check the code with an admin. Codes change each season.',
+      pending: 'You’re new to this group, so an admin checks every new player before they can RSVP.',
+      joined: 'Welcome to the season. You can RSVP to runs from Home.'
+    };
+    return {
+      t,
+      heading: headings[st], intro: intros[st],
+      showForm: st === 'enter' || st === 'error', isError, isPending: st === 'pending', isJoined: st === 'joined',
+      boxes,
+      frame: wash + ' padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + t.barGrad + ' border-box',
+      pendingFrame: 'linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, linear-gradient(' + t.surface + ', ' + t.surface + ') padding-box, ' + amberBar + ' border-box',
+      joinBg: full && !isError ? t.btn : (isError ? t.btn : t.surface2),
+      joinFg: full || isError ? t.onBrand : t.muted2,
+      footer: st === 'joined' ? '' : 'Signed in as daniel.mensah@gmail.com'
+    };
+  }
+}
+</script>
+</body>
+</html>

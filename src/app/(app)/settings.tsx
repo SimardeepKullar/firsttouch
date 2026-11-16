@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Pressable, Text } from 'react-native';
+import { router } from 'expo-router';
+import { Text } from 'react-native';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { EditNameSheet } from '../../components/EditNameSheet';
 import { ProfileCard } from '../../components/ProfileCard';
 import { Screen } from '../../components/Screen';
 import { SegmentedControl, type SegmentedOption } from '../../components/SegmentedControl';
-import { FOCUS_RING } from '../../components/pressable';
+import { SectionHeading, SettingsCard, SettingsRow } from '../../components/SettingsCard';
 import { useAuth } from '../../lib/auth';
 import { homeVariant } from '../../lib/homeVariant';
 import { appearanceHint, profileChip } from '../../lib/settings';
@@ -19,7 +20,7 @@ const APPEARANCE_OPTIONS: readonly SegmentedOption<ThemeMode>[] = [
   { value: 'system', label: 'System' },
 ];
 
-// Settings, built up over T-20: Appearance is in; profile, Privacy and Delete account come next.
+// Settings: profile card, Appearance, Privacy and Account. (Notifications come in T-32.)
 export default function Settings() {
   const { session, signOut } = useAuth();
   const me = useMe();
@@ -58,9 +59,7 @@ export default function Settings() {
       {editingName && me.data ? (
         <EditNameSheet currentName={me.data.name} onClose={() => setEditingName(false)} />
       ) : null}
-      <Text className="mt-[10px] px-1 font-inter-extrabold text-[13px] uppercase tracking-[0.08em] text-muted">
-        Appearance
-      </Text>
+      <SectionHeading>Appearance</SectionHeading>
       <SegmentedControl
         options={APPEARANCE_OPTIONS}
         value={mode}
@@ -76,20 +75,17 @@ export default function Settings() {
         </Text>
       ) : null}
 
-      <Pressable
-        role="button"
-        onPress={signOut}
-        className={`min-h-tap items-center justify-center self-start rounded-input border border-line bg-surface px-6 ${FOCUS_RING}`}
-      >
-        <Text className="font-inter-semibold text-ink">Sign out</Text>
-      </Pressable>
-      <Pressable
-        role="button"
-        onPress={() => setConfirmingDelete(true)}
-        className={`min-h-tap items-center justify-center self-start rounded-input px-6 ${FOCUS_RING}`}
-      >
-        <Text className="font-inter-extrabold text-unpaid-fg">Delete account</Text>
-      </Pressable>
+      <SectionHeading>Privacy</SectionHeading>
+      <SettingsCard>
+        <SettingsRow label="Privacy policy" role="link" chevron onPress={() => router.push('/privacy')} />
+      </SettingsCard>
+
+      <SectionHeading>Account</SectionHeading>
+      <SettingsCard>
+        <SettingsRow label="Sign out" onPress={signOut} />
+        <SettingsRow label="Delete account" danger divider onPress={() => setConfirmingDelete(true)} />
+      </SettingsCard>
+
       <ConfirmDialog
         visible={confirmingDelete}
         title="Delete your account?"
